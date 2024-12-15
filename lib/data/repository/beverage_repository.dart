@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_brew/data/infra/api_service.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
+import 'package:flutter_brew/data/model/beverage_result.dart';
 
 abstract interface class BeverageRepository {
-  Future<List<Beverage>> getBeverage();
+  Future<BeverageResult> getBeverage();
 }
 
 class BeverageRepositoryImpl implements BeverageRepository {
@@ -15,11 +16,12 @@ class BeverageRepositoryImpl implements BeverageRepository {
       : client = ApiService(Dio());
 
   @override
-  Future<List<Beverage>> getBeverage() async {
+  Future<BeverageResult> getBeverage() async {
     try {
-      return await client.getBeverages();
+      List<Beverage> lists = await client.getBeverages();
+      return Success(lists);
     } catch (e) {
-      rethrow;
+      return Error(e.toString());
     }
   }
 }

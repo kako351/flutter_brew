@@ -15,18 +15,6 @@ void main() {
     provideDummy<BeverageResult>(Success([]));
   });
 
-  test('beverages_view_model loading test', () async {
-    // arrange
-    final BeverageRepository mockRepository = MockBeverageRepository();
-    final viewModel = BeveragesViewModel(repository: mockRepository);
-
-    // act
-    final result = await viewModel.build();
-
-    // assert
-    expect(result, isA<LoadingBeveragesViewState>());
-  });
-
   test('beverages_view_model success test', () async {
     // arrange
     final BeverageRepository mockRepository = MockBeverageRepository();

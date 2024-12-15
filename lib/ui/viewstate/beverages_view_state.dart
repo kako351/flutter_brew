@@ -3,8 +3,6 @@ import 'package:flutter_brew/data/model/beverage.dart';
 
 abstract interface class BeveragesViewState {}
 
-class LoadingBeveragesViewState implements BeveragesViewState {}
-
 class ErrorBeveragesViewState implements BeveragesViewState {}
 
 class SuccessBeveragesViewState implements BeveragesViewState {

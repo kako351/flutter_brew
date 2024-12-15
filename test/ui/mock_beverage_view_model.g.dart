@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'beverages_view_model.dart';
+part of 'mock_beverage_view_model.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$beveragesViewModelHash() =>
-    r'95c750c56c8bb983340ea7694471f741757aa26a';
+String _$mockBeverageViewModelHash() =>
+    r'c2b57149d61ea1ab334cc8dd06912d95ec76a571';
 
-/// See also [BeveragesViewModel].
-@ProviderFor(BeveragesViewModel)
-final beveragesViewModelProvider = AutoDisposeAsyncNotifierProvider<
-    BeveragesViewModel, BeveragesViewState>.internal(
-  BeveragesViewModel.new,
-  name: r'beveragesViewModelProvider',
+/// See also [MockBeverageViewModel].
+@ProviderFor(MockBeverageViewModel)
+final mockBeverageViewModelProvider = AutoDisposeAsyncNotifierProvider<
+    MockBeverageViewModel, BeveragesViewState>.internal(
+  MockBeverageViewModel.new,
+  name: r'mockBeverageViewModelProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$beveragesViewModelHash,
+      : _$mockBeverageViewModelHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$BeveragesViewModel = AutoDisposeAsyncNotifier<BeveragesViewState>;
+typedef _$MockBeverageViewModel = AutoDisposeAsyncNotifier<BeveragesViewState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

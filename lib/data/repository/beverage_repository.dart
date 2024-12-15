@@ -10,10 +10,8 @@ abstract interface class BeverageRepository {
 class BeverageRepositoryImpl implements BeverageRepository {
   final ApiService client;
 
-  BeverageRepositoryImpl(this.client);
-
-  BeverageRepositoryImpl.withOutClient()
-      : client = ApiService(Dio());
+  BeverageRepositoryImpl({ApiService? apiClient})
+      : client = apiClient ?? ApiService(Dio());
 
   @override
   Future<BeverageResult> getBeverage() async {

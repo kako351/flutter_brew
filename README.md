@@ -2,7 +2,7 @@
 
 Flutter Brew is a Flutter application that displays a list of beverages. 
 
-![screenshot_android.png](images/screenshot_android.png)
+<img src="images/screenshot_android.png" width=300 />
 
 ## Features
 

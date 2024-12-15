@@ -30,7 +30,7 @@ void main() {
   test('beverage repository success test', () async {
     // arrange
     final mockApiService = MockApiService();
-    final beverageRepository = BeverageRepositoryImpl(mockApiService);
+    final beverageRepository = BeverageRepositoryImpl(apiClient: mockApiService);
 
     // act
     when(mockApiService.getBeverages()).thenAnswer((_) async => mockBeverages);
@@ -45,7 +45,7 @@ void main() {
   test('beverage repository error test', () async {
     // arrange
     final mockApiService = MockApiService();
-    final beverageRepository = BeverageRepositoryImpl(mockApiService);
+    final beverageRepository = BeverageRepositoryImpl(apiClient: mockApiService);
 
     // act
     when(mockApiService.getBeverages()).thenThrow(Exception('error'));

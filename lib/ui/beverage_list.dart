@@ -39,7 +39,9 @@ class BeverageList extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (o, s) => const Center(child: Text('データの読み込み失敗')),
         data: (state) {
-          if (state is! SuccessBeveragesViewState) return null;
+          if (state is! SuccessBeveragesViewState) {
+            return const Center(child: Text('予期せぬエラーが発生しました'));
+          }
 
           final beverages = state.beverages;
           return ListView.builder(

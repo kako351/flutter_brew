@@ -14,7 +14,7 @@ class BeveragesViewModel extends _$BeveragesViewModel {
 
   @override
   Future<BeveragesViewState> build() async {
-    return LoadingBeveragesViewState();
+    return getBeverages();
   }
 
   Future<BeveragesViewState> getBeverages() async {

@@ -1,7 +1,6 @@
 import 'package:flutter_brew/data/model/beverage_result.dart';
 import 'package:flutter_brew/data/repository/beverage_repository.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'beverages_view_model.g.dart';

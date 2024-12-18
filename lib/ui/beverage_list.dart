@@ -48,7 +48,7 @@ class BeverageList extends ConsumerWidget {
           return ListView.builder(
             itemCount: beverages.length,
             itemBuilder: (context, index) {
-              return GestureDetector(
+              return InkWell(
                   onTap: () {
                     context.pushNamed(
                         'beverage_detail',

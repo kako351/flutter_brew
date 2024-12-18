@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter_brew/ui/beverage_detail.dart';
 import 'package:flutter_brew/ui/beverage_list.dart';
 import 'package:flutter_brew/ui/error_page.dart';

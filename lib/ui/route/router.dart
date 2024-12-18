@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter_brew/ui/beverage_detail.dart';
 import 'package:flutter_brew/ui/beverage_list.dart';
+import 'package:flutter_brew/ui/error_page.dart';
 import 'package:go_router/go_router.dart';
 
 GoRouter router = GoRouter(
@@ -14,7 +15,15 @@ GoRouter router = GoRouter(
     GoRoute(
       path: '/beverage/:id',
       name: 'beverage_detail',
-      builder: (context, state) => BeverageDetailPage(id: int.parse(state.pathParameters['id'] as String)),
+      builder: (context, state) {
+        final idStr = state.pathParameters['id'];
+        try {
+          final id = int.parse(idStr ?? '');
+          return BeverageDetailPage(id: id);
+        } catch (e) {
+          return const ErrorPage();
+        }
+      }
     )
   ],
 );

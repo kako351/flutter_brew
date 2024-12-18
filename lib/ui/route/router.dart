@@ -3,16 +3,26 @@ import 'package:flutter_brew/ui/beverage_list.dart';
 import 'package:flutter_brew/ui/error_page.dart';
 import 'package:go_router/go_router.dart';
 
+abstract class HomeRoute {
+  static const path = '/';
+  static const name = 'beverage_list';
+}
+
+abstract class DetailRoute {
+  static const path = '/beverage/:id';
+  static const name = 'beverage_detail';
+}
+
 GoRouter router = GoRouter(
   routes: [
     GoRoute(
-      path: '/',
-      name: 'beverage_list',
+      path: HomeRoute.path,
+      name: HomeRoute.name,
       builder: (context, state) => BeverageListPage(),
     ),
     GoRoute(
-      path: '/beverage/:id',
-      name: 'beverage_detail',
+      path: DetailRoute.path,
+      name: DetailRoute.name,
       builder: (context, state) {
         final idStr = state.pathParameters['id'];
         try {

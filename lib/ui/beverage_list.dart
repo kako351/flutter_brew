@@ -50,7 +50,10 @@ class BeverageList extends ConsumerWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                   onTap: () {
-                    context.push('/beverage/${beverages[index].id}');
+                    context.pushNamed(
+                        'beverage_detail',
+                        pathParameters: { 'id': '${beverages[index].id}' }
+                    );
                   },
                   child: ListTile(title: Text('${beverages[index]}')),
               );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_brew/ui/beverages_view_model.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 
 class BeverageListPage extends ConsumerStatefulWidget {
@@ -47,8 +48,11 @@ class BeverageList extends ConsumerWidget {
           return ListView.builder(
             itemCount: beverages.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text('${beverages[index]}'),
+              return GestureDetector(
+                  onTap: () {
+                    context.push('/beverage/${beverages[index].id}');
+                  },
+                  child: ListTile(title: Text('${beverages[index]}')),
               );
             },
           );

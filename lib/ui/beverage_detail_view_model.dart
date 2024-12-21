@@ -31,7 +31,7 @@ class BeverageDetailViewModel extends _$BeverageDetailViewModel {
       case Success():
         return result.beverageDetail;
       case Error():
-        throw Exception('Failed to get beverage detail');
+        throw Exception(result.message);
     }
   }
 }

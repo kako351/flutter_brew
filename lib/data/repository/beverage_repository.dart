@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_brew/data/infra/api_service.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
-import 'package:flutter_brew/data/model/beverage_detail_result.dart' as BeverageDetailResult;
-import 'package:flutter_brew/data/model/beverage_result.dart' as BeverageResult;
+import 'package:flutter_brew/data/model/beverage_detail_result.dart' as beverage_detail_result;
+import 'package:flutter_brew/data/model/beverage_result.dart' as beverage_result;
 
 abstract interface class BeverageRepository {
-  Future<BeverageResult.BeverageResult> getBeverage();
+  Future<beverage_result.BeverageResult> getBeverage();
 
-  Future<BeverageDetailResult.BeverageDetailResult> getHotBeverageDetail(int id);
+  Future<beverage_detail_result.BeverageDetailResult> getHotBeverageDetail(int id);
 }
 
 class BeverageRepositoryImpl implements BeverageRepository {
@@ -17,22 +17,22 @@ class BeverageRepositoryImpl implements BeverageRepository {
       : client = apiClient ?? ApiService(Dio());
 
   @override
-  Future<BeverageResult.BeverageResult> getBeverage() async {
+  Future<beverage_result.BeverageResult> getBeverage() async {
     try {
       List<Beverage> lists = await client.getBeverages();
-      return BeverageResult.Success(lists);
+      return beverage_result.Success(lists);
     } catch (e) {
-      return BeverageResult.Error(e.toString());
+      return beverage_result.Error(e.toString());
     }
   }
 
   @override
-  Future<BeverageDetailResult.BeverageDetailResult> getHotBeverageDetail(int id) async {
+  Future<beverage_detail_result.BeverageDetailResult> getHotBeverageDetail(int id) async {
     try {
       Beverage beverage = await client.getHotBeverageDetail(id);
-      return BeverageDetailResult.Success(beverage);
+      return beverage_detail_result.Success(beverage);
     } catch (e) {
-      return BeverageDetailResult.Error(e.toString());
+      return beverage_detail_result.Error(e.toString());
     }
   }
 }

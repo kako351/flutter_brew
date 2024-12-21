@@ -22,7 +22,7 @@ class BeverageDetailViewModel extends _$BeverageDetailViewModel {
     try {
       return _handleBeverageDetailResult(result);
     } catch (e) {
-      throw Future.error('Failed to get beverage detail');
+      throw Exception('Failed to get beverage detail');
     }
   }
 

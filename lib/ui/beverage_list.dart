@@ -91,7 +91,7 @@ class BeverageCellWidget extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 8.0), // 上に20ピクセルのパディングを追加
+          padding: EdgeInsets.only(top: 8.0),
         ),
         Text(beverage.title),
       ],

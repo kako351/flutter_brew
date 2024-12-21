@@ -3,10 +3,10 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
-import 'package:flutter_brew/data/infra/api_service.dart' as _i2;
-import 'package:flutter_brew/data/model/beverage.dart' as _i4;
+import 'package:flutter_brew/data/infra/api_service.dart' as _i3;
+import 'package:flutter_brew/data/model/beverage.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -22,18 +22,51 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeBeverage_0 extends _i1.SmartFake implements _i2.Beverage {
+  _FakeBeverage_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [ApiService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockApiService extends _i1.Mock implements _i2.ApiService {
+class MockApiService extends _i1.Mock implements _i3.ApiService {
   @override
-  _i3.Future<List<_i4.Beverage>> getBeverages() => (super.noSuchMethod(
+  _i4.Future<List<_i2.Beverage>> getBeverages() => (super.noSuchMethod(
         Invocation.method(
           #getBeverages,
           [],
         ),
-        returnValue: _i3.Future<List<_i4.Beverage>>.value(<_i4.Beverage>[]),
+        returnValue: _i4.Future<List<_i2.Beverage>>.value(<_i2.Beverage>[]),
         returnValueForMissingStub:
-            _i3.Future<List<_i4.Beverage>>.value(<_i4.Beverage>[]),
-      ) as _i3.Future<List<_i4.Beverage>>);
+            _i4.Future<List<_i2.Beverage>>.value(<_i2.Beverage>[]),
+      ) as _i4.Future<List<_i2.Beverage>>);
+
+  @override
+  _i4.Future<_i2.Beverage> getHotBeverageDetail(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #getHotBeverageDetail,
+          [id],
+        ),
+        returnValue: _i4.Future<_i2.Beverage>.value(_FakeBeverage_0(
+          this,
+          Invocation.method(
+            #getHotBeverageDetail,
+            [id],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i4.Future<_i2.Beverage>.value(_FakeBeverage_0(
+          this,
+          Invocation.method(
+            #getHotBeverageDetail,
+            [id],
+          ),
+        )),
+      ) as _i4.Future<_i2.Beverage>);
 }

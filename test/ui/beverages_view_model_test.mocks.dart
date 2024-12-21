@@ -5,6 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
+import 'package:flutter_brew/data/model/beverage_detail_result.dart' as _i6;
 import 'package:flutter_brew/data/model/beverage_result.dart' as _i4;
 import 'package:flutter_brew/data/repository/beverage_repository.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
@@ -51,4 +52,29 @@ class MockBeverageRepository extends _i1.Mock
           ),
         )),
       ) as _i3.Future<_i4.BeverageResult>);
+
+  @override
+  _i3.Future<_i6.BeverageDetailResult> getHotBeverageDetail(int? id) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getHotBeverageDetail,
+          [id],
+        ),
+        returnValue: _i3.Future<_i6.BeverageDetailResult>.value(
+            _i5.dummyValue<_i6.BeverageDetailResult>(
+          this,
+          Invocation.method(
+            #getHotBeverageDetail,
+            [id],
+          ),
+        )),
+        returnValueForMissingStub: _i3.Future<_i6.BeverageDetailResult>.value(
+            _i5.dummyValue<_i6.BeverageDetailResult>(
+          this,
+          Invocation.method(
+            #getHotBeverageDetail,
+            [id],
+          ),
+        )),
+      ) as _i3.Future<_i6.BeverageDetailResult>);
 }

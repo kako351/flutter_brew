@@ -69,11 +69,18 @@ class _BeverageDetailContent extends StatelessWidget {
               Image.network(
                 beverage.image,
                 key: Key(beverage.title),
-                width: 500.0,
-                height: 500.0,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.width,
                 cacheWidth: 537,
                 cacheHeight: 807,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Center(child: Icon(Icons.error));
+                },
+               loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const Center(child: CircularProgressIndicator());
+                },
               ),
               Container(
                 margin: const EdgeInsets.only(left: SpacerDefinition.sizeM, right: SpacerDefinition.sizeM),

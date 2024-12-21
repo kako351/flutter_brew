@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/ui/beverages_view_model.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,7 +46,8 @@ class BeverageList extends ConsumerWidget {
           }
 
           final beverages = state.beverages;
-          return ListView.builder(
+          return ListView.separated(
+            padding: const EdgeInsets.all(8),
             itemCount: beverages.length,
             itemBuilder: (context, index) {
               return InkWell(
@@ -55,12 +57,44 @@ class BeverageList extends ConsumerWidget {
                         pathParameters: { 'id': '${beverages[index].id}' }
                     );
                   },
-                  child: ListTile(title: Text('${beverages[index]}')),
+                  child: BeverageCellWidget(beverage: beverages[index])
               );
             },
+            separatorBuilder: (BuildContext context, int index) => const Padding(padding: EdgeInsets.all(12)),
           );
         }
       ),
+    );
+  }
+}
+
+
+class BeverageCellWidget extends StatelessWidget {
+  const BeverageCellWidget({required this.beverage, super.key});
+
+  final Beverage beverage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ClipOval(
+          child: Image.network(
+            beverage.image,
+            key: Key(beverage.title),
+            width: 100.0,
+            height: 100.0,
+            cacheWidth: 537,
+            cacheHeight: 807,
+            fit: BoxFit.cover,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 8.0), // 上に20ピクセルのパディングを追加
+        ),
+        Text(beverage.title),
+      ],
     );
   }
 }

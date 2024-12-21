@@ -1,5 +1,6 @@
 import 'package:flutter_brew/data/infra/api_service.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
+import 'package:flutter_brew/data/model/beverage_detail_result.dart' as beverage_detail_result;
 import 'package:flutter_brew/data/model/beverage_result.dart';
 import 'package:flutter_brew/data/repository/beverage_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -54,5 +55,33 @@ void main() {
     // assert
     expect(result, isA<Error>());
     expect((result as Error).message, Exception('error').toString());
+  });
+
+  test('beverage repository hot beverage detail success test', () async {
+    // arrange
+    final mockApiService = MockApiService();
+    final beverageRepository = BeverageRepositoryImpl(apiClient: mockApiService);
+
+    // act
+    when(mockApiService.getHotBeverageDetail(1)).thenAnswer((_) async => mockBeverages[0]);
+    final result = await beverageRepository.getHotBeverageDetail(1);
+
+    // assert
+    expect(result, isA<beverage_detail_result.Success>());
+    expect((result as beverage_detail_result.Success).beverageDetail, mockBeverages[0]);
+  });
+
+  test('beverage repository hot beverage detail error test', () async {
+    // arrange
+    final mockApiService = MockApiService();
+    final beverageRepository = BeverageRepositoryImpl(apiClient: mockApiService);
+
+    // act
+    when(mockApiService.getHotBeverageDetail(1)).thenThrow(Exception('error'));
+    final result = await beverageRepository.getHotBeverageDetail(1);
+
+    // assert
+    expect(result, isA<beverage_detail_result.Error>());
+    expect((result as beverage_detail_result.Error).message, Exception('error').toString());
   });
 }

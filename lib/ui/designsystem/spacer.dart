@@ -9,50 +9,28 @@ class SpacerDefinition {
   static const double sizeXL = 32.0;
 }
 
-class SpacerS extends StatelessWidget {
-  const SpacerS({super.key});
+abstract class _BaseSpacerWidget extends StatelessWidget {
+  final double size;
+  const _BaseSpacerWidget(this.size, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: SpacerDefinition.sizeS,
-      width: SpacerDefinition.sizeS,
-    );
+    return SizedBox(height: size, width: size);
   }
 }
 
-class SpacerM extends StatelessWidget {
-  const SpacerM({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: SpacerDefinition.sizeM,
-      width: SpacerDefinition.sizeM,
-    );
-  }
+class SpacerS extends _BaseSpacerWidget {
+  const SpacerS({super.key}): super(SpacerDefinition.sizeS);
 }
 
-class SpacerL extends StatelessWidget {
-  const SpacerL({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: SpacerDefinition.sizeL,
-      width: SpacerDefinition.sizeL,
-    );
-  }
+class SpacerM extends _BaseSpacerWidget {
+  const SpacerM({super.key}): super(SpacerDefinition.sizeM);
 }
 
-class SpacerXL extends StatelessWidget {
-  const SpacerXL({super.key});
+class SpacerL extends _BaseSpacerWidget {
+  const SpacerL({super.key}): super(SpacerDefinition.sizeL);
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: SpacerDefinition.sizeXL,
-      width: SpacerDefinition.sizeXL,
-    );
-  }
+class SpacerXL extends _BaseSpacerWidget {
+  const SpacerXL({super.key}): super(SpacerDefinition.sizeXL);
 }

@@ -1,4 +1,5 @@
 import 'package:flutter_brew/ui/beverage_detail.dart';
+import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/beverage_list.dart';
 import 'package:flutter_brew/ui/error_page.dart';
 import 'package:go_router/go_router.dart';
@@ -25,9 +26,10 @@ GoRouter router = GoRouter(
       name: DetailRoute.name,
       builder: (context, state) {
         final idStr = state.pathParameters['id'];
+        final args = state.extra as BeverageDetailArgs?;
         try {
           final id = int.parse(idStr ?? '');
-          return BeverageDetailPage(id: id);
+          return BeverageDetailPage(id: id, args: args);
         } catch (e) {
           return const ErrorPage();
         }

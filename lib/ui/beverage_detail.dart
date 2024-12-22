@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
+import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/designsystem/color.dart';
 import 'package:flutter_brew/ui/designsystem/size.dart';
 import 'package:flutter_brew/ui/designsystem/spacer.dart';
@@ -7,9 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_brew/ui/beverage_detail_view_model.dart';
 
 class BeverageDetailPage extends ConsumerStatefulWidget {
-  const BeverageDetailPage({required this.id, super.key});
+  const BeverageDetailPage({required this.id, this.args, super.key});
 
   final int id;
+  final BeverageDetailArgs? args;
 
   @override
   BeverageDetailPageState createState() => BeverageDetailPageState();
@@ -24,25 +26,51 @@ class BeverageDetailPageState extends ConsumerState<BeverageDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BeverageDetail(id: widget.id);
+    return BeverageDetail(id: widget.id, args: widget.args);
   }
 }
 
 class BeverageDetail extends ConsumerWidget {
-  const BeverageDetail({required this.id, super.key});
+  const BeverageDetail({required this.id, this.args, super.key});
 
   final int id;
+  final BeverageDetailArgs? args;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(beverageDetailViewModelProvider(id));
 
+    final args = this.args;
+
     return Scaffold(
         appBar: AppBar(
-          title: Text(data.value?.title ?? ''),
+          title: Text(data.value?.title ?? args?.title ?? ''),
         ),
         body: data.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
+          loading: () {
+            if(args != null) {
+              return Column(
+                children: [
+                  _BeverageImage(image: args.image, imageHeroTag: args.imageHeroTag),
+                  Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(left: SpacerDefinition.sizeM, right: SpacerDefinition.sizeM),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SpacerS(),
+                          _BeverageTitle(title: args.title, titleHeroTag: args.titleHeroTag),
+                          SpacerL(),
+                          Center(child: CircularProgressIndicator()),
+                        ]
+                    ),
+                  )
+                ]
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
           error: (o, s) => const Center(child: Text('データの読み込み失敗')),
           data: (state) {
             final detail = state;
@@ -66,32 +94,15 @@ class _BeverageDetailContent extends StatelessWidget {
         SliverToBoxAdapter(
           child: Column(
             children: [
-              Hero(
-                tag: beverage.imageHeroTag,
-                child: Image.network(
-                  beverage.image,
-                  key: Key(beverage.title),
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.width,
-                  cacheWidth: 537,
-                  cacheHeight: 807,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Center(child: Icon(Icons.error));
-                  },
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                ),
-              ),
+              _BeverageImage(image: beverage.image, imageHeroTag: beverage.imageHeroTag),
+
               Container(
                 margin: const EdgeInsets.only(left: SpacerDefinition.sizeM, right: SpacerDefinition.sizeM),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SpacerS(),
-                    Hero(tag: beverage.titleHeroTag, child: Text(beverage.title, style: Theme.of(context).textTheme.headlineLarge)),
+                    _BeverageTitle(title: beverage.title, titleHeroTag: beverage.titleHeroTag),
                     SpacerS(),
                     Text(beverage.description, style: Theme.of(context).textTheme.bodyLarge),
                     SpacerXL(),
@@ -120,6 +131,50 @@ class _BeverageDetailContent extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _BeverageImage extends StatelessWidget {
+  const _BeverageImage({required this.image, required this.imageHeroTag, super.key});
+
+  final String image;
+  final String imageHeroTag;
+
+  @override
+  Widget build(BuildContext context) {
+    return Hero(
+      tag: imageHeroTag,
+      child: Image.network(
+        image,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.width,
+        cacheWidth: 537,
+        cacheHeight: 807,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return const Center(child: Icon(Icons.error));
+        },
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
+    );
+  }
+}
+
+class _BeverageTitle extends StatelessWidget {
+  const _BeverageTitle({required this.title, required this.titleHeroTag, super.key});
+
+  final String title;
+  final String titleHeroTag;
+
+  @override
+  Widget build(BuildContext context) {
+    return Hero(
+      tag: titleHeroTag,
+      child: Text(title, style: Theme.of(context).textTheme.headlineLarge),
     );
   }
 }

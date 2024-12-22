@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
+import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/beverages_view_model.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,7 +55,8 @@ class BeverageList extends ConsumerWidget {
                   onTap: () {
                     context.pushNamed(
                         'beverage_detail',
-                        pathParameters: { 'id': '${beverages[index].id}' }
+                        pathParameters: { 'id': '${beverages[index].id}' },
+                        extra: BeverageDetailArgs.fromModel(beverages[index]),
                     );
                   },
                   child: BeverageCellWidget(beverage: beverages[index])

@@ -7,7 +7,7 @@ part of 'beverage_detail_view_model.dart';
 // **************************************************************************
 
 String _$beverageDetailViewModelHash() =>
-    r'980d48b26c0a30c28b6b7ad12778a9085f0e9e7e';
+    r'09e4a70884906789cf787c00b53b8b14a286c827';
 
 /// Copied from Dart SDK
 class _SystemHash {

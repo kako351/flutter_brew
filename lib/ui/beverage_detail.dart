@@ -136,7 +136,7 @@ class _BeverageDetailContent extends StatelessWidget {
 }
 
 class _BeverageImage extends StatelessWidget {
-  const _BeverageImage({required this.image, required this.imageHeroTag, super.key});
+  const _BeverageImage({required this.image, required this.imageHeroTag});
 
   final String image;
   final String imageHeroTag;
@@ -165,7 +165,7 @@ class _BeverageImage extends StatelessWidget {
 }
 
 class _BeverageTitle extends StatelessWidget {
-  const _BeverageTitle({required this.title, required this.titleHeroTag, super.key});
+  const _BeverageTitle({required this.title, required this.titleHeroTag});
 
   final String title;
   final String titleHeroTag;

@@ -17,6 +17,6 @@ class Beverage with _$Beverage {
 
   factory Beverage.fromJson(Map<String, dynamic> json) => _$BeverageFromJson(json);
 
-  get imageHeroTag => 'beverage_image_${id}_${title}';
-  get titleHeroTag => 'beverage_title_${id}_${title}';
+  get imageHeroTag => 'beverage_image_${id}_$title';
+  get titleHeroTag => 'beverage_title_${id}_$title';
 }

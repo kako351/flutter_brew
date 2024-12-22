@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
+import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/beverages_view_model.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,7 +55,8 @@ class BeverageList extends ConsumerWidget {
                   onTap: () {
                     context.pushNamed(
                         'beverage_detail',
-                        pathParameters: { 'id': '${beverages[index].id}' }
+                        pathParameters: { 'id': '${beverages[index].id}' },
+                        extra: BeverageDetailArgs.fromModel(beverages[index]),
                     );
                   },
                   child: BeverageCellWidget(beverage: beverages[index])
@@ -79,21 +81,28 @@ class BeverageCellWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ClipOval(
-          child: Image.network(
-            beverage.image,
-            key: Key(beverage.title),
-            width: 100.0,
-            height: 100.0,
-            cacheWidth: 537,
-            cacheHeight: 807,
-            fit: BoxFit.cover,
+        Hero(
+          tag: beverage.imageHeroTag,
+          child: ClipOval(
+            child: Image.network(
+              beverage.image,
+              key: Key(beverage.title),
+              width: 100.0,
+              height: 100.0,
+              cacheWidth: 537,
+              cacheHeight: 807,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         Padding(
           padding: EdgeInsets.only(top: 8.0),
         ),
-        Text(beverage.title),
+        Hero(
+          tag: beverage.titleHeroTag,
+          child: Text(beverage.title, style: Theme.of(context).textTheme.labelMedium
+          ),
+        ),
       ],
     );
   }

@@ -5,6 +5,8 @@ part 'beverage.g.dart';
 
 @freezed
 class Beverage with _$Beverage {
+  const Beverage._();
+
   const factory Beverage({
     required String title,
     required String description,
@@ -14,4 +16,7 @@ class Beverage with _$Beverage {
   }) = _Beverage;
 
   factory Beverage.fromJson(Map<String, dynamic> json) => _$BeverageFromJson(json);
+
+  get imageHeroTag => 'beverage_image_${id}_$title';
+  get titleHeroTag => 'beverage_title_${id}_$title';
 }

@@ -38,3 +38,18 @@ Flutter Brew is a Flutter application that displays a list of beverages.
 To run the app on an emulator or physical device, use the following command:
 ```sh
 flutter run
+```
+
+### Running the Tests
+
+To run the unit tests, use the following command:
+```sh
+flutter test
+```
+
+### Widget Book
+
+To run the widget book, use the following command:
+```sh
+flutter run -d chrome -t lib/widgetbook.dart
+```

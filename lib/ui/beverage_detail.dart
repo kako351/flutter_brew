@@ -6,6 +6,7 @@ import 'package:flutter_brew/ui/designsystem/size.dart';
 import 'package:flutter_brew/ui/designsystem/spacer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_brew/ui/beverage_detail_view_model.dart';
+import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widget_book;
 
 class BeverageDetailPage extends ConsumerStatefulWidget {
   const BeverageDetailPage({required this.id, this.args, super.key});
@@ -51,7 +52,7 @@ class BeverageDetail extends ConsumerWidget {
             if(args != null) {
               return Column(
                 children: [
-                  _BeverageImage(image: args.image, imageHeroTag: args.imageHeroTag),
+                  BeverageImage(image: args.image, imageHeroTag: args.imageHeroTag),
                   Container(
                     width: double.infinity,
                     margin: const EdgeInsets.only(left: SpacerDefinition.sizeM, right: SpacerDefinition.sizeM),
@@ -59,7 +60,7 @@ class BeverageDetail extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SpacerS(),
-                          _BeverageTitle(title: args.title, titleHeroTag: args.titleHeroTag),
+                          BeverageTitle(title: args.title, titleHeroTag: args.titleHeroTag),
                           SpacerL(),
                           Center(child: CircularProgressIndicator()),
                         ]
@@ -74,15 +75,15 @@ class BeverageDetail extends ConsumerWidget {
           error: (o, s) => const Center(child: Text('データの読み込み失敗')),
           data: (state) {
             final detail = state;
-            return _BeverageDetailContent(beverage: detail);
+            return BeverageDetailContent(beverage: detail);
           }
         )
     );
   }
 }
 
-class _BeverageDetailContent extends StatelessWidget {
-  const _BeverageDetailContent({required this.beverage});
+class BeverageDetailContent extends StatelessWidget {
+  const BeverageDetailContent({super.key, required this.beverage});
 
 
   final Beverage beverage;
@@ -94,7 +95,7 @@ class _BeverageDetailContent extends StatelessWidget {
         SliverToBoxAdapter(
           child: Column(
             children: [
-              _BeverageImage(image: beverage.image, imageHeroTag: beverage.imageHeroTag),
+              BeverageImage(image: beverage.image, imageHeroTag: beverage.imageHeroTag),
 
               Container(
                 margin: const EdgeInsets.only(left: SpacerDefinition.sizeM, right: SpacerDefinition.sizeM),
@@ -102,7 +103,7 @@ class _BeverageDetailContent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SpacerS(),
-                    _BeverageTitle(title: beverage.title, titleHeroTag: beverage.titleHeroTag),
+                    BeverageTitle(title: beverage.title, titleHeroTag: beverage.titleHeroTag),
                     SpacerS(),
                     Text(beverage.description, style: Theme.of(context).textTheme.bodyLarge),
                     SpacerXL(),
@@ -135,8 +136,8 @@ class _BeverageDetailContent extends StatelessWidget {
   }
 }
 
-class _BeverageImage extends StatelessWidget {
-  const _BeverageImage({required this.image, required this.imageHeroTag});
+class BeverageImage extends StatelessWidget {
+  const BeverageImage({super.key, required this.image, required this.imageHeroTag});
 
   final String image;
   final String imageHeroTag;
@@ -164,8 +165,8 @@ class _BeverageImage extends StatelessWidget {
   }
 }
 
-class _BeverageTitle extends StatelessWidget {
-  const _BeverageTitle({required this.title, required this.titleHeroTag});
+class BeverageTitle extends StatelessWidget {
+  const BeverageTitle({super.key, required this.title, required this.titleHeroTag});
 
   final String title;
   final String titleHeroTag;
@@ -177,4 +178,39 @@ class _BeverageTitle extends StatelessWidget {
       child: Text(title, style: Theme.of(context).textTheme.headlineLarge),
     );
   }
+}
+
+@widget_book.UseCase(
+  name: 'BeverageDetail',
+  type: BeverageDetailContent,
+  path: '[widgets]/beverage_detail_content',
+)
+BeverageDetailContent beverageDetailContent(BuildContext context) {
+  final beverage = Beverage(
+    id: 1,
+    title: 'Beverage',
+    image: 'https://fastly.picsum.photos/id/664/200/300.jpg?hmac=Ov1G0ZpIuC3e0t33HURn4DPJFK6o7bz602P6M-o_SDc',
+    description: 'This is a description',
+    ingredients: ['ingredient1', 'ingredient2', 'ingredient3'],
+  );
+
+  return BeverageDetailContent(beverage: beverage);
+}
+
+@widget_book.UseCase(
+  name: 'BeverageImage',
+  type: BeverageImage,
+  path: '[widgets]/beverage_image',
+)
+BeverageImage beverageImage(BuildContext context) {
+  return BeverageImage(image: 'https://fastly.picsum.photos/id/664/200/300.jpg?hmac=Ov1G0ZpIuC3e0t33HURn4DPJFK6o7bz602P6M-o_SDc', imageHeroTag: '',);
+}
+
+@widget_book.UseCase(
+  name: 'BeverageTitle',
+  type: BeverageTitle,
+  path: '[widgets]/beverage_title',
+)
+BeverageTitle beverageTitle(BuildContext context) {
+  return BeverageTitle(title: 'Beverage', titleHeroTag: '');
 }

@@ -19,6 +19,33 @@ class WidgetbookApp extends StatelessWidget {
     return Widgetbook.material(
       // Use the generated directories variable
       directories: directories,
+      addons: [
+        TextScaleAddon(
+          min: 1.0,
+          max: 2.0,
+        ),
+        LocalizationAddon(
+          locales: [
+            const Locale('en', 'US'),
+            const Locale('ja', 'JP'),
+          ],
+          localizationsDelegates: [
+            DefaultWidgetsLocalizations.delegate,
+            DefaultMaterialLocalizations.delegate,
+          ],
+        ),
+        DeviceFrameAddon(
+          devices: [
+            Devices.ios.iPhoneSE,
+            Devices.ios.iPhone13,
+            Devices.android.samsungGalaxyS20,
+            Devices.android.sonyXperia1II,
+            Devices.android.smallPhone,
+            Devices.android.bigPhone,
+          ],
+        ),
+        GridAddon(),
+      ],
     );
   }
 }

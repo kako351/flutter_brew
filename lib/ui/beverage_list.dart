@@ -6,7 +6,7 @@ import 'package:flutter_brew/ui/beverages_view_model.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
+import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widget_book;
 
 
 class BeverageListPage extends ConsumerStatefulWidget {
@@ -109,7 +109,7 @@ class BeverageCellWidget extends StatelessWidget {
   }
 }
 
-@widgetbook.UseCase(
+@widget_book.UseCase(
   name: 'BeverageCellWidget',
   type: BeverageCellWidget,
   path: '[widgets]/beverage_list',

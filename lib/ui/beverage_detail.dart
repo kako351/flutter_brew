@@ -6,6 +6,7 @@ import 'package:flutter_brew/ui/designsystem/size.dart';
 import 'package:flutter_brew/ui/designsystem/spacer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_brew/ui/beverage_detail_view_model.dart';
+import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widget_book;
 
 class BeverageDetailPage extends ConsumerStatefulWidget {
   const BeverageDetailPage({required this.id, this.args, super.key});
@@ -177,4 +178,39 @@ class _BeverageTitle extends StatelessWidget {
       child: Text(title, style: Theme.of(context).textTheme.headlineLarge),
     );
   }
+}
+
+@widget_book.UseCase(
+  name: 'BeverageDetail',
+  type: _BeverageDetailContent,
+  path: '[widgets]/beverage_detail_content',
+)
+_BeverageDetailContent beverageDetailContent(BuildContext context) {
+  final beverage = Beverage(
+    id: 1,
+    title: 'Beverage',
+    image: 'https://fastly.picsum.photos/id/664/200/300.jpg?hmac=Ov1G0ZpIuC3e0t33HURn4DPJFK6o7bz602P6M-o_SDc',
+    description: 'This is a description',
+    ingredients: ['ingredient1', 'ingredient2', 'ingredient3'],
+  );
+
+  return _BeverageDetailContent(beverage: beverage);
+}
+
+@widget_book.UseCase(
+  name: 'BeverageImage',
+  type: _BeverageImage,
+  path: '[widgets]/beverage_image',
+)
+_BeverageImage beverageImage(BuildContext context) {
+  return _BeverageImage(image: 'https://fastly.picsum.photos/id/664/200/300.jpg?hmac=Ov1G0ZpIuC3e0t33HURn4DPJFK6o7bz602P6M-o_SDc', imageHeroTag: '',);
+}
+
+@widget_book.UseCase(
+  name: 'BeverageTitle',
+  type: _BeverageTitle,
+  path: '[widgets]/beverage_title',
+)
+_BeverageTitle beverageTitle(BuildContext context) {
+  return _BeverageTitle(title: 'Beverage', titleHeroTag: '');
 }

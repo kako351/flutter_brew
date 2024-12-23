@@ -6,6 +6,7 @@ import 'package:flutter_brew/ui/beverages_view_model.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 
 class BeverageListPage extends ConsumerStatefulWidget {
@@ -106,4 +107,20 @@ class BeverageCellWidget extends StatelessWidget {
       ],
     );
   }
+}
+
+@widgetbook.UseCase(
+  name: 'BeverageCellWidget',
+  type: BeverageCellWidget,
+  path: '[widgets]/beverage_list',
+)
+BeverageCellWidget beverageList(BuildContext context) {
+  final beverage = Beverage(
+    id: 1,
+    title: 'Beverage',
+    image: 'https://fastly.picsum.photos/id/664/200/300.jpg?hmac=Ov1G0ZpIuC3e0t33HURn4DPJFK6o7bz602P6M-o_SDc',
+    description: 'Description',
+    ingredients: ['Ingredient 1', 'Ingredient 2'],
+  );
+  return BeverageCellWidget(beverage: beverage);
 }

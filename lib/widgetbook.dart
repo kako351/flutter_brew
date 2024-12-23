@@ -20,6 +20,18 @@ class WidgetbookApp extends StatelessWidget {
       // Use the generated directories variable
       directories: directories,
       addons: [
+        MaterialThemeAddon(
+          themes: [
+            WidgetbookTheme(
+              name: 'Light',
+              data: ThemeData.light(),
+            ),
+            WidgetbookTheme(
+              name: 'Dark',
+              data: ThemeData.dark(),
+            ),
+          ],
+        ),
         TextScaleAddon(
           min: 1.0,
           max: 2.0,
@@ -38,10 +50,12 @@ class WidgetbookApp extends StatelessWidget {
           devices: [
             Devices.ios.iPhoneSE,
             Devices.ios.iPhone13,
+            Devices.ios.iPad,
             Devices.android.samsungGalaxyS20,
             Devices.android.sonyXperia1II,
             Devices.android.smallPhone,
             Devices.android.bigPhone,
+            Devices.android.largeTablet,
           ],
         ),
         GridAddon(),

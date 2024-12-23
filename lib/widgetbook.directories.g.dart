@@ -21,7 +21,7 @@ final directories = <_i1.WidgetbookNode>[
         name: 'beverage_detail_content',
         children: [
           _i1.WidgetbookLeafComponent(
-            name: '_BeverageDetailContent',
+            name: 'BeverageDetailContent',
             useCase: _i1.WidgetbookUseCase(
               name: 'BeverageDetail',
               builder: _i2.beverageDetailContent,
@@ -33,7 +33,7 @@ final directories = <_i1.WidgetbookNode>[
         name: 'beverage_image',
         children: [
           _i1.WidgetbookLeafComponent(
-            name: '_BeverageImage',
+            name: 'BeverageImage',
             useCase: _i1.WidgetbookUseCase(
               name: 'BeverageImage',
               builder: _i2.beverageImage,
@@ -57,7 +57,7 @@ final directories = <_i1.WidgetbookNode>[
         name: 'beverage_title',
         children: [
           _i1.WidgetbookLeafComponent(
-            name: '_BeverageTitle',
+            name: 'BeverageTitle',
             useCase: _i1.WidgetbookUseCase(
               name: 'BeverageTitle',
               builder: _i2.beverageTitle,

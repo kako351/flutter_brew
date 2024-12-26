@@ -36,6 +36,8 @@ class BeverageList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(beveragesViewModelProvider);
+    final notifier = ref.read(beveragesViewModelProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Beverages'),
@@ -47,24 +49,36 @@ class BeverageList extends ConsumerWidget {
           if (state is! SuccessBeveragesViewState) {
             return const Center(child: Text('予期せぬエラーが発生しました'));
           }
-
+          print('BeveragesViewModel state: ${state.beverages}');
           final beverages = state.beverages;
-          return ListView.separated(
-            padding: const EdgeInsets.all(8),
-            itemCount: beverages.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                  onTap: () {
-                    context.pushNamed(
-                        'beverage_detail',
-                        pathParameters: { 'id': '${beverages[index].id}' },
-                        extra: BeverageDetailArgs.fromModel(beverages[index]),
+          return Column(
+            children: [
+              getCategoryUI(
+                  selectedType: state.type,
+                  onTapCallback: (type) => {
+                    notifier.updateSelectedType(type)
+                  }
+                ),
+              Expanded(
+                child: ListView.separated(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: beverages.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        context.pushNamed(
+                          'beverage_detail',
+                          pathParameters: { 'id': '${beverages[index].id}' },
+                          extra: BeverageDetailArgs.fromModel(beverages[index]),
+                        );
+                      },
+                      child: BeverageCellWidget(beverage: beverages[index])
                     );
                   },
-                  child: BeverageCellWidget(beverage: beverages[index])
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) => const Padding(padding: EdgeInsets.all(12)),
+                  separatorBuilder: (BuildContext context, int index) => const Padding(padding: EdgeInsets.all(12)),
+                )
+              ),
+            ]
           );
         }
       ),
@@ -108,6 +122,96 @@ class BeverageCellWidget extends StatelessWidget {
       ],
     );
   }
+}
+
+class getCategoryUI extends StatelessWidget {
+  const getCategoryUI({required this.selectedType, required this.onTapCallback, super.key});
+
+  final BeverageType selectedType;
+  final Function(BeverageType) onTapCallback;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const SizedBox(
+          height: 16,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          child: Row(
+            children: <Widget>[
+              getButtonUI(
+                  context, BeverageType.all, selectedType == BeverageType.all, () { onTapCallback(BeverageType.all); }),
+              const SizedBox(
+                width: 16,
+              ),
+              getButtonUI(
+                  context, BeverageType.hot, selectedType == BeverageType.hot, () { onTapCallback(BeverageType.hot); }),
+              const SizedBox(
+                width: 16,
+              ),
+              getButtonUI(
+                  context, BeverageType.iced, selectedType == BeverageType.iced, () { onTapCallback(BeverageType.iced); }),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+      ],
+    );
+  }
+}
+
+Widget getButtonUI(BuildContext context, BeverageType type, bool isSelected, VoidCallback onTap) {
+  String txt = type.displayValue;
+
+  return Expanded(
+    child: Container(
+      decoration: BoxDecoration(
+          color: isSelected
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+          border: Border.all(color: Theme.of(context).colorScheme.primary)),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          splashColor: Colors.white24,
+          borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+          onTap: () {
+            onTap();
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(
+                top: 12, bottom: 12, left: 18, right: 18),
+            child: Center(
+              child: Text(
+                txt,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                  letterSpacing: 0.27,
+                  color: isSelected
+                      ? Theme.of(context).scaffoldBackgroundColor
+                      : Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+void onCategorySelected(WidgetRef ref, BeverageType type) {
+  var notifier = ref.read(beveragesViewModelProvider.notifier);
+  notifier.updateSelectedType(type);
 }
 
 @widget_book.UseCase(

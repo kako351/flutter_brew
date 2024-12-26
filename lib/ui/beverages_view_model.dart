@@ -1,4 +1,6 @@
+import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/data/model/beverage_result.dart';
+import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/data/repository/beverage_repository.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -11,6 +13,8 @@ class BeveragesViewModel extends _$BeveragesViewModel {
     : _repository = repository ?? BeverageRepositoryImpl();
 
   final BeverageRepository _repository;
+
+  List<Beverage> _beverages = <Beverage>[];
 
   @override
   Future<BeveragesViewState> build() async {
@@ -25,9 +29,28 @@ class BeveragesViewModel extends _$BeveragesViewModel {
   BeveragesViewState _handleBeverageResult(BeverageResult result) {
     switch(result) {
       case Success():
-        return SuccessBeveragesViewState(result.beverages);
+        _beverages = result.beverages;
+        return SuccessBeveragesViewState(result.beverages, BeverageType.defaultValue);
       case Error():
         return ErrorBeveragesViewState();
+    }
+  }
+
+  void updateSelectedType(BeverageType type) {
+    state = state.whenData((viewState) {
+      if (viewState is SuccessBeveragesViewState) {
+        return SuccessBeveragesViewState(_getBeveragesByType(type), type);
+      }
+      return viewState;
+    });
+  }
+
+  List<Beverage> _getBeveragesByType(BeverageType type) {
+    switch(type) {
+      case BeverageType.all:
+        return _beverages;
+      default:
+        return _beverages.where((beverage) => beverage.type == type).toList();
     }
   }
 }

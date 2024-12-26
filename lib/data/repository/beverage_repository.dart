@@ -8,6 +8,10 @@ abstract interface class BeverageRepository {
   Future<beverage_result.BeverageResult> getHotBeverage();
 
   Future<beverage_detail_result.BeverageDetailResult> getHotBeverageDetail(int id);
+
+  Future<beverage_result.BeverageResult> getIcedBeverage();
+
+  Future<beverage_detail_result.BeverageDetailResult> getIcedBeverageDetail(int id);
 }
 
 class BeverageRepositoryImpl implements BeverageRepository {
@@ -30,6 +34,26 @@ class BeverageRepositoryImpl implements BeverageRepository {
   Future<beverage_detail_result.BeverageDetailResult> getHotBeverageDetail(int id) async {
     try {
       Beverage beverage = await client.getHotBeverageDetail(id);
+      return beverage_detail_result.Success(beverage);
+    } catch (e) {
+      return beverage_detail_result.Error(e.toString());
+    }
+  }
+
+  @override
+  Future<beverage_result.BeverageResult> getIcedBeverage() async {
+    try {
+      List<Beverage> lists = await client.getIcedBeverages();
+      return beverage_result.Success(lists);
+    } catch (e) {
+      return beverage_result.Error(e.toString());
+    }
+  }
+
+  @override
+  Future<beverage_detail_result.BeverageDetailResult> getIcedBeverageDetail(int id) async {
+    try {
+      Beverage beverage = await client.getIcedBeverageDetail(id);
       return beverage_detail_result.Success(beverage);
     } catch (e) {
       return beverage_detail_result.Error(e.toString());

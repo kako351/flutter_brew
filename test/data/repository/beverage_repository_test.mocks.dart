@@ -69,4 +69,39 @@ class MockApiService extends _i1.Mock implements _i3.ApiService {
           ),
         )),
       ) as _i4.Future<_i2.Beverage>);
+
+  @override
+  _i4.Future<List<_i2.Beverage>> getIcedBeverages() => (super.noSuchMethod(
+        Invocation.method(
+          #getIcedBeverages,
+          [],
+        ),
+        returnValue: _i4.Future<List<_i2.Beverage>>.value(<_i2.Beverage>[]),
+        returnValueForMissingStub:
+            _i4.Future<List<_i2.Beverage>>.value(<_i2.Beverage>[]),
+      ) as _i4.Future<List<_i2.Beverage>>);
+
+  @override
+  _i4.Future<_i2.Beverage> getIcedBeverageDetail(int? id) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getIcedBeverageDetail,
+          [id],
+        ),
+        returnValue: _i4.Future<_i2.Beverage>.value(_FakeBeverage_0(
+          this,
+          Invocation.method(
+            #getIcedBeverageDetail,
+            [id],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i4.Future<_i2.Beverage>.value(_FakeBeverage_0(
+          this,
+          Invocation.method(
+            #getIcedBeverageDetail,
+            [id],
+          ),
+        )),
+      ) as _i4.Future<_i2.Beverage>);
 }

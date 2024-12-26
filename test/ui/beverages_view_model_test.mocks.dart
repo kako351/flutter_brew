@@ -77,4 +77,53 @@ class MockBeverageRepository extends _i1.Mock
           ),
         )),
       ) as _i3.Future<_i6.BeverageDetailResult>);
+
+  @override
+  _i3.Future<_i4.BeverageResult> getIcedBeverage() => (super.noSuchMethod(
+        Invocation.method(
+          #getIcedBeverage,
+          [],
+        ),
+        returnValue: _i3.Future<_i4.BeverageResult>.value(
+            _i5.dummyValue<_i4.BeverageResult>(
+          this,
+          Invocation.method(
+            #getIcedBeverage,
+            [],
+          ),
+        )),
+        returnValueForMissingStub: _i3.Future<_i4.BeverageResult>.value(
+            _i5.dummyValue<_i4.BeverageResult>(
+          this,
+          Invocation.method(
+            #getIcedBeverage,
+            [],
+          ),
+        )),
+      ) as _i3.Future<_i4.BeverageResult>);
+
+  @override
+  _i3.Future<_i6.BeverageDetailResult> getIcedBeverageDetail(int? id) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getIcedBeverageDetail,
+          [id],
+        ),
+        returnValue: _i3.Future<_i6.BeverageDetailResult>.value(
+            _i5.dummyValue<_i6.BeverageDetailResult>(
+          this,
+          Invocation.method(
+            #getIcedBeverageDetail,
+            [id],
+          ),
+        )),
+        returnValueForMissingStub: _i3.Future<_i6.BeverageDetailResult>.value(
+            _i5.dummyValue<_i6.BeverageDetailResult>(
+          this,
+          Invocation.method(
+            #getIcedBeverageDetail,
+            [id],
+          ),
+        )),
+      ) as _i3.Future<_i6.BeverageDetailResult>);
 }

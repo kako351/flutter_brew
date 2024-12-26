@@ -84,4 +84,60 @@ void main() {
     expect(result, isA<beverage_detail_result.Error>());
     expect((result as beverage_detail_result.Error).message, Exception('error').toString());
   });
+
+  test('beverage repository iced beverage success test', () async {
+    // arrange
+    final mockApiService = MockApiService();
+    final beverageRepository = BeverageRepositoryImpl(apiClient: mockApiService);
+
+    // act
+    when(mockApiService.getIcedBeverages()).thenAnswer((_) async => mockBeverages);
+    final result = await beverageRepository.getIcedBeverage();
+
+    // assert
+    expect(result, isA<Success>());
+    expect((result as Success).beverages, mockBeverages);
+  });
+
+  test('beverage repository iced beverage error test', () async {
+    // arrange
+    final mockApiService = MockApiService();
+    final beverageRepository = BeverageRepositoryImpl(apiClient: mockApiService);
+
+    // act
+    when(mockApiService.getIcedBeverages()).thenThrow(Exception('error'));
+    final result = await beverageRepository.getIcedBeverage();
+
+    // assert
+    expect(result, isA<Error>());
+    expect((result as Error).message, Exception('error').toString());
+  });
+
+  test('beverage repository iced beverage detail success test', () async {
+    // arrange
+    final mockApiService = MockApiService();
+    final beverageRepository = BeverageRepositoryImpl(apiClient: mockApiService);
+
+    // act
+    when(mockApiService.getIcedBeverageDetail(1)).thenAnswer((_) async => mockBeverages[0]);
+    final result = await beverageRepository.getIcedBeverageDetail(1);
+
+    // assert
+    expect(result, isA<beverage_detail_result.Success>());
+    expect((result as beverage_detail_result.Success).beverageDetail, mockBeverages[0]);
+  });
+
+  test('beverage repository iced beverage detail error test', () async {
+    // arrange
+    final mockApiService = MockApiService();
+    final beverageRepository = BeverageRepositoryImpl(apiClient: mockApiService);
+
+    // act
+    when(mockApiService.getIcedBeverageDetail(1)).thenThrow(Exception('error'));
+    final result = await beverageRepository.getIcedBeverageDetail(1);
+
+    // assert
+    expect(result, isA<beverage_detail_result.Error>());
+    expect((result as beverage_detail_result.Error).message, Exception('error').toString());
+  });
 }

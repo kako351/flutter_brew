@@ -13,4 +13,10 @@ abstract class ApiService {
 
   @GET('/coffee/hot/{id}')
   Future<Beverage> getHotBeverageDetail(@Path('id') int id);
+
+  @GET('/coffee/iced')
+  Future<List<Beverage>> getIcedBeverages();
+
+  @GET('/coffee/iced/{id}')
+  Future<Beverage> getIcedBeverageDetail(@Path('id') int id);
 }

@@ -37,9 +37,9 @@ class _FakeBeverage_0 extends _i1.SmartFake implements _i2.Beverage {
 /// See the documentation for Mockito's code generation for more information.
 class MockApiService extends _i1.Mock implements _i3.ApiService {
   @override
-  _i4.Future<List<_i2.Beverage>> getBeverages() => (super.noSuchMethod(
+  _i4.Future<List<_i2.Beverage>> getHotBeverages() => (super.noSuchMethod(
         Invocation.method(
-          #getBeverages,
+          #getHotBeverages,
           [],
         ),
         returnValue: _i4.Future<List<_i2.Beverage>>.value(<_i2.Beverage>[]),

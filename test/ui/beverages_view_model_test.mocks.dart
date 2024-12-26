@@ -30,16 +30,16 @@ import 'package:mockito/src/dummies.dart' as _i5;
 class MockBeverageRepository extends _i1.Mock
     implements _i2.BeverageRepository {
   @override
-  _i3.Future<_i4.BeverageResult> getBeverage() => (super.noSuchMethod(
+  _i3.Future<_i4.BeverageResult> getHotBeverage() => (super.noSuchMethod(
         Invocation.method(
-          #getBeverage,
+          #getHotBeverage,
           [],
         ),
         returnValue: _i3.Future<_i4.BeverageResult>.value(
             _i5.dummyValue<_i4.BeverageResult>(
           this,
           Invocation.method(
-            #getBeverage,
+            #getHotBeverage,
             [],
           ),
         )),
@@ -47,7 +47,7 @@ class MockBeverageRepository extends _i1.Mock
             _i5.dummyValue<_i4.BeverageResult>(
           this,
           Invocation.method(
-            #getBeverage,
+            #getHotBeverage,
             [],
           ),
         )),

@@ -34,8 +34,8 @@ void main() {
     final beverageRepository = BeverageRepositoryImpl(apiClient: mockApiService);
 
     // act
-    when(mockApiService.getBeverages()).thenAnswer((_) async => mockBeverages);
-    final result = await beverageRepository.getBeverage();
+    when(mockApiService.getHotBeverages()).thenAnswer((_) async => mockBeverages);
+    final result = await beverageRepository.getHotBeverage();
 
     // assert
     expect(result, isA<Success>());
@@ -49,8 +49,8 @@ void main() {
     final beverageRepository = BeverageRepositoryImpl(apiClient: mockApiService);
 
     // act
-    when(mockApiService.getBeverages()).thenThrow(Exception('error'));
-    final result = await beverageRepository.getBeverage();
+    when(mockApiService.getHotBeverages()).thenThrow(Exception('error'));
+    final result = await beverageRepository.getHotBeverage();
 
     // assert
     expect(result, isA<Error>());

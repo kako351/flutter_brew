@@ -9,7 +9,7 @@ abstract class ApiService {
   factory ApiService(Dio dio, {String? baseUrl}) = _ApiService;
 
   @GET('/coffee/hot')
-  Future<List<Beverage>> getBeverages();
+  Future<List<Beverage>> getHotBeverages();
 
   @GET('/coffee/hot/{id}')
   Future<Beverage> getHotBeverageDetail(@Path('id') int id);

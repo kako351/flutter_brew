@@ -5,7 +5,7 @@ import 'package:flutter_brew/data/model/beverage_detail_result.dart' as beverage
 import 'package:flutter_brew/data/model/beverage_result.dart' as beverage_result;
 
 abstract interface class BeverageRepository {
-  Future<beverage_result.BeverageResult> getBeverage();
+  Future<beverage_result.BeverageResult> getHotBeverage();
 
   Future<beverage_detail_result.BeverageDetailResult> getHotBeverageDetail(int id);
 }
@@ -17,9 +17,9 @@ class BeverageRepositoryImpl implements BeverageRepository {
       : client = apiClient ?? ApiService(Dio());
 
   @override
-  Future<beverage_result.BeverageResult> getBeverage() async {
+  Future<beverage_result.BeverageResult> getHotBeverage() async {
     try {
-      List<Beverage> lists = await client.getBeverages();
+      List<Beverage> lists = await client.getHotBeverages();
       return beverage_result.Success(lists);
     } catch (e) {
       return beverage_result.Error(e.toString());

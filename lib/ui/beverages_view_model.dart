@@ -18,7 +18,7 @@ class BeveragesViewModel extends _$BeveragesViewModel {
   }
 
   Future<BeveragesViewState> getBeverages() async {
-    BeverageResult result = await _repository.getBeverage();
+    BeverageResult result = await _repository.getHotBeverage();
     return _handleBeverageResult(result);
   }
 

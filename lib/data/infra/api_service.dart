@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_brew/data/infra/response/beverage_response.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -9,14 +10,14 @@ abstract class ApiService {
   factory ApiService(Dio dio, {String? baseUrl}) = _ApiService;
 
   @GET('/coffee/hot')
-  Future<List<Beverage>> getHotBeverages();
+  Future<List<BeverageResponse>> getHotBeverages();
 
   @GET('/coffee/hot/{id}')
-  Future<Beverage> getHotBeverageDetail(@Path('id') int id);
+  Future<BeverageResponse> getHotBeverageDetail(@Path('id') int id);
 
   @GET('/coffee/iced')
-  Future<List<Beverage>> getIcedBeverages();
+  Future<List<BeverageResponse>> getIcedBeverages();
 
   @GET('/coffee/iced/{id}')
-  Future<Beverage> getIcedBeverageDetail(@Path('id') int id);
+  Future<BeverageResponse> getIcedBeverageDetail(@Path('id') int id);
 }

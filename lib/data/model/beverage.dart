@@ -1,3 +1,5 @@
+import 'package:flutter_brew/data/infra/response/beverage_response.dart';
+import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'beverage.freezed.dart';
@@ -13,9 +15,21 @@ class Beverage with _$Beverage {
     required List<String> ingredients,
     required String image,
     required int id,
+    required BeverageType type,
   }) = _Beverage;
 
   factory Beverage.fromJson(Map<String, dynamic> json) => _$BeverageFromJson(json);
+
+  factory Beverage.fromResponse(BeverageResponse response, BeverageType type) {
+    return Beverage(
+      title: response.title,
+      description: response.description,
+      ingredients: response.ingredients,
+      image: response.image,
+      id: response.id,
+      type: type,
+    );
+  }
 
   get imageHeroTag => 'beverage_image_${id}_$title';
   get titleHeroTag => 'beverage_title_${id}_$title';

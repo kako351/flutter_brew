@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
+import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/beverages_view_model.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
@@ -121,6 +122,7 @@ BeverageCellWidget beverageList(BuildContext context) {
     image: 'https://fastly.picsum.photos/id/664/200/300.jpg?hmac=Ov1G0ZpIuC3e0t33HURn4DPJFK6o7bz602P6M-o_SDc',
     description: 'Description',
     ingredients: ['Ingredient 1', 'Ingredient 2'],
+    type: BeverageType.hot,
   );
   return BeverageCellWidget(beverage: beverage);
 }

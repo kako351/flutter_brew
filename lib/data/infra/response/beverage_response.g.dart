@@ -1,13 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'beverage.dart';
+part of 'beverage_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$BeverageImpl _$$BeverageImplFromJson(Map<String, dynamic> json) =>
-    _$BeverageImpl(
+_$BeverageResponseImpl _$$BeverageResponseImplFromJson(
+        Map<String, dynamic> json) =>
+    _$BeverageResponseImpl(
       title: json['title'] as String,
       description: json['description'] as String,
       ingredients: (json['ingredients'] as List<dynamic>)
@@ -15,20 +16,14 @@ _$BeverageImpl _$$BeverageImplFromJson(Map<String, dynamic> json) =>
           .toList(),
       image: json['image'] as String,
       id: (json['id'] as num).toInt(),
-      type: $enumDecode(_$BeverageTypeEnumMap, json['type']),
     );
 
-Map<String, dynamic> _$$BeverageImplToJson(_$BeverageImpl instance) =>
+Map<String, dynamic> _$$BeverageResponseImplToJson(
+        _$BeverageResponseImpl instance) =>
     <String, dynamic>{
       'title': instance.title,
       'description': instance.description,
       'ingredients': instance.ingredients,
       'image': instance.image,
       'id': instance.id,
-      'type': _$BeverageTypeEnumMap[instance.type]!,
     };
-
-const _$BeverageTypeEnumMap = {
-  BeverageType.hot: 'hot',
-  BeverageType.iced: 'iced',
-};

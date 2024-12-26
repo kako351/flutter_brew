@@ -21,7 +21,7 @@ void main() {
     final viewModel = BeveragesViewModel(repository: mockRepository);
     
     // act
-    when(mockRepository.getHotBeverage()).thenAnswer((_) async => Success([]));
+    when(mockRepository.getAllBeverage()).thenAnswer((_) async => Success([]));
     final result = await viewModel.getBeverages();
     
     // assert
@@ -34,7 +34,7 @@ void main() {
     final viewModel = BeveragesViewModel(repository: mockRepository);
 
     // act
-    when(mockRepository.getHotBeverage()).thenAnswer((_) async => Error('error'));
+    when(mockRepository.getAllBeverage()).thenAnswer((_) async => Error('error'));
     final result = await viewModel.getBeverages();
 
     // assert

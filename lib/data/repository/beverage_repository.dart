@@ -17,6 +17,8 @@ abstract interface class BeverageRepository {
   Future<beverage_result.BeverageResult> getIcedBeverage();
 
   Future<beverage_detail_result.BeverageDetailResult> getIcedBeverageDetail(int id);
+
+  Future<beverage_detail_result.BeverageDetailResult> getBeverageDetail(int id, BeverageType type);
 }
 
 class BeverageRepositoryImpl implements BeverageRepository {
@@ -101,6 +103,21 @@ class BeverageRepositoryImpl implements BeverageRepository {
     try {
       BeverageResponse result = await client.getIcedBeverageDetail(id);
       Beverage beverage = Beverage.fromResponse(result, BeverageType.iced);
+      return beverage_detail_result.Success(beverage);
+    } catch (e) {
+      return beverage_detail_result.Error(e.toString());
+    }
+  }
+
+  @override
+  Future<beverage_detail_result.BeverageDetailResult> getBeverageDetail(int id, BeverageType type) async {
+    try {
+      BeverageResponse result = switch(type) {
+        BeverageType.hot => await client.getHotBeverageDetail(id),
+        BeverageType.iced => await client.getIcedBeverageDetail(id),
+        _ => throw Exception('Invalid beverage type'),
+      };
+      Beverage beverage = Beverage.fromResponse(result, type);
       return beverage_detail_result.Success(beverage);
     } catch (e) {
       return beverage_detail_result.Error(e.toString());

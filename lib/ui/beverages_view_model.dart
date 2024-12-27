@@ -1,4 +1,3 @@
-import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/data/model/beverage_result.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/data/repository/beverage_repository.dart';
@@ -14,8 +13,6 @@ class BeveragesViewModel extends _$BeveragesViewModel {
 
   final BeverageRepository _repository;
 
-  List<Beverage> _beverages = <Beverage>[];
-
   @override
   Future<BeveragesViewState> build() async {
     return getBeverages();
@@ -23,34 +20,36 @@ class BeveragesViewModel extends _$BeveragesViewModel {
 
   Future<BeveragesViewState> getBeverages() async {
     BeverageResult result = await _repository.getAllBeverage();
-    return _handleBeverageResult(result);
+    return _handleBeverageResult(result, BeverageType.defaultValue);
   }
 
-  BeveragesViewState _handleBeverageResult(BeverageResult result) {
+  BeveragesViewState _handleBeverageResult(BeverageResult result, BeverageType type) {
     switch(result) {
       case Success():
-        _beverages = result.beverages;
-        return SuccessBeveragesViewState(result.beverages, BeverageType.defaultValue);
+        return SuccessBeveragesViewState(result.beverages, type);
       case Error():
         return ErrorBeveragesViewState();
     }
   }
 
-  void updateSelectedType(BeverageType type) {
+  Future<void> updateSelectedType(BeverageType type) async {
+    var result = await _getBeveragesByType(type);
     state = state.whenData((viewState) {
       if (viewState is SuccessBeveragesViewState) {
-        return SuccessBeveragesViewState(_getBeveragesByType(type), type);
+        return _handleBeverageResult(result, type);
       }
       return viewState;
     });
   }
 
-  List<Beverage> _getBeveragesByType(BeverageType type) {
+  Future<BeverageResult> _getBeveragesByType(BeverageType type) async {
     switch(type) {
+      case BeverageType.hot:
+        return await _repository.getHotBeverage();
+      case BeverageType.iced:
+        return await _repository.getIcedBeverage();
       case BeverageType.all:
-        return _beverages;
-      default:
-        return _beverages.where((beverage) => beverage.type == type).toList();
+        return await _repository.getAllBeverage();
     }
   }
 }

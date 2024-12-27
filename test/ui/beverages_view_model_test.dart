@@ -1,4 +1,3 @@
-
 import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/data/model/beverage_result.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
@@ -102,8 +101,10 @@ void main() {
 
     // act
     when(mockRepository.getAllBeverage()).thenAnswer((_) async => Success(mockBeverages));
+    when(mockRepository.getHotBeverage()).thenAnswer((_) async => Success(mockHotBeverages));
+    when(mockRepository.getIcedBeverage()).thenAnswer((_) async => Success(mockIcedBeverages));
     await viewModel.getBeverages();
-    viewModel.updateSelectedType(type);
+    await viewModel.updateSelectedType(type);
 
     // assert
     final state = viewModel.state.value as SuccessBeveragesViewState;
@@ -125,8 +126,10 @@ void main() {
 
     // act
     when(mockRepository.getAllBeverage()).thenAnswer((_) async => Success(mockBeverages));
+    when(mockRepository.getHotBeverage()).thenAnswer((_) async => Success(mockHotBeverages));
+    when(mockRepository.getIcedBeverage()).thenAnswer((_) async => Success(mockIcedBeverages));
     await viewModel.getBeverages();
-    viewModel.updateSelectedType(type);
+    await viewModel.updateSelectedType(type);
 
     // assert
     final state = viewModel.state.value as SuccessBeveragesViewState;
@@ -148,8 +151,10 @@ void main() {
 
     // act
     when(mockRepository.getAllBeverage()).thenAnswer((_) async => Success(mockBeverages));
+    when(mockRepository.getHotBeverage()).thenAnswer((_) async => Success(mockHotBeverages));
+    when(mockRepository.getIcedBeverage()).thenAnswer((_) async => Success(mockIcedBeverages));
     await viewModel.getBeverages();
-    viewModel.updateSelectedType(type);
+    await viewModel.updateSelectedType(type);
 
     // assert
     final state = viewModel.state.value as SuccessBeveragesViewState;

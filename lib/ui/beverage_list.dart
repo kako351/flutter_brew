@@ -34,15 +34,9 @@ class BeverageListPageState extends ConsumerState<BeverageListPage> {
 class BeverageList extends ConsumerWidget {
   const BeverageList({super.key});
 
-  final int _crossAxisCount = 2;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(beveragesViewModelProvider);
-    final notifier = ref.read(beveragesViewModelProvider.notifier);
-
-    final double itemWidth = (MediaQuery.of(context).size.width / _crossAxisCount) - 16.0;
-    final double itemHeight = itemWidth * 0.9;
 
     return Scaffold(
       appBar: AppBar(
@@ -55,35 +49,16 @@ class BeverageList extends ConsumerWidget {
           if (state is! SuccessBeveragesViewState) {
             return const Center(child: Text('予期せぬエラーが発生しました'));
           }
-          final beverages = state.beverages;
-          return Column(
-            children: [
-              CategoryUI(
-                  selectedType: state.type,
-                  onTapCallback: (type) => {
-                    notifier.updateSelectedType(type)
-                  }
-                ),
-              Expanded(
-                child: GridView.count(
-                  crossAxisCount: _crossAxisCount,
-                  mainAxisSpacing: 8.0,
-                  crossAxisSpacing: 8.0,
-                  childAspectRatio: (itemWidth / itemHeight),
-                  children: List.generate(
-                    beverages.length, (index) {
-                      return BeverageCellWidget(beverage: beverages[index], onTap: () {
-                        context.pushNamed(
-                          'beverage_detail',
-                          pathParameters: { 'id': '${beverages[index].id}' },
-                          extra: BeverageDetailArgs.fromModel(beverages[index]),
-                        );
-                      });
-                    }
-                  ),
-                )
-              ),
-            ]
+          return BeverageContentsByType(
+            state: state,
+            onTypeTap: (type) => onCategorySelected(ref, type),
+            onTap: (beverage) {
+              context.pushNamed(
+                'beverage_detail',
+                pathParameters: { 'id': '${beverage.id}' },
+                extra: BeverageDetailArgs.fromModel(beverage),
+              );
+            }
           );
         }
       ),
@@ -91,6 +66,176 @@ class BeverageList extends ConsumerWidget {
   }
 }
 
+class BeverageContentsByType extends StatelessWidget {
+  const BeverageContentsByType({required this.state, required this.onTypeTap, required this.onTap, super.key});
+
+  final SuccessBeveragesViewState state;
+  final Function(BeverageType) onTypeTap;
+  final Function(Beverage) onTap;
+
+  final int _crossAxisCount = 2;
+
+  @override
+  Widget build(BuildContext context) {
+    final double itemWidth = (MediaQuery.of(context).size.width / _crossAxisCount) - 16.0;
+    final double itemHeight = itemWidth * 0.9;
+
+    List<Beverage> remainingBeveragesList = switch(state.type) {
+      BeverageType.all => state.remainingBeverages(),
+      BeverageType.hot || BeverageType.iced => state.beverages,
+    };
+
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Column(
+            children: [
+              CategoryUI(
+                  selectedType: state.type,
+                  onTapCallback: (type) => {
+                    onTypeTap(type)
+                  }
+              ),
+            ],
+          ),
+        ),
+        switch(state.type) {
+          BeverageType.all => SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Top Beverages',
+                    style: Theme.of(context).textTheme.titleLarge?.merge(TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                ),
+                SizedBox(
+                  height: 250.0,
+                  child: ListView.separated(
+                    padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                    separatorBuilder: (context, index) => SizedBox(width: 8.0),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: state.topBeverages().length,
+                    itemBuilder: (context, index) {
+                      return BeverageTopCellWidget(beverage: state.topBeverages()[index], onTap: () {
+                        onTap(state.topBeverages()[index]);
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          BeverageType.hot || BeverageType.iced => SliverToBoxAdapter(
+            // 何も表示しない
+            child: Container(),
+          ),
+        },
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Recommend',
+              style: Theme.of(context).textTheme.titleLarge?.merge(TextStyle(fontWeight: FontWeight.bold)),
+            ),
+          ),
+        ),
+        SliverGrid(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: _crossAxisCount,
+            mainAxisSpacing: 8.0,
+            crossAxisSpacing: 8.0,
+            childAspectRatio: (itemWidth / itemHeight),
+          ),
+          delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+              if (remainingBeveragesList.isEmpty) {
+                return Center(
+                   child: Text('表示するアイテムがありません'),
+                );
+              }
+              return BeverageCellWidget(beverage: remainingBeveragesList[index], onTap: () {
+                onTap(remainingBeveragesList[index]);
+              });
+            },
+            childCount: remainingBeveragesList.isEmpty ? 1 : remainingBeveragesList.length,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class BeverageTopCellWidget extends StatelessWidget {
+  const BeverageTopCellWidget({required this.beverage, required this.onTap, super.key});
+
+  final Beverage beverage;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8.0),
+        child: Container(
+          width: 300.0,
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Hero(
+                tag: beverage.imageHeroTag,
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: Image.network(
+                    beverage.image,
+                    key: Key(beverage.title),
+                    width: MediaQuery.of(context).size.width,
+                    cacheWidth: 537,
+                    cacheHeight: 807,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Hero(
+                        tag: beverage.titleHeroTag,
+                        child: Text(beverage.title, style: Theme.of(context).textTheme.labelLarge
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 8.0),
+                      ),
+                      Text(
+                        beverage.ingredients.join(', '),
+                        style: Theme.of(context).textTheme.labelSmall?.merge(TextStyle(color: BrewColor.lightGrey)),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  )
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class BeverageCellWidget extends StatelessWidget {
   const BeverageCellWidget({required this.beverage, required this.onTap, super.key});

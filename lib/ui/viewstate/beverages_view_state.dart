@@ -11,4 +11,7 @@ class SuccessBeveragesViewState implements BeveragesViewState {
   final BeverageType type;
 
   SuccessBeveragesViewState(this.beverages, this.type);
+
+  List<Beverage> topBeverages () => beverages.take(3).toList();
+  List<Beverage> remainingBeverages () => beverages.skip(3).toList();
 }

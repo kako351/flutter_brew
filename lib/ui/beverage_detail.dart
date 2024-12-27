@@ -45,32 +45,28 @@ class BeverageDetail extends ConsumerWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(data.value?.title ?? args.title ?? ''),
+          title: Text(data.value?.title ?? args.title),
         ),
         body: data.when(
           loading: () {
-            if(args != null) {
-              return Column(
-                children: [
-                  BeverageImage(image: args.image, imageHeroTag: args.imageHeroTag),
-                  Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.only(left: SpacerDefinition.sizeM, right: SpacerDefinition.sizeM),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SpacerS(),
-                          BeverageTitle(title: args.title, titleHeroTag: args.titleHeroTag),
-                          SpacerL(),
-                          Center(child: CircularProgressIndicator()),
-                        ]
-                    ),
-                  )
-                ]
-              );
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
+            return Column(
+              children: [
+                BeverageImage(image: args.image, imageHeroTag: args.imageHeroTag),
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(left: SpacerDefinition.sizeM, right: SpacerDefinition.sizeM),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SpacerS(),
+                        BeverageTitle(title: args.title, titleHeroTag: args.titleHeroTag),
+                        SpacerL(),
+                        Center(child: CircularProgressIndicator()),
+                      ]
+                  ),
+                )
+              ]
+            );
           },
           error: (o, s) => const Center(child: Text('データの読み込み失敗')),
           data: (state) {

@@ -10,10 +10,10 @@ import 'package:flutter_brew/ui/beverage_detail_view_model.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widget_book;
 
 class BeverageDetailPage extends ConsumerStatefulWidget {
-  const BeverageDetailPage({required this.id, this.args, super.key});
+  const BeverageDetailPage({required this.id, required this.args, super.key});
 
   final int id;
-  final BeverageDetailArgs? args;
+  final BeverageDetailArgs args;
 
   @override
   BeverageDetailPageState createState() => BeverageDetailPageState();
@@ -23,7 +23,7 @@ class BeverageDetailPageState extends ConsumerState<BeverageDetailPage> {
   @override
   void initState() {
     super.initState();
-    ref.read(beverageDetailViewModelProvider(widget.id));
+    ref.read(beverageDetailViewModelProvider(widget.id, widget.args.type));
   }
 
   @override
@@ -33,20 +33,19 @@ class BeverageDetailPageState extends ConsumerState<BeverageDetailPage> {
 }
 
 class BeverageDetail extends ConsumerWidget {
-  const BeverageDetail({required this.id, this.args, super.key});
+  const BeverageDetail({required this.id, required this.args, super.key});
 
   final int id;
-  final BeverageDetailArgs? args;
+  final BeverageDetailArgs args;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final data = ref.watch(beverageDetailViewModelProvider(id));
-
     final args = this.args;
+    final data = ref.watch(beverageDetailViewModelProvider(id, args.type));
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(data.value?.title ?? args?.title ?? ''),
+          title: Text(data.value?.title ?? args.title ?? ''),
         ),
         body: data.when(
           loading: () {

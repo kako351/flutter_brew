@@ -1,5 +1,6 @@
 import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/data/model/beverage_detail_result.dart';
+import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/data/repository/beverage_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,12 +14,12 @@ class BeverageDetailViewModel extends _$BeverageDetailViewModel {
   final BeverageRepository _repository;
 
   @override
-  Future<Beverage> build(int id) async {
-    return getBeverageDetail(id);
+  Future<Beverage> build(int id, BeverageType type) async {
+    return getBeverageDetail(id, type);
   }
 
-  Future<Beverage> getBeverageDetail(int id) async {
-    BeverageDetailResult result = await _repository.getHotBeverageDetail(id);
+  Future<Beverage> getBeverageDetail(int id, BeverageType type) async {
+    BeverageDetailResult result = await _repository.getBeverageDetail(id, type);
     try {
       return _handleBeverageDetailResult(result);
     } catch (e) {

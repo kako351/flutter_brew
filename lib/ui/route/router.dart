@@ -26,7 +26,7 @@ GoRouter router = GoRouter(
       name: DetailRoute.name,
       builder: (context, state) {
         final idStr = state.pathParameters['id'];
-        final args = state.extra as BeverageDetailArgs?;
+        final args = state.extra as BeverageDetailArgs;
         try {
           final id = int.parse(idStr ?? '');
           return BeverageDetailPage(id: id, args: args);

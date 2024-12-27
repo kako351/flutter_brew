@@ -7,7 +7,7 @@ part of 'beverage_detail_view_model.dart';
 // **************************************************************************
 
 String _$beverageDetailViewModelHash() =>
-    r'09e4a70884906789cf787c00b53b8b14a286c827';
+    r'213e538ba29264f17e24950b76b1c9d934f634c9';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -33,9 +33,11 @@ class _SystemHash {
 abstract class _$BeverageDetailViewModel
     extends BuildlessAutoDisposeAsyncNotifier<Beverage> {
   late final int id;
+  late final BeverageType type;
 
   FutureOr<Beverage> build(
     int id,
+    BeverageType type,
   );
 }
 
@@ -51,9 +53,11 @@ class BeverageDetailViewModelFamily extends Family<AsyncValue<Beverage>> {
   /// See also [BeverageDetailViewModel].
   BeverageDetailViewModelProvider call(
     int id,
+    BeverageType type,
   ) {
     return BeverageDetailViewModelProvider(
       id,
+      type,
     );
   }
 
@@ -63,6 +67,7 @@ class BeverageDetailViewModelFamily extends Family<AsyncValue<Beverage>> {
   ) {
     return call(
       provider.id,
+      provider.type,
     );
   }
 
@@ -88,8 +93,11 @@ class BeverageDetailViewModelProvider
   /// See also [BeverageDetailViewModel].
   BeverageDetailViewModelProvider(
     int id,
+    BeverageType type,
   ) : this._internal(
-          () => BeverageDetailViewModel()..id = id,
+          () => BeverageDetailViewModel()
+            ..id = id
+            ..type = type,
           from: beverageDetailViewModelProvider,
           name: r'beverageDetailViewModelProvider',
           debugGetCreateSourceHash:
@@ -100,6 +108,7 @@ class BeverageDetailViewModelProvider
           allTransitiveDependencies:
               BeverageDetailViewModelFamily._allTransitiveDependencies,
           id: id,
+          type: type,
         );
 
   BeverageDetailViewModelProvider._internal(
@@ -110,9 +119,11 @@ class BeverageDetailViewModelProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.id,
+    required this.type,
   }) : super.internal();
 
   final int id;
+  final BeverageType type;
 
   @override
   FutureOr<Beverage> runNotifierBuild(
@@ -120,6 +131,7 @@ class BeverageDetailViewModelProvider
   ) {
     return notifier.build(
       id,
+      type,
     );
   }
 
@@ -128,13 +140,16 @@ class BeverageDetailViewModelProvider
     return ProviderOverride(
       origin: this,
       override: BeverageDetailViewModelProvider._internal(
-        () => create()..id = id,
+        () => create()
+          ..id = id
+          ..type = type,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         id: id,
+        type: type,
       ),
     );
   }
@@ -147,13 +162,16 @@ class BeverageDetailViewModelProvider
 
   @override
   bool operator ==(Object other) {
-    return other is BeverageDetailViewModelProvider && other.id == id;
+    return other is BeverageDetailViewModelProvider &&
+        other.id == id &&
+        other.type == type;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, id.hashCode);
+    hash = _SystemHash.combine(hash, type.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -165,6 +183,9 @@ mixin BeverageDetailViewModelRef
     on AutoDisposeAsyncNotifierProviderRef<Beverage> {
   /// The parameter `id` of this provider.
   int get id;
+
+  /// The parameter `type` of this provider.
+  BeverageType get type;
 }
 
 class _BeverageDetailViewModelProviderElement
@@ -174,6 +195,8 @@ class _BeverageDetailViewModelProviderElement
 
   @override
   int get id => (origin as BeverageDetailViewModelProvider).id;
+  @override
+  BeverageType get type => (origin as BeverageDetailViewModelProvider).type;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

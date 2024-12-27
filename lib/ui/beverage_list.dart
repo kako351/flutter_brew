@@ -49,11 +49,10 @@ class BeverageList extends ConsumerWidget {
           if (state is! SuccessBeveragesViewState) {
             return const Center(child: Text('予期せぬエラーが発生しました'));
           }
-          print('BeveragesViewModel state: ${state.beverages}');
           final beverages = state.beverages;
           return Column(
             children: [
-              getCategoryUI(
+              CategoryUI(
                   selectedType: state.type,
                   onTapCallback: (type) => {
                     notifier.updateSelectedType(type)
@@ -124,8 +123,8 @@ class BeverageCellWidget extends StatelessWidget {
   }
 }
 
-class getCategoryUI extends StatelessWidget {
-  const getCategoryUI({required this.selectedType, required this.onTapCallback, super.key});
+class CategoryUI extends StatelessWidget {
+  const CategoryUI({required this.selectedType, required this.onTapCallback, super.key});
 
   final BeverageType selectedType;
   final Function(BeverageType) onTapCallback;

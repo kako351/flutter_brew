@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_brew/data/infra/response/beverage_response.dart';
-import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api_service.g.dart';

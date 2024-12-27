@@ -59,20 +59,21 @@ class BeverageList extends ConsumerWidget {
                   }
                 ),
               Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: beverages.length,
-                  itemBuilder: (context, index) {
-                    return BeverageCellWidget(beverage: beverages[index], onTap: () {
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 8.0,
+                  crossAxisSpacing: 8.0,
+                  children: List.generate(
+                    beverages.length, (index) {
+                      return BeverageCellWidget(beverage: beverages[index], onTap: () {
                         context.pushNamed(
                           'beverage_detail',
                           pathParameters: { 'id': '${beverages[index].id}' },
                           extra: BeverageDetailArgs.fromModel(beverages[index]),
                         );
-                      }
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) => const Padding(padding: EdgeInsets.all(12)),
+                      });
+                    }
+                  ),
                 )
               ),
             ]
@@ -97,7 +98,7 @@ class BeverageCellWidget extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(8.0),
         child: Container(
-          height: 150.0,
+          height: 120.0,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(

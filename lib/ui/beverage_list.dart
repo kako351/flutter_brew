@@ -150,11 +150,16 @@ class BeverageContentsByType extends StatelessWidget {
             childAspectRatio: (itemWidth / itemHeight),
           ),
           delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+              if (remainingBeveragesList.isEmpty) {
+                return Center(
+                   child: Text('表示するアイテムがありません'),
+                );
+              }
               return BeverageCellWidget(beverage: remainingBeveragesList[index], onTap: () {
                 onTap(remainingBeveragesList[index]);
               });
             },
-            childCount: remainingBeveragesList.length,
+            childCount: remainingBeveragesList.isEmpty ? 1 : remainingBeveragesList.length,
           ),
         ),
       ],

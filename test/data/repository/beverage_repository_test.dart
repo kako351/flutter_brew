@@ -194,4 +194,48 @@ void main() {
     expect(result, isA<Error>());
     expect((result as Error).message, Exception('error').toString());
   });
+
+  test('beverage repository detail beverages success hot test', () async {
+    // arrange
+    final mockApiService = MockApiService();
+    final beverageRepository = BeverageRepositoryImpl(apiClient: mockApiService);
+    final expectedBeverage = Beverage.fromResponse(mockBeverages[0], BeverageType.hot);
+
+    // act
+    when(mockApiService.getHotBeverageDetail(1)).thenAnswer((_) async => mockBeverages[0]);
+    final result = await beverageRepository.getBeverageDetail(1, BeverageType.hot);
+
+    // assert
+    expect(result, isA<beverage_detail_result.Success>());
+    expect((result as beverage_detail_result.Success).beverageDetail, expectedBeverage);
+  });
+
+  test('beverage repository detail beverages success iced test', () async {
+    // arrange
+    final mockApiService = MockApiService();
+    final beverageRepository = BeverageRepositoryImpl(apiClient: mockApiService);
+    final expectedBeverage = Beverage.fromResponse(mockIcedBeverages[0], BeverageType.iced);
+
+    // act
+    when(mockApiService.getIcedBeverageDetail(1)).thenAnswer((_) async => mockIcedBeverages[0]);
+    final result = await beverageRepository.getBeverageDetail(1, BeverageType.iced);
+
+    // assert
+    expect(result, isA<beverage_detail_result.Success>());
+    expect((result as beverage_detail_result.Success).beverageDetail, expectedBeverage);
+  });
+
+  test('beverage repository detail beverages error test', () async {
+    // arrange
+    final mockApiService = MockApiService();
+    final beverageRepository = BeverageRepositoryImpl(apiClient: mockApiService);
+
+    // act
+    when(mockApiService.getHotBeverageDetail(1)).thenThrow(Exception('error'));
+    final result = await beverageRepository.getBeverageDetail(1, BeverageType.hot);
+
+    // assert
+    expect(result, isA<beverage_detail_result.Error>());
+    expect((result as beverage_detail_result.Error).message, Exception('error').toString());
+  });
 }

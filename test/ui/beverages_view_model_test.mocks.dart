@@ -7,6 +7,7 @@ import 'dart:async' as _i3;
 
 import 'package:flutter_brew/data/model/beverage_detail_result.dart' as _i6;
 import 'package:flutter_brew/data/model/beverage_result.dart' as _i4;
+import 'package:flutter_brew/data/model/beverage_type.dart' as _i7;
 import 'package:flutter_brew/data/repository/beverage_repository.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i5;
@@ -147,6 +148,43 @@ class MockBeverageRepository extends _i1.Mock
           Invocation.method(
             #getIcedBeverageDetail,
             [id],
+          ),
+        )),
+      ) as _i3.Future<_i6.BeverageDetailResult>);
+
+  @override
+  _i3.Future<_i6.BeverageDetailResult> getBeverageDetail(
+    int? id,
+    _i7.BeverageType? type,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getBeverageDetail,
+          [
+            id,
+            type,
+          ],
+        ),
+        returnValue: _i3.Future<_i6.BeverageDetailResult>.value(
+            _i5.dummyValue<_i6.BeverageDetailResult>(
+          this,
+          Invocation.method(
+            #getBeverageDetail,
+            [
+              id,
+              type,
+            ],
+          ),
+        )),
+        returnValueForMissingStub: _i3.Future<_i6.BeverageDetailResult>.value(
+            _i5.dummyValue<_i6.BeverageDetailResult>(
+          this,
+          Invocation.method(
+            #getBeverageDetail,
+            [
+              id,
+              type,
+            ],
           ),
         )),
       ) as _i3.Future<_i6.BeverageDetailResult>);

@@ -34,15 +34,9 @@ class BeverageListPageState extends ConsumerState<BeverageListPage> {
 class BeverageList extends ConsumerWidget {
   const BeverageList({super.key});
 
-  final int _crossAxisCount = 2;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(beveragesViewModelProvider);
-    final notifier = ref.read(beveragesViewModelProvider.notifier);
-
-    final double itemWidth = (MediaQuery.of(context).size.width / _crossAxisCount) - 16.0;
-    final double itemHeight = itemWidth * 0.9;
 
     return Scaffold(
       appBar: AppBar(
@@ -119,7 +113,9 @@ class BeverageContentsByType extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 250.0,
-                  child: ListView.builder(
+                  child: ListView.separated(
+                    padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                    separatorBuilder: (context, index) => SizedBox(width: 8.0),
                     scrollDirection: Axis.horizontal,
                     itemCount: state.topBeverages().length,
                     itemBuilder: (context, index) {

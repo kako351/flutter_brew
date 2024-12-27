@@ -150,10 +150,10 @@ class BeverageContentsByType extends StatelessWidget {
             childAspectRatio: (itemWidth / itemHeight),
           ),
           delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-            return BeverageCellWidget(beverage: remainingBeveragesList[index], onTap: () {
-              onTap(remainingBeveragesList[index]);
-            });
-          },
+              return BeverageCellWidget(beverage: remainingBeveragesList[index], onTap: () {
+                onTap(remainingBeveragesList[index]);
+              });
+            },
             childCount: remainingBeveragesList.length,
           ),
         ),

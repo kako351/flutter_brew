@@ -4,6 +4,7 @@ import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/beverages_view_model.dart';
+import 'package:flutter_brew/ui/designsystem/color.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -33,10 +34,15 @@ class BeverageListPageState extends ConsumerState<BeverageListPage> {
 class BeverageList extends ConsumerWidget {
   const BeverageList({super.key});
 
+  final int _crossAxisCount = 2;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(beveragesViewModelProvider);
     final notifier = ref.read(beveragesViewModelProvider.notifier);
+
+    final double itemWidth = (MediaQuery.of(context).size.width / _crossAxisCount) - 16.0;
+    final double itemHeight = itemWidth * 0.9;
 
     return Scaffold(
       appBar: AppBar(
@@ -59,22 +65,22 @@ class BeverageList extends ConsumerWidget {
                   }
                 ),
               Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: beverages.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
+                child: GridView.count(
+                  crossAxisCount: _crossAxisCount,
+                  mainAxisSpacing: 8.0,
+                  crossAxisSpacing: 8.0,
+                  childAspectRatio: (itemWidth / itemHeight),
+                  children: List.generate(
+                    beverages.length, (index) {
+                      return BeverageCellWidget(beverage: beverages[index], onTap: () {
                         context.pushNamed(
                           'beverage_detail',
                           pathParameters: { 'id': '${beverages[index].id}' },
                           extra: BeverageDetailArgs.fromModel(beverages[index]),
                         );
-                      },
-                      child: BeverageCellWidget(beverage: beverages[index])
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) => const Padding(padding: EdgeInsets.all(12)),
+                      });
+                    }
+                  ),
                 )
               ),
             ]
@@ -87,38 +93,70 @@ class BeverageList extends ConsumerWidget {
 
 
 class BeverageCellWidget extends StatelessWidget {
-  const BeverageCellWidget({required this.beverage, super.key});
+  const BeverageCellWidget({required this.beverage, required this.onTap, super.key});
 
   final Beverage beverage;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Hero(
-          tag: beverage.imageHeroTag,
-          child: ClipOval(
-            child: Image.network(
-              beverage.image,
-              key: Key(beverage.title),
-              width: 100.0,
-              height: 100.0,
-              cacheWidth: 537,
-              cacheHeight: 807,
-              fit: BoxFit.cover,
+    return Card(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8.0),
+        child: Container(
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
             ),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 8.0),
-        ),
-        Hero(
-          tag: beverage.titleHeroTag,
-          child: Text(beverage.title, style: Theme.of(context).textTheme.labelMedium
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Hero(
+                tag: beverage.imageHeroTag,
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: Image.network(
+                    beverage.image,
+                    key: Key(beverage.title),
+                    width: MediaQuery.of(context).size.width,
+                    cacheWidth: 537,
+                    cacheHeight: 807,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Hero(
+                      tag: beverage.titleHeroTag,
+                      child: Text(beverage.title, style: Theme.of(context).textTheme.labelLarge
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.0),
+                    ),
+                    Text(
+                      beverage.ingredients.join(', '),
+                      style: Theme.of(context).textTheme.labelSmall?.merge(TextStyle(color: BrewColor.lightGrey)),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                )
+              )
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }
@@ -227,5 +265,5 @@ BeverageCellWidget beverageList(BuildContext context) {
     ingredients: ['Ingredient 1', 'Ingredient 2'],
     type: BeverageType.hot,
   );
-  return BeverageCellWidget(beverage: beverage);
+  return BeverageCellWidget(beverage: beverage, onTap: () {});
 }

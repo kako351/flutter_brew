@@ -7,7 +7,7 @@ part of 'beverages_view_model.dart';
 // **************************************************************************
 
 String _$beveragesViewModelHash() =>
-    r'47cce37cdb266a3fc1a782fa4c65c0cd659abeb9';
+    r'a9e7093725045fc0a01f1635b09e7739524a96a3';
 
 /// See also [BeveragesViewModel].
 @ProviderFor(BeveragesViewModel)

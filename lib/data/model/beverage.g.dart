@@ -31,4 +31,5 @@ Map<String, dynamic> _$$BeverageImplToJson(_$BeverageImpl instance) =>
 const _$BeverageTypeEnumMap = {
   BeverageType.hot: 'hot',
   BeverageType.iced: 'iced',
+  BeverageType.all: 'all',
 };

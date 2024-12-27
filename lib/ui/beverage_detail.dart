@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
+import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/designsystem/color.dart';
 import 'package:flutter_brew/ui/designsystem/size.dart';
@@ -192,6 +193,7 @@ BeverageDetailContent beverageDetailContent(BuildContext context) {
     image: 'https://fastly.picsum.photos/id/664/200/300.jpg?hmac=Ov1G0ZpIuC3e0t33HURn4DPJFK6o7bz602P6M-o_SDc',
     description: 'This is a description',
     ingredients: ['ingredient1', 'ingredient2', 'ingredient3'],
+    type: BeverageType.hot,
   );
 
   return BeverageDetailContent(beverage: beverage);

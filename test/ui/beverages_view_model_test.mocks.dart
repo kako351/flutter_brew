@@ -30,16 +30,16 @@ import 'package:mockito/src/dummies.dart' as _i5;
 class MockBeverageRepository extends _i1.Mock
     implements _i2.BeverageRepository {
   @override
-  _i3.Future<_i4.BeverageResult> getBeverage() => (super.noSuchMethod(
+  _i3.Future<_i4.BeverageResult> getAllBeverage() => (super.noSuchMethod(
         Invocation.method(
-          #getBeverage,
+          #getAllBeverage,
           [],
         ),
         returnValue: _i3.Future<_i4.BeverageResult>.value(
             _i5.dummyValue<_i4.BeverageResult>(
           this,
           Invocation.method(
-            #getBeverage,
+            #getAllBeverage,
             [],
           ),
         )),
@@ -47,7 +47,31 @@ class MockBeverageRepository extends _i1.Mock
             _i5.dummyValue<_i4.BeverageResult>(
           this,
           Invocation.method(
-            #getBeverage,
+            #getAllBeverage,
+            [],
+          ),
+        )),
+      ) as _i3.Future<_i4.BeverageResult>);
+
+  @override
+  _i3.Future<_i4.BeverageResult> getHotBeverage() => (super.noSuchMethod(
+        Invocation.method(
+          #getHotBeverage,
+          [],
+        ),
+        returnValue: _i3.Future<_i4.BeverageResult>.value(
+            _i5.dummyValue<_i4.BeverageResult>(
+          this,
+          Invocation.method(
+            #getHotBeverage,
+            [],
+          ),
+        )),
+        returnValueForMissingStub: _i3.Future<_i4.BeverageResult>.value(
+            _i5.dummyValue<_i4.BeverageResult>(
+          this,
+          Invocation.method(
+            #getHotBeverage,
             [],
           ),
         )),
@@ -73,6 +97,55 @@ class MockBeverageRepository extends _i1.Mock
           this,
           Invocation.method(
             #getHotBeverageDetail,
+            [id],
+          ),
+        )),
+      ) as _i3.Future<_i6.BeverageDetailResult>);
+
+  @override
+  _i3.Future<_i4.BeverageResult> getIcedBeverage() => (super.noSuchMethod(
+        Invocation.method(
+          #getIcedBeverage,
+          [],
+        ),
+        returnValue: _i3.Future<_i4.BeverageResult>.value(
+            _i5.dummyValue<_i4.BeverageResult>(
+          this,
+          Invocation.method(
+            #getIcedBeverage,
+            [],
+          ),
+        )),
+        returnValueForMissingStub: _i3.Future<_i4.BeverageResult>.value(
+            _i5.dummyValue<_i4.BeverageResult>(
+          this,
+          Invocation.method(
+            #getIcedBeverage,
+            [],
+          ),
+        )),
+      ) as _i3.Future<_i4.BeverageResult>);
+
+  @override
+  _i3.Future<_i6.BeverageDetailResult> getIcedBeverageDetail(int? id) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getIcedBeverageDetail,
+          [id],
+        ),
+        returnValue: _i3.Future<_i6.BeverageDetailResult>.value(
+            _i5.dummyValue<_i6.BeverageDetailResult>(
+          this,
+          Invocation.method(
+            #getIcedBeverageDetail,
+            [id],
+          ),
+        )),
+        returnValueForMissingStub: _i3.Future<_i6.BeverageDetailResult>.value(
+            _i5.dummyValue<_i6.BeverageDetailResult>(
+          this,
+          Invocation.method(
+            #getIcedBeverageDetail,
             [id],
           ),
         )),

@@ -7,7 +7,7 @@ part of 'mock_beverage_view_model.dart';
 // **************************************************************************
 
 String _$mockBeverageViewModelHash() =>
-    r'c2b57149d61ea1ab334cc8dd06912d95ec76a571';
+    r'5a7cb5de653c2a6797de46eb73d9e15fe86ffbfe';
 
 /// See also [MockBeverageViewModel].
 @ProviderFor(MockBeverageViewModel)

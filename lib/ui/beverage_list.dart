@@ -55,28 +55,16 @@ class BeverageList extends ConsumerWidget {
           if (state is! SuccessBeveragesViewState) {
             return const Center(child: Text('予期せぬエラーが発生しました'));
           }
-          return CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    CategoryUI(
-                      selectedType: state.type,
-                      onTapCallback: (type) => {
-                        notifier.updateSelectedType(type)
-                      }
-                    ),
-                  ],
-                ),
-              ),
-              BeverageContentsByType(state: state, onTap: (beverage) {
-                context.pushNamed(
-                  'beverage_detail',
-                  pathParameters: { 'id': '${beverage.id}' },
-                  extra: BeverageDetailArgs.fromModel(beverage),
-                );}
-              )
-            ]
+          return BeverageContentsByType(
+            state: state,
+            onTypeTap: (type) => onCategorySelected(ref, type),
+            onTap: (beverage) {
+              context.pushNamed(
+                'beverage_detail',
+                pathParameters: { 'id': '${beverage.id}' },
+                extra: BeverageDetailArgs.fromModel(beverage),
+              );
+            }
           );
         }
       ),
@@ -85,9 +73,10 @@ class BeverageList extends ConsumerWidget {
 }
 
 class BeverageContentsByType extends StatelessWidget {
-  const BeverageContentsByType({required this.state, required this.onTap, super.key});
+  const BeverageContentsByType({required this.state, required this.onTypeTap, required this.onTap, super.key});
 
   final SuccessBeveragesViewState state;
+  final Function(BeverageType) onTypeTap;
   final Function(Beverage) onTap;
 
   final int _crossAxisCount = 2;
@@ -96,42 +85,84 @@ class BeverageContentsByType extends StatelessWidget {
   Widget build(BuildContext context) {
     final double itemWidth = (MediaQuery.of(context).size.width / _crossAxisCount) - 16.0;
     final double itemHeight = itemWidth * 0.9;
-    switch(state.type) {
-      case BeverageType.all:
-        return SliverGrid(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: _crossAxisCount,
-              mainAxisSpacing: 8.0,
-              crossAxisSpacing: 8.0,
-              childAspectRatio: (itemWidth / itemHeight),
+
+    List<Beverage> remainingBeveragesList = switch(state.type) {
+      BeverageType.all => state.remainingBeverages(),
+      BeverageType.hot || BeverageType.iced => state.beverages,
+    };
+
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Column(
+            children: [
+              CategoryUI(
+                  selectedType: state.type,
+                  onTapCallback: (type) => {
+                    onTypeTap(type)
+                  }
+              ),
+            ],
+          ),
+        ),
+        switch(state.type) {
+          BeverageType.all => SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Top Beverages',
+                    style: Theme.of(context).textTheme.titleLarge?.merge(TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                ),
+                SizedBox(
+                  height: 250.0,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: state.topBeverages().length,
+                    itemBuilder: (context, index) {
+                      return BeverageTopCellWidget(beverage: state.topBeverages()[index], onTap: () {
+                        onTap(state.topBeverages()[index]);
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
-            delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                return BeverageCellWidget(beverage: state.beverages[index], onTap: () {
-                  onTap(state.beverages[index]);
-                });
-              },
-              childCount: state.beverages.length,
-            )
-        );
-      default:
-        return SliverGrid(
+          ),
+          BeverageType.hot || BeverageType.iced => SliverToBoxAdapter(
+            // 何も表示しない
+            child: Container(),
+          ),
+        },
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Recommend',
+              style: Theme.of(context).textTheme.titleLarge?.merge(TextStyle(fontWeight: FontWeight.bold)),
+            ),
+          ),
+        ),
+        SliverGrid(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: _crossAxisCount,
             mainAxisSpacing: 8.0,
             crossAxisSpacing: 8.0,
             childAspectRatio: (itemWidth / itemHeight),
           ),
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              return BeverageCellWidget(beverage: state.beverages[index], onTap: () {
-                onTap(state.beverages[index]);
-              });
-            },
-            childCount: state.beverages.length,
-          )
-        );
-    }
+          delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+            return BeverageCellWidget(beverage: remainingBeveragesList[index], onTap: () {
+              onTap(remainingBeveragesList[index]);
+            });
+          },
+            childCount: remainingBeveragesList.length,
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -148,7 +179,7 @@ class BeverageTopCellWidget extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(8.0),
         child: Container(
-          width: 500.0,
+          width: 300.0,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(

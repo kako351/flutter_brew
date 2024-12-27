@@ -4,6 +4,7 @@ import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/beverages_view_model.dart';
+import 'package:flutter_brew/ui/designsystem/color.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -33,10 +34,15 @@ class BeverageListPageState extends ConsumerState<BeverageListPage> {
 class BeverageList extends ConsumerWidget {
   const BeverageList({super.key});
 
+  final int _crossAxisCount = 2;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(beveragesViewModelProvider);
     final notifier = ref.read(beveragesViewModelProvider.notifier);
+
+    final double itemWidth = (MediaQuery.of(context).size.width / _crossAxisCount) - 16.0;
+    final double itemHeight = itemWidth * 0.9;
 
     return Scaffold(
       appBar: AppBar(
@@ -60,9 +66,10 @@ class BeverageList extends ConsumerWidget {
                 ),
               Expanded(
                 child: GridView.count(
-                  crossAxisCount: 2,
+                  crossAxisCount: _crossAxisCount,
                   mainAxisSpacing: 8.0,
                   crossAxisSpacing: 8.0,
+                  childAspectRatio: (itemWidth / itemHeight),
                   children: List.generate(
                     beverages.length, (index) {
                       return BeverageCellWidget(beverage: beverages[index], onTap: () {
@@ -98,7 +105,6 @@ class BeverageCellWidget extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(8.0),
         child: Container(
-          height: 120.0,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -107,34 +113,46 @@ class BeverageCellWidget extends StatelessWidget {
             ),
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Hero(
                 tag: beverage.imageHeroTag,
-                child: Image.network(
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: Image.network(
                     beverage.image,
                     key: Key(beverage.title),
                     width: MediaQuery.of(context).size.width,
-                    height: 100.0,
                     cacheWidth: 537,
                     cacheHeight: 807,
                     fit: BoxFit.cover,
                   ),
                 ),
+              ),
               Padding(
-                padding: EdgeInsets.only(top: 8.0),
-              ),
-              Hero(
-                tag: beverage.titleHeroTag,
-                child: Text(beverage.title, style: Theme.of(context).textTheme.labelLarge
-                ),
-              ),
-              Text(
-                  beverage.ingredients.join(', '),
-                  style: Theme.of(context).textTheme.labelSmall,
-                  overflow: TextOverflow.ellipsis,
-              ),
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Hero(
+                      tag: beverage.titleHeroTag,
+                      child: Text(beverage.title, style: Theme.of(context).textTheme.labelLarge
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.0),
+                    ),
+                    Text(
+                      beverage.ingredients.join(', '),
+                      style: Theme.of(context).textTheme.labelSmall?.merge(TextStyle(color: BrewColor.lightGrey)),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                )
+              )
             ],
           ),
         ),

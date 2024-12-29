@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_brew/data/infra/api_service.dart';
 import 'package:flutter_brew/data/infra/response/beverage_response.dart';
+import 'package:flutter_brew/data/local/database.dart';
 import 'package:flutter_brew/data/local/local_beverages.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/data/model/beverage_detail_result.dart' as beverage_detail_result;
 import 'package:flutter_brew/data/model/beverage_result.dart' as beverage_result;
 import 'package:flutter_brew/data/model/beverage_type.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 abstract interface class BeverageRepository {
   Future<beverage_result.BeverageResult> getAllBeverage();
@@ -21,20 +23,26 @@ abstract interface class BeverageRepository {
   Future<beverage_detail_result.BeverageDetailResult> getBeverageDetail(int id, BeverageType type);
 }
 
+final beverageRepositoryImplProvider = FutureProvider<BeverageRepository>((ref) async {
+  final isar = await ref.read(isarProvider.future);
+  return BeverageRepositoryImpl(LocalBeverages(isar), apiClient: ApiService(Dio()));
+});
+
 class BeverageRepositoryImpl implements BeverageRepository {
   final ApiService client;
   final LocalBeverages localBeverages;
 
-  BeverageRepositoryImpl({ApiService? apiClient, LocalBeverages? localBeverages})
-      : client = apiClient ?? ApiService(Dio()),
-        localBeverages = localBeverages ?? LocalBeverages([]);
+  BeverageRepositoryImpl(this.localBeverages, {ApiService? apiClient})
+      : client = apiClient ?? ApiService(Dio());
 
 
   @override
   Future<beverage_result.BeverageResult> getAllBeverage() async {
     try {
-      if(localBeverages.beverages.isNotEmpty) {
-        return beverage_result.Success(localBeverages.beverages);
+      final localBeverages = await this.localBeverages.getBeverages();
+
+      if(localBeverages.isNotEmpty) {
+        return beverage_result.Success(localBeverages);
       }
 
       Future<List<BeverageResponse>> hot() async => client.getHotBeverages();
@@ -49,7 +57,7 @@ class BeverageRepositoryImpl implements BeverageRepository {
         }
       }).toList();
 
-      localBeverages.saveBeverages(list);
+      await this.localBeverages.saveBeverages(list);
 
       return beverage_result.Success(list);
     } catch (e) {
@@ -60,8 +68,10 @@ class BeverageRepositoryImpl implements BeverageRepository {
   @override
   Future<beverage_result.BeverageResult> getHotBeverage() async {
     try {
-      if(localBeverages.beverages.isNotEmpty) {
-        return beverage_result.Success(localBeverages.beverages.where((beverage) => beverage.type == BeverageType.hot).toList());
+      final localBeverages = await this.localBeverages.getHotBeverages();
+
+      if(localBeverages.isNotEmpty) {
+        return beverage_result.Success(localBeverages);
       }
 
       List<BeverageResponse> result = await client.getHotBeverages();
@@ -86,8 +96,10 @@ class BeverageRepositoryImpl implements BeverageRepository {
   @override
   Future<beverage_result.BeverageResult> getIcedBeverage() async {
     try {
-      if(localBeverages.beverages.isNotEmpty) {
-        return beverage_result.Success(localBeverages.beverages.where((beverage) => beverage.type == BeverageType.iced).toList());
+      final localBeverages = await this.localBeverages.getIcedBeverages();
+
+      if(localBeverages.isNotEmpty) {
+        return beverage_result.Success(localBeverages);
       }
 
       List<BeverageResponse> result = await client.getIcedBeverages();

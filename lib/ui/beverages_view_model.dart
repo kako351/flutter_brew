@@ -8,13 +8,12 @@ part 'beverages_view_model.g.dart';
 
 @riverpod
 class BeveragesViewModel extends _$BeveragesViewModel {
-  BeveragesViewModel({BeverageRepository? repository})
-    : _repository = repository ?? BeverageRepositoryImpl();
 
-  final BeverageRepository _repository;
+  late final BeverageRepository _repository;
 
   @override
   Future<BeveragesViewState> build() async {
+    _repository = await ref.read(beverageRepositoryImplProvider.future);
     return getBeverages();
   }
 

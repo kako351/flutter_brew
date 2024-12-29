@@ -14,7 +14,7 @@ _$BeverageImpl _$$BeverageImplFromJson(Map<String, dynamic> json) =>
           .map((e) => e as String)
           .toList(),
       image: json['image'] as String,
-      id: (json['id'] as num).toInt(),
+      beverageId: (json['beverageId'] as num).toInt(),
       type: $enumDecode(_$BeverageTypeEnumMap, json['type']),
     );
 
@@ -24,7 +24,7 @@ Map<String, dynamic> _$$BeverageImplToJson(_$BeverageImpl instance) =>
       'description': instance.description,
       'ingredients': instance.ingredients,
       'image': instance.image,
-      'id': instance.id,
+      'beverageId': instance.beverageId,
       'type': _$BeverageTypeEnumMap[instance.type]!,
     };
 

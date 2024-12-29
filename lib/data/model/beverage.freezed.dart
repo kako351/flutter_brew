@@ -24,7 +24,7 @@ mixin _$Beverage {
   String get description => throw _privateConstructorUsedError;
   List<String> get ingredients => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
-  int get id => throw _privateConstructorUsedError;
+  int get beverageId => throw _privateConstructorUsedError;
   BeverageType get type => throw _privateConstructorUsedError;
 
   /// Serializes this Beverage to a JSON map.
@@ -47,7 +47,7 @@ abstract class $BeverageCopyWith<$Res> {
       String description,
       List<String> ingredients,
       String image,
-      int id,
+      int beverageId,
       BeverageType type});
 }
 
@@ -70,7 +70,7 @@ class _$BeverageCopyWithImpl<$Res, $Val extends Beverage>
     Object? description = null,
     Object? ingredients = null,
     Object? image = null,
-    Object? id = null,
+    Object? beverageId = null,
     Object? type = null,
   }) {
     return _then(_value.copyWith(
@@ -90,9 +90,9 @@ class _$BeverageCopyWithImpl<$Res, $Val extends Beverage>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String,
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      beverageId: null == beverageId
+          ? _value.beverageId
+          : beverageId // ignore: cast_nullable_to_non_nullable
               as int,
       type: null == type
           ? _value.type
@@ -115,7 +115,7 @@ abstract class _$$BeverageImplCopyWith<$Res>
       String description,
       List<String> ingredients,
       String image,
-      int id,
+      int beverageId,
       BeverageType type});
 }
 
@@ -136,7 +136,7 @@ class __$$BeverageImplCopyWithImpl<$Res>
     Object? description = null,
     Object? ingredients = null,
     Object? image = null,
-    Object? id = null,
+    Object? beverageId = null,
     Object? type = null,
   }) {
     return _then(_$BeverageImpl(
@@ -156,9 +156,9 @@ class __$$BeverageImplCopyWithImpl<$Res>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String,
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      beverageId: null == beverageId
+          ? _value.beverageId
+          : beverageId // ignore: cast_nullable_to_non_nullable
               as int,
       type: null == type
           ? _value.type
@@ -176,7 +176,7 @@ class _$BeverageImpl extends _Beverage {
       required this.description,
       required final List<String> ingredients,
       required this.image,
-      required this.id,
+      required this.beverageId,
       required this.type})
       : _ingredients = ingredients,
         super._();
@@ -199,13 +199,13 @@ class _$BeverageImpl extends _Beverage {
   @override
   final String image;
   @override
-  final int id;
+  final int beverageId;
   @override
   final BeverageType type;
 
   @override
   String toString() {
-    return 'Beverage(title: $title, description: $description, ingredients: $ingredients, image: $image, id: $id, type: $type)';
+    return 'Beverage(title: $title, description: $description, ingredients: $ingredients, image: $image, beverageId: $beverageId, type: $type)';
   }
 
   @override
@@ -219,14 +219,21 @@ class _$BeverageImpl extends _Beverage {
             const DeepCollectionEquality()
                 .equals(other._ingredients, _ingredients) &&
             (identical(other.image, image) || other.image == image) &&
-            (identical(other.id, id) || other.id == id) &&
+            (identical(other.beverageId, beverageId) ||
+                other.beverageId == beverageId) &&
             (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, title, description,
-      const DeepCollectionEquality().hash(_ingredients), image, id, type);
+  int get hashCode => Object.hash(
+      runtimeType,
+      title,
+      description,
+      const DeepCollectionEquality().hash(_ingredients),
+      image,
+      beverageId,
+      type);
 
   /// Create a copy of Beverage
   /// with the given fields replaced by the non-null parameter values.
@@ -250,7 +257,7 @@ abstract class _Beverage extends Beverage {
       required final String description,
       required final List<String> ingredients,
       required final String image,
-      required final int id,
+      required final int beverageId,
       required final BeverageType type}) = _$BeverageImpl;
   const _Beverage._() : super._();
 
@@ -266,7 +273,7 @@ abstract class _Beverage extends Beverage {
   @override
   String get image;
   @override
-  int get id;
+  int get beverageId;
   @override
   BeverageType get type;
 

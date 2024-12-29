@@ -14,7 +14,7 @@ class Beverage with _$Beverage {
     required String description,
     required List<String> ingredients,
     required String image,
-    required int id,
+    required int beverageId,
     required BeverageType type,
   }) = _Beverage;
 
@@ -26,11 +26,11 @@ class Beverage with _$Beverage {
       description: response.description,
       ingredients: response.ingredients,
       image: response.image,
-      id: response.id,
+      beverageId: response.id,
       type: type,
     );
   }
 
-  get imageHeroTag => 'beverage_image_${id}_$title';
-  get titleHeroTag => 'beverage_title_${id}_$title';
+  get imageHeroTag => 'beverage_image_${beverageId}_$title';
+  get titleHeroTag => 'beverage_title_${beverageId}_$title';
 }

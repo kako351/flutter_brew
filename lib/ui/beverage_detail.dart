@@ -183,7 +183,7 @@ class BeverageTitle extends StatelessWidget {
 )
 BeverageDetailContent beverageDetailContent(BuildContext context) {
   final beverage = Beverage(
-    id: 1,
+    beverageId: 1,
     title: 'Beverage',
     image: 'https://fastly.picsum.photos/id/664/200/300.jpg?hmac=Ov1G0ZpIuC3e0t33HURn4DPJFK6o7bz602P6M-o_SDc',
     description: 'This is a description',

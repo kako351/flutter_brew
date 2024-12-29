@@ -16,7 +16,7 @@ class MockBeverageViewModel extends _$MockBeverageViewModel
   Future<BeveragesViewState> build() async {
     return SuccessBeveragesViewState([
       Beverage(
-          id: 1,
+          beverageId: 1,
           title: 'Black Coffee',
           description: 'Svart kaffe är så enkelt som det kan bli med malda kaffebönor dränkta i hett vatten, serverat varmt. Och om du vill låta fancy kan du kalla svart kaffe med sitt rätta namn: café noir.',
           ingredients: ['Coffee'],

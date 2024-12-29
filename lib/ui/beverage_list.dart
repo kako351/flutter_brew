@@ -53,7 +53,7 @@ class BeverageList extends ConsumerWidget {
             state: state,
             onTypeTap: (type) => onCategorySelected(ref, type),
             onTap: (beverage) {
-              BeverageDetailPageRoute(id: beverage.id, $extra: BeverageDetailArgs.fromModel(beverage)).push(context);
+              BeverageDetailPageRoute(id: beverage.beverageId, $extra: BeverageDetailArgs.fromModel(beverage)).push(context);
             }
           );
         }
@@ -399,7 +399,7 @@ void onCategorySelected(WidgetRef ref, BeverageType type) {
 )
 BeverageCellWidget beverageList(BuildContext context) {
   final beverage = Beverage(
-    id: 1,
+    beverageId: 1,
     title: 'Beverage',
     image: 'https://fastly.picsum.photos/id/664/200/300.jpg?hmac=Ov1G0ZpIuC3e0t33HURn4DPJFK6o7bz602P6M-o_SDc',
     description: 'Description',

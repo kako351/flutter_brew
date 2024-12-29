@@ -16,7 +16,7 @@ void main() {
 
   test('beverage model test', () async {
     final beverage = Beverage.fromResponse(BeverageResponse.fromJson(mockJson), BeverageType.hot);
-    expect(beverage.id, 1);
+    expect(beverage.beverageId, 1);
     expect(beverage.title, 'Black Coffee');
     expect(beverage.description, 'Svart kaffe är så enkelt som det kan bli med malda kaffebönor dränkta i hett vatten, serverat varmt. Och om du vill låta fancy kan du kalla svart kaffe med sitt rätta namn: café noir.');
     expect(beverage.ingredients, ['Coffee']);

@@ -19,7 +19,7 @@ class Listener extends Mock {
 void main() {
   final List<Beverage> mockHotBeverages = [
     Beverage(
-        id: 1,
+        beverageId: 1,
         title: 'Black Coffee',
         description: 'Svart kaffe är så enkelt som det kan bli med malda kaffebönor dränkta i hett vatten, serverat varmt. Och om du vill låta fancy kan du kalla svart kaffe med sitt rätta namn: café noir.',
         ingredients: ['Coffee'],
@@ -27,7 +27,7 @@ void main() {
         type: BeverageType.hot
     ),
     Beverage(
-        id: 2,
+        beverageId: 2,
         title: 'Latte',
         description: 'Latte är en kaffe dryck gjord på espresso och varm ångad mjölk. Det är en italiensk ord som betyder mjölk.',
         ingredients: ['Espresso', 'Milk'],
@@ -38,7 +38,7 @@ void main() {
 
   final List<Beverage> mockIcedBeverages = [
     Beverage(
-        id: 1,
+        beverageId: 1,
         title: 'Iced Black Coffee',
         description: 'Svart kaffe är så enkelt som det kan bli med malda kaffebönor dränkta i hett vatten, serverat kallt. Och om du vill låta fancy kan du kalla svart kaffe med sitt rätta namn: café noir.',
         ingredients: ['Coffee'],
@@ -46,7 +46,7 @@ void main() {
         type: BeverageType.iced
     ),
     Beverage(
-        id: 2,
+        beverageId: 2,
         title: 'Iced Latte',
         description: 'Latte är en kaffe dryck gjord på espresso och kall mjölk. Det är en italiensk ord som betyder mjölk.',
         ingredients: ['Espresso', 'Milk'],

@@ -49,6 +49,8 @@ dependencies:
   go_router: ^14.6.2
   widgetbook: ^3.10.1
   widgetbook_annotation: ^3.2.0
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
 
 dev_dependencies:
   flutter_test:
@@ -68,7 +70,10 @@ dev_dependencies:
   mockito: ^5.4.4
   widgetbook_generator: ^3.9.1
   go_router_builder: ^2.3.0
+  isar_generator: ^3.1.0+1
 
+dependency_overrides:
+  analyzer: ^6.0.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

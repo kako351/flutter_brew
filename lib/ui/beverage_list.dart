@@ -54,10 +54,49 @@ class BeverageList extends ConsumerWidget {
             onTypeTap: (type) => onCategorySelected(ref, type),
             onTap: (beverage) {
               BeverageDetailPageRoute(id: beverage.beverageId, $extra: BeverageDetailArgs.fromModel(beverage)).push(context);
-            }
+            },
           );
         }
       ),
+    );
+  }
+}
+
+class SearchToolBar extends StatelessWidget {
+  const SearchToolBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SearchAnchor(
+        builder: (BuildContext context, SearchController controller) {
+          return SearchBar(
+            controller: controller,
+            padding: const WidgetStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(horizontal: 16.0)),
+            elevation: const WidgetStatePropertyAll<double>(0.0),
+            hintText: 'Search',
+            onTap: () {
+              controller.openView();
+            },
+            onChanged: (_) {
+              controller.openView();
+            },
+            leading: const Icon(Icons.search),
+          );
+        },
+        suggestionsBuilder: (BuildContext context, SearchController controller) {
+          return List<ListTile>.generate(5, (int index) {
+            final String item = 'item $index';
+            return ListTile(
+              title: Text(item),
+              onTap: () {
+                controller.closeView(item);
+              },
+            );
+          }
+        );
+      }),
     );
   }
 }
@@ -83,6 +122,9 @@ class BeverageContentsByType extends StatelessWidget {
 
     return CustomScrollView(
       slivers: [
+        SliverToBoxAdapter(
+          child: SearchToolBar(),
+        ),
         SliverToBoxAdapter(
           child: Column(
             children: [

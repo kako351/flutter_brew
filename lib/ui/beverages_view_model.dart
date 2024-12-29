@@ -2,16 +2,15 @@ import 'package:flutter_brew/data/model/beverage_result.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/data/repository/beverage_repository.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
+import 'package:get_it/get_it.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'beverages_view_model.g.dart';
 
 @riverpod
 class BeveragesViewModel extends _$BeveragesViewModel {
-  BeveragesViewModel({BeverageRepository? repository})
-    : _repository = repository ?? BeverageRepositoryImpl();
 
-  final BeverageRepository _repository;
+  final BeverageRepository _repository = GetIt.I<BeverageRepository>();
 
   @override
   Future<BeveragesViewState> build() async {

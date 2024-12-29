@@ -3,10 +3,13 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i5;
 
-import 'package:flutter_brew/data/infra/api_service.dart' as _i3;
+import 'package:flutter_brew/data/infra/api_service.dart' as _i4;
 import 'package:flutter_brew/data/infra/response/beverage_response.dart' as _i2;
+import 'package:flutter_brew/data/local/local_beverages.dart' as _i6;
+import 'package:flutter_brew/data/model/beverage.dart' as _i7;
+import 'package:isar/isar.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -33,32 +36,42 @@ class _FakeBeverageResponse_0 extends _i1.SmartFake
         );
 }
 
+class _FakeIsar_1 extends _i1.SmartFake implements _i3.Isar {
+  _FakeIsar_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [ApiService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockApiService extends _i1.Mock implements _i3.ApiService {
+class MockApiService extends _i1.Mock implements _i4.ApiService {
   @override
-  _i4.Future<List<_i2.BeverageResponse>> getHotBeverages() =>
+  _i5.Future<List<_i2.BeverageResponse>> getHotBeverages() =>
       (super.noSuchMethod(
         Invocation.method(
           #getHotBeverages,
           [],
         ),
-        returnValue: _i4.Future<List<_i2.BeverageResponse>>.value(
+        returnValue: _i5.Future<List<_i2.BeverageResponse>>.value(
             <_i2.BeverageResponse>[]),
-        returnValueForMissingStub: _i4.Future<List<_i2.BeverageResponse>>.value(
+        returnValueForMissingStub: _i5.Future<List<_i2.BeverageResponse>>.value(
             <_i2.BeverageResponse>[]),
-      ) as _i4.Future<List<_i2.BeverageResponse>>);
+      ) as _i5.Future<List<_i2.BeverageResponse>>);
 
   @override
-  _i4.Future<_i2.BeverageResponse> getHotBeverageDetail(int? id) =>
+  _i5.Future<_i2.BeverageResponse> getHotBeverageDetail(int? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #getHotBeverageDetail,
           [id],
         ),
         returnValue:
-            _i4.Future<_i2.BeverageResponse>.value(_FakeBeverageResponse_0(
+            _i5.Future<_i2.BeverageResponse>.value(_FakeBeverageResponse_0(
           this,
           Invocation.method(
             #getHotBeverageDetail,
@@ -66,37 +79,37 @@ class MockApiService extends _i1.Mock implements _i3.ApiService {
           ),
         )),
         returnValueForMissingStub:
-            _i4.Future<_i2.BeverageResponse>.value(_FakeBeverageResponse_0(
+            _i5.Future<_i2.BeverageResponse>.value(_FakeBeverageResponse_0(
           this,
           Invocation.method(
             #getHotBeverageDetail,
             [id],
           ),
         )),
-      ) as _i4.Future<_i2.BeverageResponse>);
+      ) as _i5.Future<_i2.BeverageResponse>);
 
   @override
-  _i4.Future<List<_i2.BeverageResponse>> getIcedBeverages() =>
+  _i5.Future<List<_i2.BeverageResponse>> getIcedBeverages() =>
       (super.noSuchMethod(
         Invocation.method(
           #getIcedBeverages,
           [],
         ),
-        returnValue: _i4.Future<List<_i2.BeverageResponse>>.value(
+        returnValue: _i5.Future<List<_i2.BeverageResponse>>.value(
             <_i2.BeverageResponse>[]),
-        returnValueForMissingStub: _i4.Future<List<_i2.BeverageResponse>>.value(
+        returnValueForMissingStub: _i5.Future<List<_i2.BeverageResponse>>.value(
             <_i2.BeverageResponse>[]),
-      ) as _i4.Future<List<_i2.BeverageResponse>>);
+      ) as _i5.Future<List<_i2.BeverageResponse>>);
 
   @override
-  _i4.Future<_i2.BeverageResponse> getIcedBeverageDetail(int? id) =>
+  _i5.Future<_i2.BeverageResponse> getIcedBeverageDetail(int? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #getIcedBeverageDetail,
           [id],
         ),
         returnValue:
-            _i4.Future<_i2.BeverageResponse>.value(_FakeBeverageResponse_0(
+            _i5.Future<_i2.BeverageResponse>.value(_FakeBeverageResponse_0(
           this,
           Invocation.method(
             #getIcedBeverageDetail,
@@ -104,12 +117,74 @@ class MockApiService extends _i1.Mock implements _i3.ApiService {
           ),
         )),
         returnValueForMissingStub:
-            _i4.Future<_i2.BeverageResponse>.value(_FakeBeverageResponse_0(
+            _i5.Future<_i2.BeverageResponse>.value(_FakeBeverageResponse_0(
           this,
           Invocation.method(
             #getIcedBeverageDetail,
             [id],
           ),
         )),
-      ) as _i4.Future<_i2.BeverageResponse>);
+      ) as _i5.Future<_i2.BeverageResponse>);
+}
+
+/// A class which mocks [LocalBeverages].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLocalBeverages extends _i1.Mock implements _i6.LocalBeverages {
+  @override
+  _i3.Isar get isar => (super.noSuchMethod(
+        Invocation.getter(#isar),
+        returnValue: _FakeIsar_1(
+          this,
+          Invocation.getter(#isar),
+        ),
+        returnValueForMissingStub: _FakeIsar_1(
+          this,
+          Invocation.getter(#isar),
+        ),
+      ) as _i3.Isar);
+
+  @override
+  _i5.Future<List<_i7.Beverage>> getBeverages() => (super.noSuchMethod(
+        Invocation.method(
+          #getBeverages,
+          [],
+        ),
+        returnValue: _i5.Future<List<_i7.Beverage>>.value(<_i7.Beverage>[]),
+        returnValueForMissingStub:
+            _i5.Future<List<_i7.Beverage>>.value(<_i7.Beverage>[]),
+      ) as _i5.Future<List<_i7.Beverage>>);
+
+  @override
+  _i5.Future<List<_i7.Beverage>> getHotBeverages() => (super.noSuchMethod(
+        Invocation.method(
+          #getHotBeverages,
+          [],
+        ),
+        returnValue: _i5.Future<List<_i7.Beverage>>.value(<_i7.Beverage>[]),
+        returnValueForMissingStub:
+            _i5.Future<List<_i7.Beverage>>.value(<_i7.Beverage>[]),
+      ) as _i5.Future<List<_i7.Beverage>>);
+
+  @override
+  _i5.Future<List<_i7.Beverage>> getIcedBeverages() => (super.noSuchMethod(
+        Invocation.method(
+          #getIcedBeverages,
+          [],
+        ),
+        returnValue: _i5.Future<List<_i7.Beverage>>.value(<_i7.Beverage>[]),
+        returnValueForMissingStub:
+            _i5.Future<List<_i7.Beverage>>.value(<_i7.Beverage>[]),
+      ) as _i5.Future<List<_i7.Beverage>>);
+
+  @override
+  _i5.Future<void> saveBeverages(List<_i7.Beverage>? beverages) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #saveBeverages,
+          [beverages],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 }

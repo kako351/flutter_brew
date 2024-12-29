@@ -64,7 +64,7 @@ void main() {
   test('beverages_view_model success test', () async {
     // arrange
     final BeverageRepository mockRepository = MockBeverageRepository();
-    final viewModel = BeveragesViewModel(repository: mockRepository);
+    final viewModel = BeveragesViewModel();
     
     // act
     when(mockRepository.getAllBeverage()).thenAnswer((_) async => Success([]));
@@ -77,7 +77,7 @@ void main() {
   test('beverages_view_model error test', () async {
     // arrange
     final BeverageRepository mockRepository = MockBeverageRepository();
-    final viewModel = BeveragesViewModel(repository: mockRepository);
+    final viewModel = BeveragesViewModel();
 
     // act
     when(mockRepository.getAllBeverage()).thenAnswer((_) async => Error('error'));
@@ -93,7 +93,7 @@ void main() {
     final type = BeverageType.hot;
     final container = ProviderContainer(
       overrides: [
-        beveragesViewModelProvider.overrideWith(() { return BeveragesViewModel(repository: mockRepository); })
+        beveragesViewModelProvider.overrideWith(() { return BeveragesViewModel(); })
       ],
     );
     addTearDown(container.dispose);
@@ -118,7 +118,7 @@ void main() {
     final type = BeverageType.iced;
     final container = ProviderContainer(
       overrides: [
-        beveragesViewModelProvider.overrideWith(() { return BeveragesViewModel(repository: mockRepository); })
+        beveragesViewModelProvider.overrideWith(() { return BeveragesViewModel(); })
       ],
     );
     addTearDown(container.dispose);
@@ -143,7 +143,7 @@ void main() {
     final type = BeverageType.all;
     final container = ProviderContainer(
       overrides: [
-        beveragesViewModelProvider.overrideWith(() { return BeveragesViewModel(repository: mockRepository); })
+        beveragesViewModelProvider.overrideWith(() { return BeveragesViewModel(); })
       ],
     );
     addTearDown(container.dispose);

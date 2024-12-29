@@ -23,6 +23,8 @@ RouteBase get $mainShellRouteData => StatefulShellRouteData.$route(
                 GoRouteData.$route(
                   path: '/beverage/:id',
                   name: 'beverage_detail',
+                  parentNavigatorKey:
+                      BeverageDetailPageRoute.$parentNavigatorKey,
                   factory: $BeverageDetailPageRouteExtension._fromState,
                 ),
               ],
@@ -66,21 +68,24 @@ extension $HomePageRouteExtension on HomePageRoute {
 extension $BeverageDetailPageRouteExtension on BeverageDetailPageRoute {
   static BeverageDetailPageRoute _fromState(GoRouterState state) =>
       BeverageDetailPageRoute(
-        id: state.pathParameters['id']!,
+        id: int.parse(state.pathParameters['id']!),
+        $extra: state.extra as BeverageDetailArgs,
       );
 
   String get location => GoRouteData.$location(
-        '/beverage/${Uri.encodeComponent(id)}',
+        '/beverage/${Uri.encodeComponent(id.toString())}',
       );
 
-  void go(BuildContext context) => context.go(location);
+  void go(BuildContext context) => context.go(location, extra: $extra);
 
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
+      context.pushReplacement(location, extra: $extra);
 
-  void replace(BuildContext context) => context.replace(location);
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
 
 extension $FavoritePageRouteExtension on FavoritePageRoute {

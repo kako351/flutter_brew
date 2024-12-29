@@ -41,15 +41,21 @@ class HomePageRoute extends GoRouteData {
 }
 
 class BeverageDetailPageRoute extends GoRouteData {
-  const BeverageDetailPageRoute({required this.id});
+  const BeverageDetailPageRoute({required this.id, required this.$extra});
 
-  final String id;
+  final int id;
+  final BeverageDetailArgs $extra;
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = _rootNavigatorKey;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     try {
-      final intId = int.parse(id ?? '');
-      return BeverageDetailPage(id: intId, args: state.extra as BeverageDetailArgs);
+      final extra = state.extra;
+      if (extra is! BeverageDetailArgs) {
+        return const ErrorPage();
+      }
+      return BeverageDetailPage(id: id, args: extra);
     } catch (e) {
       return const ErrorPage();
     }

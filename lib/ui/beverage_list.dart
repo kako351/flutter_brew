@@ -5,9 +5,9 @@ import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/beverages_view_model.dart';
 import 'package:flutter_brew/ui/designsystem/color.dart';
+import 'package:flutter_brew/ui/route/routes.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widget_book;
 
 
@@ -53,11 +53,7 @@ class BeverageList extends ConsumerWidget {
             state: state,
             onTypeTap: (type) => onCategorySelected(ref, type),
             onTap: (beverage) {
-              context.pushNamed(
-                'beverage_detail',
-                pathParameters: { 'id': '${beverage.id}' },
-                extra: BeverageDetailArgs.fromModel(beverage),
-              );
+              BeverageDetailPageRoute(id: beverage.id, $extra: BeverageDetailArgs.fromModel(beverage)).push(context);
             }
           );
         }

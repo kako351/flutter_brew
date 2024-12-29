@@ -1,13 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_brew/data/infra/api_service.dart';
 import 'package:flutter_brew/data/infra/response/beverage_response.dart';
-import 'package:flutter_brew/data/local/database.dart';
 import 'package:flutter_brew/data/local/local_beverages.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/data/model/beverage_detail_result.dart' as beverage_detail_result;
 import 'package:flutter_brew/data/model/beverage_result.dart' as beverage_result;
 import 'package:flutter_brew/data/model/beverage_type.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
 
 abstract interface class BeverageRepository {
   Future<beverage_result.BeverageResult> getAllBeverage();
@@ -23,16 +22,11 @@ abstract interface class BeverageRepository {
   Future<beverage_detail_result.BeverageDetailResult> getBeverageDetail(int id, BeverageType type);
 }
 
-final beverageRepositoryImplProvider = FutureProvider<BeverageRepository>((ref) async {
-  final isar = await ref.read(isarProvider.future);
-  return BeverageRepositoryImpl(LocalBeverages(isar), apiClient: ApiService(Dio()));
-});
-
 class BeverageRepositoryImpl implements BeverageRepository {
   final ApiService client;
-  final LocalBeverages localBeverages;
+  final LocalBeverages localBeverages = GetIt.I<LocalBeverages>();
 
-  BeverageRepositoryImpl(this.localBeverages, {ApiService? apiClient})
+  BeverageRepositoryImpl({ApiService? apiClient})
       : client = apiClient ?? ApiService(Dio());
 
 

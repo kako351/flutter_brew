@@ -7,6 +7,7 @@ import 'package:flutter_brew/data/model/beverage_result.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/data/repository/beverage_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -48,15 +49,26 @@ void main() {
     ),
   ];
 
+  final mockApiService = MockApiService();
+  final mockLocalBeverages = MockLocalBeverages();
+  late final BeverageRepository beverageRepository;
+  final getIt = GetIt.instance;
+
+  setUpAll((){
+    getIt.registerSingleton<LocalBeverages>(mockLocalBeverages);
+    beverageRepository = BeverageRepositoryImpl(apiClient: mockApiService);
+  });
+
+  tearDownAll((){
+    addTearDown(getIt.reset);
+  });
+
   test('beverage repository success test', () async {
     // arrange
-    final mockApiService = MockApiService();
-    final mockLocalBeverages = MockLocalBeverages();
-    final beverageRepository = BeverageRepositoryImpl(mockLocalBeverages, apiClient: mockApiService);
+    when(mockApiService.getHotBeverages()).thenAnswer((_) async => mockBeverages);
     final expectedBeverages = mockBeverages.map((e) => Beverage.fromResponse(e, BeverageType.hot)).toList();
 
     // act
-    when(mockApiService.getHotBeverages()).thenAnswer((_) async => mockBeverages);
     final result = await beverageRepository.getHotBeverage();
 
     // assert
@@ -67,12 +79,9 @@ void main() {
 
   test('beverage repository error test', () async {
     // arrange
-    final mockApiService = MockApiService();
-    final mockLocalBeverages = MockLocalBeverages();
-    final beverageRepository = BeverageRepositoryImpl(mockLocalBeverages, apiClient: mockApiService);
+    when(mockApiService.getHotBeverages()).thenThrow(Exception('error'));
 
     // act
-    when(mockApiService.getHotBeverages()).thenThrow(Exception('error'));
     final result = await beverageRepository.getHotBeverage();
 
     // assert
@@ -82,13 +91,10 @@ void main() {
 
   test('beverage repository hot beverage detail success test', () async {
     // arrange
-    final mockApiService = MockApiService();
-    final mockLocalBeverages = MockLocalBeverages();
-    final beverageRepository = BeverageRepositoryImpl(mockLocalBeverages, apiClient: mockApiService);
+    when(mockApiService.getHotBeverageDetail(1)).thenAnswer((_) async => mockBeverages[0]);
     final expectedBeverage = Beverage.fromResponse(mockBeverages[0], BeverageType.hot);
 
     // act
-    when(mockApiService.getHotBeverageDetail(1)).thenAnswer((_) async => mockBeverages[0]);
     final result = await beverageRepository.getHotBeverageDetail(1);
 
     // assert
@@ -98,12 +104,9 @@ void main() {
 
   test('beverage repository hot beverage detail error test', () async {
     // arrange
-    final mockApiService = MockApiService();
-    final mockLocalBeverages = MockLocalBeverages();
-    final beverageRepository = BeverageRepositoryImpl(mockLocalBeverages, apiClient: mockApiService);
+    when(mockApiService.getHotBeverageDetail(1)).thenThrow(Exception('error'));
 
     // act
-    when(mockApiService.getHotBeverageDetail(1)).thenThrow(Exception('error'));
     final result = await beverageRepository.getHotBeverageDetail(1);
 
     // assert
@@ -113,13 +116,10 @@ void main() {
 
   test('beverage repository iced beverage success test', () async {
     // arrange
-    final mockApiService = MockApiService();
-    final mockLocalBeverages = MockLocalBeverages();
-    final beverageRepository = BeverageRepositoryImpl(mockLocalBeverages, apiClient: mockApiService);
+    when(mockApiService.getIcedBeverages()).thenAnswer((_) async => mockBeverages);
     final expectedBeverages = mockBeverages.map((e) => Beverage.fromResponse(e, BeverageType.iced)).toList();
 
     // act
-    when(mockApiService.getIcedBeverages()).thenAnswer((_) async => mockBeverages);
     final result = await beverageRepository.getIcedBeverage();
 
     // assert
@@ -129,12 +129,9 @@ void main() {
 
   test('beverage repository iced beverage error test', () async {
     // arrange
-    final mockApiService = MockApiService();
-    final mockLocalBeverages = MockLocalBeverages();
-    final beverageRepository = BeverageRepositoryImpl(mockLocalBeverages, apiClient: mockApiService);
+    when(mockApiService.getIcedBeverages()).thenThrow(Exception('error'));
 
     // act
-    when(mockApiService.getIcedBeverages()).thenThrow(Exception('error'));
     final result = await beverageRepository.getIcedBeverage();
 
     // assert
@@ -144,13 +141,10 @@ void main() {
 
   test('beverage repository iced beverage detail success test', () async {
     // arrange
-    final mockApiService = MockApiService();
-    final mockLocalBeverages = MockLocalBeverages();
-    final beverageRepository = BeverageRepositoryImpl(mockLocalBeverages, apiClient: mockApiService);
+    when(mockApiService.getIcedBeverageDetail(1)).thenAnswer((_) async => mockBeverages[0]);
     final expectedBeverage = Beverage.fromResponse(mockBeverages[0], BeverageType.iced);
 
     // act
-    when(mockApiService.getIcedBeverageDetail(1)).thenAnswer((_) async => mockBeverages[0]);
     final result = await beverageRepository.getIcedBeverageDetail(1);
 
     // assert
@@ -160,12 +154,9 @@ void main() {
 
   test('beverage repository iced beverage detail error test', () async {
     // arrange
-    final mockApiService = MockApiService();
-    final mockLocalBeverages = MockLocalBeverages();
-    final beverageRepository = BeverageRepositoryImpl(mockLocalBeverages, apiClient: mockApiService);
+    when(mockApiService.getIcedBeverageDetail(1)).thenThrow(Exception('error'));
 
     // act
-    when(mockApiService.getIcedBeverageDetail(1)).thenThrow(Exception('error'));
     final result = await beverageRepository.getIcedBeverageDetail(1);
 
     // assert
@@ -175,15 +166,12 @@ void main() {
 
   test('beverage repository all beverages success test', () async {
     // arrange
-    final mockApiService = MockApiService();
-    final mockLocalBeverages = MockLocalBeverages();
-    final beverageRepository = BeverageRepositoryImpl(mockLocalBeverages, apiClient: mockApiService);
+    when(mockApiService.getHotBeverages()).thenAnswer((_) async => mockBeverages);
+    when(mockApiService.getIcedBeverages()).thenAnswer((_) async => mockIcedBeverages);
     final expectedBeverages = mockBeverages.map((e) => Beverage.fromResponse(e, BeverageType.hot)).toList();
     expectedBeverages.addAll(mockIcedBeverages.map((e) => Beverage.fromResponse(e, BeverageType.iced)).toList());
 
     // act
-    when(mockApiService.getHotBeverages()).thenAnswer((_) async => mockBeverages);
-    when(mockApiService.getIcedBeverages()).thenAnswer((_) async => mockIcedBeverages);
     final result = await beverageRepository.getAllBeverage();
 
     // assert
@@ -193,12 +181,9 @@ void main() {
 
   test('beverage repository all beverages error test', () async {
     // arrange
-    final mockApiService = MockApiService();
-    final mockLocalBeverages = MockLocalBeverages();
-    final beverageRepository = BeverageRepositoryImpl(mockLocalBeverages, apiClient: mockApiService);
+    when(mockApiService.getHotBeverages()).thenThrow(Exception('error'));
 
     // act
-    when(mockApiService.getHotBeverages()).thenThrow(Exception('error'));
     final result = await beverageRepository.getAllBeverage();
 
     // assert
@@ -208,13 +193,10 @@ void main() {
 
   test('beverage repository detail beverages success hot test', () async {
     // arrange
-    final mockApiService = MockApiService();
-    final mockLocalBeverages = MockLocalBeverages();
-    final beverageRepository = BeverageRepositoryImpl(mockLocalBeverages, apiClient: mockApiService);
+    when(mockApiService.getHotBeverageDetail(1)).thenAnswer((_) async => mockBeverages[0]);
     final expectedBeverage = Beverage.fromResponse(mockBeverages[0], BeverageType.hot);
 
     // act
-    when(mockApiService.getHotBeverageDetail(1)).thenAnswer((_) async => mockBeverages[0]);
     final result = await beverageRepository.getBeverageDetail(1, BeverageType.hot);
 
     // assert
@@ -224,13 +206,10 @@ void main() {
 
   test('beverage repository detail beverages success iced test', () async {
     // arrange
-    final mockApiService = MockApiService();
-    final mockLocalBeverages = MockLocalBeverages();
-    final beverageRepository = BeverageRepositoryImpl(mockLocalBeverages, apiClient: mockApiService);
+    when(mockApiService.getIcedBeverageDetail(1)).thenAnswer((_) async => mockIcedBeverages[0]);
     final expectedBeverage = Beverage.fromResponse(mockIcedBeverages[0], BeverageType.iced);
 
     // act
-    when(mockApiService.getIcedBeverageDetail(1)).thenAnswer((_) async => mockIcedBeverages[0]);
     final result = await beverageRepository.getBeverageDetail(1, BeverageType.iced);
 
     // assert
@@ -240,12 +219,9 @@ void main() {
 
   test('beverage repository detail beverages error test', () async {
     // arrange
-    final mockApiService = MockApiService();
-    final mockLocalBeverages = MockLocalBeverages();
-    final beverageRepository = BeverageRepositoryImpl(mockLocalBeverages, apiClient: mockApiService);
+    when(mockApiService.getHotBeverageDetail(1)).thenThrow(Exception('error'));
 
     // act
-    when(mockApiService.getHotBeverageDetail(1)).thenThrow(Exception('error'));
     final result = await beverageRepository.getBeverageDetail(1, BeverageType.hot);
 
     // assert

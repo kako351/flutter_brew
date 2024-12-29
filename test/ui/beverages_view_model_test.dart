@@ -6,6 +6,7 @@ import 'package:flutter_brew/ui/beverages_view_model.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -56,18 +57,28 @@ void main() {
   ];
 
   final List<Beverage> mockBeverages = mockHotBeverages + mockIcedBeverages;
+  late final BeverageRepository mockRepository;
+  final getIt = GetIt.instance;
 
   setUp(() {
     provideDummy<BeverageResult>(Success([]));
   });
 
+  setUpAll((){
+    mockRepository = MockBeverageRepository();
+    getIt.registerSingleton<BeverageRepository>(mockRepository);
+  });
+
+  tearDownAll((){
+    addTearDown(getIt.reset);
+  });
+
   test('beverages_view_model success test', () async {
     // arrange
-    final BeverageRepository mockRepository = MockBeverageRepository();
+    when(mockRepository.getAllBeverage()).thenAnswer((_) async => Success([]));
     final viewModel = BeveragesViewModel();
     
     // act
-    when(mockRepository.getAllBeverage()).thenAnswer((_) async => Success([]));
     final result = await viewModel.getBeverages();
     
     // assert
@@ -76,11 +87,10 @@ void main() {
 
   test('beverages_view_model error test', () async {
     // arrange
-    final BeverageRepository mockRepository = MockBeverageRepository();
+    when(mockRepository.getAllBeverage()).thenAnswer((_) async => Error('error'));
     final viewModel = BeveragesViewModel();
 
     // act
-    when(mockRepository.getAllBeverage()).thenAnswer((_) async => Error('error'));
     final result = await viewModel.getBeverages();
 
     // assert
@@ -89,7 +99,9 @@ void main() {
 
   test('beverages_view_model updateSelectedType hot test', () async {
     // arrange
-    final BeverageRepository mockRepository = MockBeverageRepository();
+    when(mockRepository.getAllBeverage()).thenAnswer((_) async => Success(mockBeverages));
+    when(mockRepository.getHotBeverage()).thenAnswer((_) async => Success(mockHotBeverages));
+    when(mockRepository.getIcedBeverage()).thenAnswer((_) async => Success(mockIcedBeverages));
     final type = BeverageType.hot;
     final container = ProviderContainer(
       overrides: [
@@ -100,9 +112,6 @@ void main() {
     final viewModel = container.listen(beveragesViewModelProvider.notifier, (previous, next) {}).read();
 
     // act
-    when(mockRepository.getAllBeverage()).thenAnswer((_) async => Success(mockBeverages));
-    when(mockRepository.getHotBeverage()).thenAnswer((_) async => Success(mockHotBeverages));
-    when(mockRepository.getIcedBeverage()).thenAnswer((_) async => Success(mockIcedBeverages));
     await viewModel.getBeverages();
     await viewModel.updateSelectedType(type);
 
@@ -114,7 +123,9 @@ void main() {
 
   test('beverages_view_model getBeveragesByType iced test', () async {
     // arrange
-    final BeverageRepository mockRepository = MockBeverageRepository();
+    when(mockRepository.getAllBeverage()).thenAnswer((_) async => Success(mockBeverages));
+    when(mockRepository.getHotBeverage()).thenAnswer((_) async => Success(mockHotBeverages));
+    when(mockRepository.getIcedBeverage()).thenAnswer((_) async => Success(mockIcedBeverages));
     final type = BeverageType.iced;
     final container = ProviderContainer(
       overrides: [
@@ -125,9 +136,6 @@ void main() {
     final viewModel = container.listen(beveragesViewModelProvider.notifier, (previous, next) {}).read();
 
     // act
-    when(mockRepository.getAllBeverage()).thenAnswer((_) async => Success(mockBeverages));
-    when(mockRepository.getHotBeverage()).thenAnswer((_) async => Success(mockHotBeverages));
-    when(mockRepository.getIcedBeverage()).thenAnswer((_) async => Success(mockIcedBeverages));
     await viewModel.getBeverages();
     await viewModel.updateSelectedType(type);
 
@@ -139,7 +147,9 @@ void main() {
 
   test('beverages_view_model getBeveragesByType all test', () async {
     // arrange
-    final BeverageRepository mockRepository = MockBeverageRepository();
+    when(mockRepository.getAllBeverage()).thenAnswer((_) async => Success(mockBeverages));
+    when(mockRepository.getHotBeverage()).thenAnswer((_) async => Success(mockHotBeverages));
+    when(mockRepository.getIcedBeverage()).thenAnswer((_) async => Success(mockIcedBeverages));
     final type = BeverageType.all;
     final container = ProviderContainer(
       overrides: [
@@ -150,9 +160,6 @@ void main() {
     final viewModel = container.listen(beveragesViewModelProvider.notifier, (previous, next) {}).read();
 
     // act
-    when(mockRepository.getAllBeverage()).thenAnswer((_) async => Success(mockBeverages));
-    when(mockRepository.getHotBeverage()).thenAnswer((_) async => Success(mockHotBeverages));
-    when(mockRepository.getIcedBeverage()).thenAnswer((_) async => Success(mockIcedBeverages));
     await viewModel.getBeverages();
     await viewModel.updateSelectedType(type);
 

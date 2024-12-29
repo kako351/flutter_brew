@@ -1,13 +1,21 @@
 import 'package:flutter_brew/data/infra/response/beverage_response.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:isar/isar.dart';
 
 part 'beverage.freezed.dart';
 part 'beverage.g.dart';
 
+@Collection(ignore:{'copyWith'})
 @freezed
 class Beverage with _$Beverage {
   const Beverage._();
+
+  Id get id => Isar.autoIncrement;
+
+  @override
+  @enumerated
+  BeverageType get type;
 
   const factory Beverage({
     required String title,
@@ -31,6 +39,9 @@ class Beverage with _$Beverage {
     );
   }
 
+  @ignore
   get imageHeroTag => 'beverage_image_${beverageId}_$title';
+
+  @ignore
   get titleHeroTag => 'beverage_title_${beverageId}_$title';
 }

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/ui/beverage_detail_args.dart';
+import 'package:flutter_brew/ui/beverage_list.dart';
 import 'package:flutter_brew/ui/favorite_beverage_view_model.dart';
 import 'package:flutter_brew/ui/route/routes.dart';
 import 'package:flutter_brew/ui/viewstate/favorite_beverage_view_state.dart';
@@ -31,9 +32,14 @@ class FavoriteBeveragePageState extends ConsumerState<FavoriteBeveragePage> {
 class FavoriteBeverage extends ConsumerWidget {
   const FavoriteBeverage({super.key});
 
+  static const int _crossAxisCount = 2;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(favoriteBeverageViewModelProvider);
+
+    final double itemWidth = (MediaQuery.of(context).size.width / _crossAxisCount) - 16.0;
+    final double itemHeight = itemWidth * 0.9;
 
     return Scaffold(
       appBar: AppBar(
@@ -48,16 +54,22 @@ class FavoriteBeverage extends ConsumerWidget {
           }
 
           final beverages = viewState.beverages;
-          return ListView.builder(
+          return GridView.builder(
             itemCount: beverages.length,
             itemBuilder: (context, index) {
-              return FavoriteBeverageItem(
+              return BeverageCellWidget(
                 beverage: beverages[index],
                 onTap: () {
                   BeverageDetailPageRoute(id: beverages[index].beverageId, $extra: BeverageDetailArgs.fromModel(beverages[index])).push(context);
                 },
               );
             },
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: _crossAxisCount,
+              mainAxisSpacing: 8.0,
+              crossAxisSpacing: 8.0,
+              childAspectRatio: (itemWidth / itemHeight),
+            ),
           );
         },
       ),

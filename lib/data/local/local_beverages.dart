@@ -1,6 +1,7 @@
 
 import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
+import 'package:flutter_brew/data/model/favorite_beverage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
 
@@ -21,8 +22,13 @@ class LocalBeverages {
   }
 
   Future<void> saveBeverages(List<Beverage> beverages) async {
-    await isar.writeTxn(() async {
-      await isar.beverages.putAll(beverages);
+    final favorite = FavoriteBeverage(isFavorite: false);
+    await isar.writeTxnSync(() async {
+      for (var element in beverages) {
+        element.favorite.value = favorite;
+      }
+
+      isar.beverages.putAllSync(beverages);
     });
   }
 

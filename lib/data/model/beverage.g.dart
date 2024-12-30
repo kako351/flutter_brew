@@ -110,7 +110,14 @@ const BeverageSchema = CollectionSchema(
       ],
     )
   },
-  links: {},
+  links: {
+    r'favorite': LinkSchema(
+      id: 2256195630523414822,
+      name: r'favorite',
+      target: r'FavoriteBeverage',
+      single: true,
+    )
+  },
   embeddedSchemas: {},
   getId: _beverageGetId,
   getLinks: _beverageGetLinks,
@@ -240,10 +247,13 @@ Id _beverageGetId(Beverage object) {
 }
 
 List<IsarLinkBase<dynamic>> _beverageGetLinks(Beverage object) {
-  return [];
+  return [object.favorite];
 }
 
-void _beverageAttach(IsarCollection<dynamic> col, Id id, Beverage object) {}
+void _beverageAttach(IsarCollection<dynamic> col, Id id, Beverage object) {
+  object.favorite
+      .attach(col, col.isar.collection<FavoriteBeverage>(), r'favorite', id);
+}
 
 extension BeverageQueryWhereSort on QueryBuilder<Beverage, Beverage, QWhere> {
   QueryBuilder<Beverage, Beverage, QAfterWhere> anyId() {
@@ -2224,7 +2234,20 @@ extension BeverageQueryObject
     on QueryBuilder<Beverage, Beverage, QFilterCondition> {}
 
 extension BeverageQueryLinks
-    on QueryBuilder<Beverage, Beverage, QFilterCondition> {}
+    on QueryBuilder<Beverage, Beverage, QFilterCondition> {
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition> favorite(
+      FilterQuery<FavoriteBeverage> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'favorite');
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition> favoriteIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'favorite', 0, true, 0, true);
+    });
+  }
+}
 
 extension BeverageQuerySortBy on QueryBuilder<Beverage, Beverage, QSortBy> {
   QueryBuilder<Beverage, Beverage, QAfterSortBy> sortByBeverageId() {

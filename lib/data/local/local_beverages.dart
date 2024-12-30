@@ -30,9 +30,15 @@ class LocalBeverages {
     return await isar.beverages.where()
         .titleWordsElementStartsWith(words)
         .or()
+        .titleWordsElementEqualTo(words)
+        .or()
         .descriptionWordsElementStartsWith(words)
         .or()
+        .descriptionWordsElementEqualTo(words)
+        .or()
         .ingredientsWordsElementStartsWith(words)
+        .or()
+        .ingredientsWordsElementEqualTo(words)
         .findAll();
   }
 }

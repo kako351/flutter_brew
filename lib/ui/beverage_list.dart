@@ -94,9 +94,12 @@ class SearchToolBar extends StatelessWidget {
                 controller.closeView(item);
               },
             );
-          }
-        );
-      }),
+          });
+        },
+        viewOnSubmitted: (String value) {
+          SearchResultPageRoute(words: value).push(context);
+        },
+      ),
     );
   }
 }

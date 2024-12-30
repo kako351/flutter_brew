@@ -47,20 +47,22 @@ class SearchResult extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (o, s) => const Center(child: Text('データの読み込み失敗')),
         data: (viewState) {
-          if (viewState is SuccessSearchResultViewState) {
-            final beverages = viewState.beverages;
-            return ListView.builder(
-              itemCount: beverages.length,
-              itemBuilder: (context, index) {
-                return SearchResultItem(
-                  beverage: beverages[index],
-                  onTap: () {
-                    BeverageDetailPageRoute(id: beverages[index].beverageId, $extra: BeverageDetailArgs.fromModel(beverages[index])).push(context);
-                  }
-                );
-              },
-            );
+          if (viewState is! SuccessSearchResultViewState) {
+            return const Center(child: Text('予期せぬエラーが発生しました'));
           }
+
+          final beverages = viewState.beverages;
+          return ListView.builder(
+            itemCount: beverages.length,
+            itemBuilder: (context, index) {
+              return SearchResultItem(
+                beverage: beverages[index],
+                onTap: () {
+                  BeverageDetailPageRoute(id: beverages[index].beverageId, $extra: BeverageDetailArgs.fromModel(beverages[index])).push(context);
+                }
+              );
+            },
+          );
         },
       ),
     );

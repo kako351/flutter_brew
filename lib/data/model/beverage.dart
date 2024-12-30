@@ -39,6 +39,15 @@ class Beverage with _$Beverage {
     );
   }
 
+  @Index(type: IndexType.value, caseSensitive: false)
+  List<String> get descriptionWords => description.split(' ');
+
+  @Index(type: IndexType.value, caseSensitive: false)
+  List<String> get titleWords => title.split(' ');
+
+  @Index(type: IndexType.value, caseSensitive: false)
+  List<String> get ingredientsWords => ingredients.map((e) => e.split(' ')).expand((e) => e).toList();
+
   @ignore
   get imageHeroTag => 'beverage_image_${beverageId}_$title';
 

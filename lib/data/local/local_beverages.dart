@@ -47,4 +47,12 @@ class LocalBeverages {
         .ingredientsWordsElementEqualTo(words)
         .findAll();
   }
+
+  Future<List<Beverage>> getIsFavoriteTrueBeverages() async {
+    return await isar.beverages.filter()
+        .favorite((q) {
+          return q.isFavoriteEqualTo(true);
+        })
+        .findAll();
+  }
 }

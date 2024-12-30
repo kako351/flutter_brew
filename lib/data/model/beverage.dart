@@ -51,6 +51,9 @@ class Beverage with _$Beverage {
   @Index(type: IndexType.value, caseSensitive: false)
   List<String> get ingredientsWords => ingredients.map((e) => e.split(' ')).expand((e) => e).toList();
 
+  @Index()
+  bool get isFavorite => favorite.value?.isFavorite ?? false;
+
   @ignore
   get imageHeroTag => 'beverage_image_${beverageId}_$title';
 

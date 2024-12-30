@@ -27,23 +27,38 @@ const BeverageSchema = CollectionSchema(
       name: r'description',
       type: IsarType.string,
     ),
-    r'image': PropertySchema(
+    r'descriptionWords': PropertySchema(
       id: 2,
+      name: r'descriptionWords',
+      type: IsarType.stringList,
+    ),
+    r'image': PropertySchema(
+      id: 3,
       name: r'image',
       type: IsarType.string,
     ),
     r'ingredients': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'ingredients',
       type: IsarType.stringList,
     ),
+    r'ingredientsWords': PropertySchema(
+      id: 5,
+      name: r'ingredientsWords',
+      type: IsarType.stringList,
+    ),
     r'title': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'title',
       type: IsarType.string,
     ),
+    r'titleWords': PropertySchema(
+      id: 7,
+      name: r'titleWords',
+      type: IsarType.stringList,
+    ),
     r'type': PropertySchema(
-      id: 5,
+      id: 8,
       name: r'type',
       type: IsarType.byte,
       enumMap: _BeveragetypeEnumValueMap,
@@ -54,7 +69,47 @@ const BeverageSchema = CollectionSchema(
   deserialize: _beverageDeserialize,
   deserializeProp: _beverageDeserializeProp,
   idName: r'id',
-  indexes: {},
+  indexes: {
+    r'descriptionWords': IndexSchema(
+      id: 4013375675557855679,
+      name: r'descriptionWords',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'descriptionWords',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
+    ),
+    r'titleWords': IndexSchema(
+      id: 80481505061976672,
+      name: r'titleWords',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'titleWords',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
+    ),
+    r'ingredientsWords': IndexSchema(
+      id: -2032323820081077892,
+      name: r'ingredientsWords',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'ingredientsWords',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
+    )
+  },
   links: {},
   embeddedSchemas: {},
   getId: _beverageGetId,
@@ -70,6 +125,13 @@ int _beverageEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.description.length * 3;
+  bytesCount += 3 + object.descriptionWords.length * 3;
+  {
+    for (var i = 0; i < object.descriptionWords.length; i++) {
+      final value = object.descriptionWords[i];
+      bytesCount += value.length * 3;
+    }
+  }
   bytesCount += 3 + object.image.length * 3;
   bytesCount += 3 + object.ingredients.length * 3;
   {
@@ -78,7 +140,21 @@ int _beverageEstimateSize(
       bytesCount += value.length * 3;
     }
   }
+  bytesCount += 3 + object.ingredientsWords.length * 3;
+  {
+    for (var i = 0; i < object.ingredientsWords.length; i++) {
+      final value = object.ingredientsWords[i];
+      bytesCount += value.length * 3;
+    }
+  }
   bytesCount += 3 + object.title.length * 3;
+  bytesCount += 3 + object.titleWords.length * 3;
+  {
+    for (var i = 0; i < object.titleWords.length; i++) {
+      final value = object.titleWords[i];
+      bytesCount += value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -90,10 +166,13 @@ void _beverageSerialize(
 ) {
   writer.writeLong(offsets[0], object.beverageId);
   writer.writeString(offsets[1], object.description);
-  writer.writeString(offsets[2], object.image);
-  writer.writeStringList(offsets[3], object.ingredients);
-  writer.writeString(offsets[4], object.title);
-  writer.writeByte(offsets[5], object.type.index);
+  writer.writeStringList(offsets[2], object.descriptionWords);
+  writer.writeString(offsets[3], object.image);
+  writer.writeStringList(offsets[4], object.ingredients);
+  writer.writeStringList(offsets[5], object.ingredientsWords);
+  writer.writeString(offsets[6], object.title);
+  writer.writeStringList(offsets[7], object.titleWords);
+  writer.writeByte(offsets[8], object.type.index);
 }
 
 Beverage _beverageDeserialize(
@@ -105,10 +184,10 @@ Beverage _beverageDeserialize(
   final object = Beverage(
     beverageId: reader.readLong(offsets[0]),
     description: reader.readString(offsets[1]),
-    image: reader.readString(offsets[2]),
-    ingredients: reader.readStringList(offsets[3]) ?? [],
-    title: reader.readString(offsets[4]),
-    type: _BeveragetypeValueEnumMap[reader.readByteOrNull(offsets[5])] ??
+    image: reader.readString(offsets[3]),
+    ingredients: reader.readStringList(offsets[4]) ?? [],
+    title: reader.readString(offsets[6]),
+    type: _BeveragetypeValueEnumMap[reader.readByteOrNull(offsets[8])] ??
         BeverageType.hot,
   );
   return object;
@@ -126,12 +205,18 @@ P _beverageDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readString(offset)) as P;
-    case 3:
       return (reader.readStringList(offset) ?? []) as P;
-    case 4:
+    case 3:
       return (reader.readString(offset)) as P;
+    case 4:
+      return (reader.readStringList(offset) ?? []) as P;
     case 5:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 8:
       return (_BeveragetypeValueEnumMap[reader.readByteOrNull(offset)] ??
           BeverageType.hot) as P;
     default:
@@ -164,6 +249,30 @@ extension BeverageQueryWhereSort on QueryBuilder<Beverage, Beverage, QWhere> {
   QueryBuilder<Beverage, Beverage, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhere> anyDescriptionWordsElement() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'descriptionWords'),
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhere> anyTitleWordsElement() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'titleWords'),
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhere> anyIngredientsWordsElement() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'ingredientsWords'),
+      );
     });
   }
 }
@@ -231,6 +340,427 @@ extension BeverageQueryWhere on QueryBuilder<Beverage, Beverage, QWhereClause> {
         upper: upperId,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      descriptionWordsElementEqualTo(String descriptionWordsElement) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'descriptionWords',
+        value: [descriptionWordsElement],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      descriptionWordsElementNotEqualTo(String descriptionWordsElement) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'descriptionWords',
+              lower: [],
+              upper: [descriptionWordsElement],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'descriptionWords',
+              lower: [descriptionWordsElement],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'descriptionWords',
+              lower: [descriptionWordsElement],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'descriptionWords',
+              lower: [],
+              upper: [descriptionWordsElement],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      descriptionWordsElementGreaterThan(
+    String descriptionWordsElement, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'descriptionWords',
+        lower: [descriptionWordsElement],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      descriptionWordsElementLessThan(
+    String descriptionWordsElement, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'descriptionWords',
+        lower: [],
+        upper: [descriptionWordsElement],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      descriptionWordsElementBetween(
+    String lowerDescriptionWordsElement,
+    String upperDescriptionWordsElement, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'descriptionWords',
+        lower: [lowerDescriptionWordsElement],
+        includeLower: includeLower,
+        upper: [upperDescriptionWordsElement],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      descriptionWordsElementStartsWith(String DescriptionWordsElementPrefix) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'descriptionWords',
+        lower: [DescriptionWordsElementPrefix],
+        upper: ['$DescriptionWordsElementPrefix\u{FFFFF}'],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      descriptionWordsElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'descriptionWords',
+        value: [''],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      descriptionWordsElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'descriptionWords',
+              upper: [''],
+            ))
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'descriptionWords',
+              lower: [''],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'descriptionWords',
+              lower: [''],
+            ))
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'descriptionWords',
+              upper: [''],
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause> titleWordsElementEqualTo(
+      String titleWordsElement) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'titleWords',
+        value: [titleWordsElement],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      titleWordsElementNotEqualTo(String titleWordsElement) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'titleWords',
+              lower: [],
+              upper: [titleWordsElement],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'titleWords',
+              lower: [titleWordsElement],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'titleWords',
+              lower: [titleWordsElement],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'titleWords',
+              lower: [],
+              upper: [titleWordsElement],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      titleWordsElementGreaterThan(
+    String titleWordsElement, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'titleWords',
+        lower: [titleWordsElement],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause> titleWordsElementLessThan(
+    String titleWordsElement, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'titleWords',
+        lower: [],
+        upper: [titleWordsElement],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause> titleWordsElementBetween(
+    String lowerTitleWordsElement,
+    String upperTitleWordsElement, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'titleWords',
+        lower: [lowerTitleWordsElement],
+        includeLower: includeLower,
+        upper: [upperTitleWordsElement],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      titleWordsElementStartsWith(String TitleWordsElementPrefix) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'titleWords',
+        lower: [TitleWordsElementPrefix],
+        upper: ['$TitleWordsElementPrefix\u{FFFFF}'],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      titleWordsElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'titleWords',
+        value: [''],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      titleWordsElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'titleWords',
+              upper: [''],
+            ))
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'titleWords',
+              lower: [''],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'titleWords',
+              lower: [''],
+            ))
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'titleWords',
+              upper: [''],
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      ingredientsWordsElementEqualTo(String ingredientsWordsElement) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'ingredientsWords',
+        value: [ingredientsWordsElement],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      ingredientsWordsElementNotEqualTo(String ingredientsWordsElement) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'ingredientsWords',
+              lower: [],
+              upper: [ingredientsWordsElement],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'ingredientsWords',
+              lower: [ingredientsWordsElement],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'ingredientsWords',
+              lower: [ingredientsWordsElement],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'ingredientsWords',
+              lower: [],
+              upper: [ingredientsWordsElement],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      ingredientsWordsElementGreaterThan(
+    String ingredientsWordsElement, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'ingredientsWords',
+        lower: [ingredientsWordsElement],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      ingredientsWordsElementLessThan(
+    String ingredientsWordsElement, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'ingredientsWords',
+        lower: [],
+        upper: [ingredientsWordsElement],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      ingredientsWordsElementBetween(
+    String lowerIngredientsWordsElement,
+    String upperIngredientsWordsElement, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'ingredientsWords',
+        lower: [lowerIngredientsWordsElement],
+        includeLower: includeLower,
+        upper: [upperIngredientsWordsElement],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      ingredientsWordsElementStartsWith(String IngredientsWordsElementPrefix) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'ingredientsWords',
+        lower: [IngredientsWordsElementPrefix],
+        upper: ['$IngredientsWordsElementPrefix\u{FFFFF}'],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      ingredientsWordsElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'ingredientsWords',
+        value: [''],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause>
+      ingredientsWordsElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'ingredientsWords',
+              upper: [''],
+            ))
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'ingredientsWords',
+              lower: [''],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'ingredientsWords',
+              lower: [''],
+            ))
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'ingredientsWords',
+              upper: [''],
+            ));
+      }
     });
   }
 }
@@ -419,6 +949,233 @@ extension BeverageQueryFilter
         property: r'description',
         value: '',
       ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsElementEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'descriptionWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsElementGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'descriptionWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsElementLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'descriptionWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsElementBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'descriptionWords',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsElementStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'descriptionWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsElementEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'descriptionWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsElementContains(String value,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'descriptionWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsElementMatches(String pattern,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'descriptionWords',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'descriptionWords',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'descriptionWords',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'descriptionWords',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'descriptionWords',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'descriptionWords',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'descriptionWords',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'descriptionWords',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      descriptionWordsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'descriptionWords',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
     });
   }
 
@@ -828,6 +1585,233 @@ extension BeverageQueryFilter
     });
   }
 
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsElementEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'ingredientsWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsElementGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'ingredientsWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsElementLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'ingredientsWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsElementBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'ingredientsWords',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsElementStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'ingredientsWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsElementEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'ingredientsWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsElementContains(String value,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'ingredientsWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsElementMatches(String pattern,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'ingredientsWords',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'ingredientsWords',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'ingredientsWords',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'ingredientsWords',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'ingredientsWords',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'ingredientsWords',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'ingredientsWords',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'ingredientsWords',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      ingredientsWordsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'ingredientsWords',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
+
   QueryBuilder<Beverage, Beverage, QAfterFilterCondition> titleEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -955,6 +1939,230 @@ extension BeverageQueryFilter
         property: r'title',
         value: '',
       ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsElementEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'titleWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsElementGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'titleWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsElementLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'titleWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsElementBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'titleWords',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsElementStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'titleWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsElementEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'titleWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsElementContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'titleWords',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsElementMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'titleWords',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'titleWords',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'titleWords',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'titleWords',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition> titleWordsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'titleWords',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'titleWords',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'titleWords',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'titleWords',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      titleWordsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'titleWords',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
     });
   }
 
@@ -1170,6 +2378,12 @@ extension BeverageQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Beverage, Beverage, QDistinct> distinctByDescriptionWords() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'descriptionWords');
+    });
+  }
+
   QueryBuilder<Beverage, Beverage, QDistinct> distinctByImage(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1183,10 +2397,22 @@ extension BeverageQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Beverage, Beverage, QDistinct> distinctByIngredientsWords() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'ingredientsWords');
+    });
+  }
+
   QueryBuilder<Beverage, Beverage, QDistinct> distinctByTitle(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'title', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QDistinct> distinctByTitleWords() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'titleWords');
     });
   }
 
@@ -1217,6 +2443,13 @@ extension BeverageQueryProperty
     });
   }
 
+  QueryBuilder<Beverage, List<String>, QQueryOperations>
+      descriptionWordsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'descriptionWords');
+    });
+  }
+
   QueryBuilder<Beverage, String, QQueryOperations> imageProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'image');
@@ -1229,9 +2462,22 @@ extension BeverageQueryProperty
     });
   }
 
+  QueryBuilder<Beverage, List<String>, QQueryOperations>
+      ingredientsWordsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'ingredientsWords');
+    });
+  }
+
   QueryBuilder<Beverage, String, QQueryOperations> titleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'title');
+    });
+  }
+
+  QueryBuilder<Beverage, List<String>, QQueryOperations> titleWordsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'titleWords');
     });
   }
 

@@ -25,4 +25,14 @@ class LocalBeverages {
       await isar.beverages.putAll(beverages);
     });
   }
+
+  Future<List<Beverage>> findSearchWords(String words) async {
+    return await isar.beverages.where()
+        .titleWordsElementStartsWith(words)
+        .or()
+        .descriptionWordsElementStartsWith(words)
+        .or()
+        .ingredientsWordsElementStartsWith(words)
+        .findAll();
+  }
 }

@@ -213,4 +213,29 @@ class MockBeverageRepository extends _i1.Mock
           ),
         )),
       ) as _i3.Future<_i4.BeverageResult>);
+
+  @override
+  _i3.Future<_i4.BeverageResult> getIsFavoriteTrueBeverages() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getIsFavoriteTrueBeverages,
+          [],
+        ),
+        returnValue: _i3.Future<_i4.BeverageResult>.value(
+            _i5.dummyValue<_i4.BeverageResult>(
+          this,
+          Invocation.method(
+            #getIsFavoriteTrueBeverages,
+            [],
+          ),
+        )),
+        returnValueForMissingStub: _i3.Future<_i4.BeverageResult>.value(
+            _i5.dummyValue<_i4.BeverageResult>(
+          this,
+          Invocation.method(
+            #getIsFavoriteTrueBeverages,
+            [],
+          ),
+        )),
+      ) as _i3.Future<_i4.BeverageResult>);
 }

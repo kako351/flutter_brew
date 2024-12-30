@@ -5,6 +5,7 @@ import 'package:flutter_brew/ui/beverage_detail.dart';
 import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/beverage_list.dart';
 import 'package:flutter_brew/ui/error_page.dart';
+import 'package:flutter_brew/ui/favorite_beverage.dart';
 import 'package:flutter_brew/ui/search_result.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

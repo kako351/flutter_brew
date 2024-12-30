@@ -187,4 +187,16 @@ class MockLocalBeverages extends _i1.Mock implements _i6.LocalBeverages {
         returnValue: _i5.Future<void>.value(),
         returnValueForMissingStub: _i5.Future<void>.value(),
       ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<List<_i7.Beverage>> findSearchWords(String? words) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #findSearchWords,
+          [words],
+        ),
+        returnValue: _i5.Future<List<_i7.Beverage>>.value(<_i7.Beverage>[]),
+        returnValueForMissingStub:
+            _i5.Future<List<_i7.Beverage>>.value(<_i7.Beverage>[]),
+      ) as _i5.Future<List<_i7.Beverage>>);
 }

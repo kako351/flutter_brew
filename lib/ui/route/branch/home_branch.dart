@@ -12,6 +12,11 @@ abstract class DetailRoute {
   static const name = 'beverage_detail';
 }
 
+abstract class SearchResult {
+  static const path = '/search';
+  static const name = 'search';
+}
+
 class HomeShellBranch extends StatefulShellBranchData {
   const HomeShellBranch();
 }
@@ -25,6 +30,10 @@ const homeStatefulShellBranch = TypedStatefulShellBranch<HomeShellBranch>(
         TypedGoRoute<BeverageDetailPageRoute>(
           path: DetailRoute.path,
           name: DetailRoute.name,
+        ),
+        TypedGoRoute<SearchResultPageRoute>(
+          path: SearchResult.path,
+          name: SearchResult.name,
         ),
       ],
     ),
@@ -62,3 +71,13 @@ class BeverageDetailPageRoute extends GoRouteData {
   }
 }
 
+class SearchResultPageRoute extends GoRouteData {
+  const SearchResultPageRoute({this.words});
+
+  final String? words;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SearchResultPage(words: words ?? '');
+  }
+}

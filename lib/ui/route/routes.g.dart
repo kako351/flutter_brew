@@ -27,6 +27,11 @@ RouteBase get $mainShellRouteData => StatefulShellRouteData.$route(
                       BeverageDetailPageRoute.$parentNavigatorKey,
                   factory: $BeverageDetailPageRouteExtension._fromState,
                 ),
+                GoRouteData.$route(
+                  path: '/search',
+                  name: 'search',
+                  factory: $SearchResultPageRouteExtension._fromState,
+                ),
               ],
             ),
           ],
@@ -86,6 +91,29 @@ extension $BeverageDetailPageRouteExtension on BeverageDetailPageRoute {
 
   void replace(BuildContext context) =>
       context.replace(location, extra: $extra);
+}
+
+extension $SearchResultPageRouteExtension on SearchResultPageRoute {
+  static SearchResultPageRoute _fromState(GoRouterState state) =>
+      SearchResultPageRoute(
+        words: state.uri.queryParameters['words'],
+      );
+
+  String get location => GoRouteData.$location(
+        '/search',
+        queryParams: {
+          if (words != null) 'words': words,
+        },
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
 }
 
 extension $FavoritePageRouteExtension on FavoritePageRoute {

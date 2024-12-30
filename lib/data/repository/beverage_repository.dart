@@ -20,6 +20,8 @@ abstract interface class BeverageRepository {
   Future<beverage_detail_result.BeverageDetailResult> getIcedBeverageDetail(int id);
 
   Future<beverage_detail_result.BeverageDetailResult> getBeverageDetail(int id, BeverageType type);
+
+  Future<beverage_result.BeverageResult> findSearchWords(String words);
 }
 
 class BeverageRepositoryImpl implements BeverageRepository {
@@ -127,6 +129,16 @@ class BeverageRepositoryImpl implements BeverageRepository {
       return beverage_detail_result.Success(beverage);
     } catch (e) {
       return beverage_detail_result.Error(e.toString());
+    }
+  }
+
+  @override
+  Future<beverage_result.BeverageResult> findSearchWords(String words) async {
+    try {
+      List<Beverage> result = await localBeverages.findSearchWords(words);
+      return beverage_result.Success(result);
+    } catch (e) {
+      return beverage_result.Error(e.toString());
     }
   }
 }

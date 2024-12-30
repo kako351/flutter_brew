@@ -8,6 +8,7 @@ part of 'routes.dart';
 
 List<RouteBase> get $appRoutes => [
       $mainShellRouteData,
+      $beverageDetailPageRoute,
     ];
 
 RouteBase get $mainShellRouteData => StatefulShellRouteData.$route(
@@ -20,13 +21,6 @@ RouteBase get $mainShellRouteData => StatefulShellRouteData.$route(
               name: 'beverage_list',
               factory: $HomePageRouteExtension._fromState,
               routes: [
-                GoRouteData.$route(
-                  path: '/beverage/:id',
-                  name: 'beverage_detail',
-                  parentNavigatorKey:
-                      BeverageDetailPageRoute.$parentNavigatorKey,
-                  factory: $BeverageDetailPageRouteExtension._fromState,
-                ),
                 GoRouteData.$route(
                   path: '/search',
                   name: 'search',
@@ -70,29 +64,6 @@ extension $HomePageRouteExtension on HomePageRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $BeverageDetailPageRouteExtension on BeverageDetailPageRoute {
-  static BeverageDetailPageRoute _fromState(GoRouterState state) =>
-      BeverageDetailPageRoute(
-        id: int.parse(state.pathParameters['id']!),
-        $extra: state.extra as BeverageDetailArgs,
-      );
-
-  String get location => GoRouteData.$location(
-        '/beverage/${Uri.encodeComponent(id.toString())}',
-      );
-
-  void go(BuildContext context) => context.go(location, extra: $extra);
-
-  Future<T?> push<T>(BuildContext context) =>
-      context.push<T>(location, extra: $extra);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: $extra);
-
-  void replace(BuildContext context) =>
-      context.replace(location, extra: $extra);
-}
-
 extension $SearchResultPageRouteExtension on SearchResultPageRoute {
   static SearchResultPageRoute _fromState(GoRouterState state) =>
       SearchResultPageRoute(
@@ -132,4 +103,33 @@ extension $FavoritePageRouteExtension on FavoritePageRoute {
       context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $beverageDetailPageRoute => GoRouteData.$route(
+      path: '/beverage/:id',
+      parentNavigatorKey: BeverageDetailPageRoute.$parentNavigatorKey,
+      factory: $BeverageDetailPageRouteExtension._fromState,
+    );
+
+extension $BeverageDetailPageRouteExtension on BeverageDetailPageRoute {
+  static BeverageDetailPageRoute _fromState(GoRouterState state) =>
+      BeverageDetailPageRoute(
+        id: int.parse(state.pathParameters['id']!),
+        $extra: state.extra as BeverageDetailArgs,
+      );
+
+  String get location => GoRouteData.$location(
+        '/beverage/${Uri.encodeComponent(id.toString())}',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }

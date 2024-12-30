@@ -1,5 +1,6 @@
 
 import 'package:flutter_brew/data/model/beverage.dart';
+import 'package:flutter_brew/data/model/favorite_beverage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,7 +17,10 @@ Future<Isar> isar(Ref ref) async {
 
 Future<Isar> openIsar(String dbPath, {String name = Isar.defaultName}) async {
   return Isar.open(
-    [BeverageSchema],
+    [
+      BeverageSchema,
+      FavoriteBeverageSchema
+    ],
     directory: dbPath,
     name: name,
   );

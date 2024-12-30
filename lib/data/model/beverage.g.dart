@@ -47,18 +47,23 @@ const BeverageSchema = CollectionSchema(
       name: r'ingredientsWords',
       type: IsarType.stringList,
     ),
-    r'title': PropertySchema(
+    r'isFavorite': PropertySchema(
       id: 6,
+      name: r'isFavorite',
+      type: IsarType.bool,
+    ),
+    r'title': PropertySchema(
+      id: 7,
       name: r'title',
       type: IsarType.string,
     ),
     r'titleWords': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'titleWords',
       type: IsarType.stringList,
     ),
     r'type': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'type',
       type: IsarType.byte,
       enumMap: _BeveragetypeEnumValueMap,
@@ -108,9 +113,29 @@ const BeverageSchema = CollectionSchema(
           caseSensitive: false,
         )
       ],
+    ),
+    r'isFavorite': IndexSchema(
+      id: 5742774614603939776,
+      name: r'isFavorite',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'isFavorite',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
     )
   },
-  links: {},
+  links: {
+    r'favorite': LinkSchema(
+      id: 2256195630523414822,
+      name: r'favorite',
+      target: r'FavoriteBeverage',
+      single: true,
+    )
+  },
   embeddedSchemas: {},
   getId: _beverageGetId,
   getLinks: _beverageGetLinks,
@@ -170,9 +195,10 @@ void _beverageSerialize(
   writer.writeString(offsets[3], object.image);
   writer.writeStringList(offsets[4], object.ingredients);
   writer.writeStringList(offsets[5], object.ingredientsWords);
-  writer.writeString(offsets[6], object.title);
-  writer.writeStringList(offsets[7], object.titleWords);
-  writer.writeByte(offsets[8], object.type.index);
+  writer.writeBool(offsets[6], object.isFavorite);
+  writer.writeString(offsets[7], object.title);
+  writer.writeStringList(offsets[8], object.titleWords);
+  writer.writeByte(offsets[9], object.type.index);
 }
 
 Beverage _beverageDeserialize(
@@ -186,8 +212,8 @@ Beverage _beverageDeserialize(
     description: reader.readString(offsets[1]),
     image: reader.readString(offsets[3]),
     ingredients: reader.readStringList(offsets[4]) ?? [],
-    title: reader.readString(offsets[6]),
-    type: _BeveragetypeValueEnumMap[reader.readByteOrNull(offsets[8])] ??
+    title: reader.readString(offsets[7]),
+    type: _BeveragetypeValueEnumMap[reader.readByteOrNull(offsets[9])] ??
         BeverageType.hot,
   );
   return object;
@@ -213,10 +239,12 @@ P _beverageDeserializeProp<P>(
     case 5:
       return (reader.readStringList(offset) ?? []) as P;
     case 6:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 7:
-      return (reader.readStringList(offset) ?? []) as P;
+      return (reader.readString(offset)) as P;
     case 8:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 9:
       return (_BeveragetypeValueEnumMap[reader.readByteOrNull(offset)] ??
           BeverageType.hot) as P;
     default:
@@ -240,10 +268,13 @@ Id _beverageGetId(Beverage object) {
 }
 
 List<IsarLinkBase<dynamic>> _beverageGetLinks(Beverage object) {
-  return [];
+  return [object.favorite];
 }
 
-void _beverageAttach(IsarCollection<dynamic> col, Id id, Beverage object) {}
+void _beverageAttach(IsarCollection<dynamic> col, Id id, Beverage object) {
+  object.favorite
+      .attach(col, col.isar.collection<FavoriteBeverage>(), r'favorite', id);
+}
 
 extension BeverageQueryWhereSort on QueryBuilder<Beverage, Beverage, QWhere> {
   QueryBuilder<Beverage, Beverage, QAfterWhere> anyId() {
@@ -272,6 +303,14 @@ extension BeverageQueryWhereSort on QueryBuilder<Beverage, Beverage, QWhere> {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         const IndexWhereClause.any(indexName: r'ingredientsWords'),
+      );
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhere> anyIsFavorite() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'isFavorite'),
       );
     });
   }
@@ -759,6 +798,51 @@ extension BeverageQueryWhere on QueryBuilder<Beverage, Beverage, QWhereClause> {
             .addWhereClause(IndexWhereClause.lessThan(
               indexName: r'ingredientsWords',
               upper: [''],
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause> isFavoriteEqualTo(
+      bool isFavorite) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'isFavorite',
+        value: [isFavorite],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause> isFavoriteNotEqualTo(
+      bool isFavorite) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'isFavorite',
+              lower: [],
+              upper: [isFavorite],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'isFavorite',
+              lower: [isFavorite],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'isFavorite',
+              lower: [isFavorite],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'isFavorite',
+              lower: [],
+              upper: [isFavorite],
+              includeUpper: false,
             ));
       }
     });
@@ -1812,6 +1896,16 @@ extension BeverageQueryFilter
     });
   }
 
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition> isFavoriteEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isFavorite',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<Beverage, Beverage, QAfterFilterCondition> titleEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -2224,7 +2318,20 @@ extension BeverageQueryObject
     on QueryBuilder<Beverage, Beverage, QFilterCondition> {}
 
 extension BeverageQueryLinks
-    on QueryBuilder<Beverage, Beverage, QFilterCondition> {}
+    on QueryBuilder<Beverage, Beverage, QFilterCondition> {
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition> favorite(
+      FilterQuery<FavoriteBeverage> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'favorite');
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition> favoriteIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'favorite', 0, true, 0, true);
+    });
+  }
+}
 
 extension BeverageQuerySortBy on QueryBuilder<Beverage, Beverage, QSortBy> {
   QueryBuilder<Beverage, Beverage, QAfterSortBy> sortByBeverageId() {
@@ -2260,6 +2367,18 @@ extension BeverageQuerySortBy on QueryBuilder<Beverage, Beverage, QSortBy> {
   QueryBuilder<Beverage, Beverage, QAfterSortBy> sortByImageDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'image', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterSortBy> sortByIsFavorite() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFavorite', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterSortBy> sortByIsFavoriteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFavorite', Sort.desc);
     });
   }
 
@@ -2338,6 +2457,18 @@ extension BeverageQuerySortThenBy
     });
   }
 
+  QueryBuilder<Beverage, Beverage, QAfterSortBy> thenByIsFavorite() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFavorite', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterSortBy> thenByIsFavoriteDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFavorite', Sort.desc);
+    });
+  }
+
   QueryBuilder<Beverage, Beverage, QAfterSortBy> thenByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
@@ -2400,6 +2531,12 @@ extension BeverageQueryWhereDistinct
   QueryBuilder<Beverage, Beverage, QDistinct> distinctByIngredientsWords() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'ingredientsWords');
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QDistinct> distinctByIsFavorite() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isFavorite');
     });
   }
 
@@ -2466,6 +2603,12 @@ extension BeverageQueryProperty
       ingredientsWordsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'ingredientsWords');
+    });
+  }
+
+  QueryBuilder<Beverage, bool, QQueryOperations> isFavoriteProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isFavorite');
     });
   }
 

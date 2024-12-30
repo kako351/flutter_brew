@@ -171,7 +171,7 @@ class __$$BeverageImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$BeverageImpl extends _Beverage {
-  const _$BeverageImpl(
+  _$BeverageImpl(
       {required this.title,
       required this.description,
       required final List<String> ingredients,
@@ -252,14 +252,14 @@ class _$BeverageImpl extends _Beverage {
 }
 
 abstract class _Beverage extends Beverage {
-  const factory _Beverage(
+  factory _Beverage(
       {required final String title,
       required final String description,
       required final List<String> ingredients,
       required final String image,
       required final int beverageId,
       required final BeverageType type}) = _$BeverageImpl;
-  const _Beverage._() : super._();
+  _Beverage._() : super._();
 
   factory _Beverage.fromJson(Map<String, dynamic> json) =
       _$BeverageImpl.fromJson;

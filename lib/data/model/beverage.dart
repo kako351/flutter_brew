@@ -1,5 +1,6 @@
 import 'package:flutter_brew/data/infra/response/beverage_response.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
+import 'package:flutter_brew/data/model/favorite_beverage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
 
@@ -9,7 +10,7 @@ part 'beverage.g.dart';
 @Collection(ignore:{'copyWith'})
 @freezed
 class Beverage with _$Beverage {
-  const Beverage._();
+  Beverage._();
 
   Id get id => Isar.autoIncrement;
 
@@ -17,7 +18,9 @@ class Beverage with _$Beverage {
   @enumerated
   BeverageType get type;
 
-  const factory Beverage({
+  final favorite = IsarLink<FavoriteBeverage>();
+
+  factory Beverage({
     required String title,
     required String description,
     required List<String> ingredients,
@@ -47,6 +50,9 @@ class Beverage with _$Beverage {
 
   @Index(type: IndexType.value, caseSensitive: false)
   List<String> get ingredientsWords => ingredients.map((e) => e.split(' ')).expand((e) => e).toList();
+
+  @Index()
+  bool get isFavorite => favorite.value?.isFavorite ?? false;
 
   @ignore
   get imageHeroTag => 'beverage_image_${beverageId}_$title';

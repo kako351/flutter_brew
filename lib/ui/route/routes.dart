@@ -5,6 +5,7 @@ import 'package:flutter_brew/ui/beverage_detail.dart';
 import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/beverage_list.dart';
 import 'package:flutter_brew/ui/error_page.dart';
+import 'package:flutter_brew/ui/favorite_beverage.dart';
 import 'package:flutter_brew/ui/search_result.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -79,5 +80,35 @@ class AppNavigationBar extends StatelessWidget {
       index,
       initialLocation: index == navigationShell.currentIndex,
     );
+  }
+}
+
+abstract class DetailRoute {
+  static const path = '/beverage/:id';
+  static const name = 'beverage_detail';
+}
+
+@TypedGoRoute<BeverageDetailPageRoute>(
+  path: DetailRoute.path,
+)
+class BeverageDetailPageRoute extends GoRouteData {
+  const BeverageDetailPageRoute({required this.id, required this.$extra});
+
+  final int id;
+  final BeverageDetailArgs $extra;
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = _rootNavigatorKey;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    try {
+      final extra = state.extra;
+      if (extra is! BeverageDetailArgs) {
+        return const ErrorPage();
+      }
+      return BeverageDetailPage(id: id, args: extra);
+    } catch (e) {
+      return const ErrorPage();
+    }
   }
 }

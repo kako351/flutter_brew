@@ -199,4 +199,16 @@ class MockLocalBeverages extends _i1.Mock implements _i6.LocalBeverages {
         returnValueForMissingStub:
             _i5.Future<List<_i7.Beverage>>.value(<_i7.Beverage>[]),
       ) as _i5.Future<List<_i7.Beverage>>);
+
+  @override
+  _i5.Future<List<_i7.Beverage>> getIsFavoriteTrueBeverages() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getIsFavoriteTrueBeverages,
+          [],
+        ),
+        returnValue: _i5.Future<List<_i7.Beverage>>.value(<_i7.Beverage>[]),
+        returnValueForMissingStub:
+            _i5.Future<List<_i7.Beverage>>.value(<_i7.Beverage>[]),
+      ) as _i5.Future<List<_i7.Beverage>>);
 }

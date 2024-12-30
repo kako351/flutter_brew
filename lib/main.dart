@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_brew/data/local/local_beverages.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
+import 'package:flutter_brew/data/model/favorite_beverage.dart';
 import 'package:flutter_brew/data/repository/beverage_repository.dart';
 import 'package:flutter_brew/ui/route/routes.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +18,10 @@ Future<void> main() async {
   final appDocumentDir = await getApplicationDocumentsDirectory();
   final dbPath = appDocumentDir.path;
   final isar = await Isar.open(
-    [BeverageSchema],
+    [
+      BeverageSchema,
+      FavoriteBeverageSchema
+    ],
     directory: dbPath,
     name: Isar.defaultName,
   );

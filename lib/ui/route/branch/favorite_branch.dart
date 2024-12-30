@@ -27,17 +27,6 @@ class FavoritePageRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const FavoritePage();
-  }
-}
-
-class FavoritePage extends StatelessWidget {
-  const FavoritePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Favorite!!'),
-    );
+    return const FavoriteBeveragePage();
   }
 }

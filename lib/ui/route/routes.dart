@@ -6,6 +6,7 @@ import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/beverage_list.dart';
 import 'package:flutter_brew/ui/error_page.dart';
 import 'package:flutter_brew/ui/favorite_beverage.dart';
+import 'package:flutter_brew/ui/route/route_name.dart';
 import 'package:flutter_brew/ui/search_result.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -81,11 +82,6 @@ class AppNavigationBar extends StatelessWidget {
       initialLocation: index == navigationShell.currentIndex,
     );
   }
-}
-
-abstract class DetailRoute {
-  static const path = '/beverage/:id';
-  static const name = 'beverage_detail';
 }
 
 @TypedGoRoute<BeverageDetailPageRoute>(

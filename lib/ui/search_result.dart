@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
+import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/designsystem/color.dart';
+import 'package:flutter_brew/ui/route/routes.dart';
 import 'package:flutter_brew/ui/search_result_view_model.dart';
 import 'package:flutter_brew/ui/viewstate/search_result_view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,13 +48,14 @@ class SearchResult extends ConsumerWidget {
         error: (o, s) => const Center(child: Text('データの読み込み失敗')),
         data: (viewState) {
           if (viewState is SuccessSearchResultViewState) {
+            final beverages = viewState.beverages;
             return ListView.builder(
-              itemCount: viewState.beverages.length,
+              itemCount: beverages.length,
               itemBuilder: (context, index) {
                 return SearchResultItem(
-                  beverage: viewState.beverages[index],
+                  beverage: beverages[index],
                   onTap: () {
-
+                    BeverageDetailPageRoute(id: beverages[index].beverageId, $extra: BeverageDetailArgs.fromModel(beverages[index])).push(context);
                   }
                 );
               },

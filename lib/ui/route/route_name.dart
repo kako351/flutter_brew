@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-abstract interface class RouteName {
+abstract class RouteName {
+  const RouteName();
   String getRouteName();
 }
 
-abstract class DetailRoute implements RouteName {
+final class DetailRoute extends RouteName {
   static const String path = '/beverage/:id';
   static const String name = 'beverage_detail';
 
@@ -12,7 +13,7 @@ abstract class DetailRoute implements RouteName {
   String getRouteName() => name;
 }
 
-abstract class HomeRoute implements RouteName {
+final class HomeRoute extends RouteName {
   static const path = '/';
   static const name = 'beverage_list';
   static const label = 'home';
@@ -22,7 +23,7 @@ abstract class HomeRoute implements RouteName {
   String getRouteName() => name;
 }
 
-abstract class SearchResultRoute implements RouteName {
+final class SearchResultRoute extends RouteName {
   static const path = '/search';
   static const name = 'search';
 
@@ -30,7 +31,7 @@ abstract class SearchResultRoute implements RouteName {
   String getRouteName() => name;
 }
 
-abstract class FavoriteRoute implements RouteName {
+final class FavoriteRoute extends RouteName {
   static const path = '/favorite';
   static const name = 'favorite';
   static const label = 'favorite';

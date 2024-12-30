@@ -1,6 +1,9 @@
 import 'package:flutter_brew/data/model/beverage_result.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/data/repository/beverage_repository.dart';
+import 'package:flutter_brew/ui/herotag/hero_tag_builder.dart';
+import 'package:flutter_brew/ui/route/route_name.dart';
+import 'package:flutter_brew/ui/viewdata/beverage_view_data.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
 import 'package:get_it/get_it.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -25,7 +28,11 @@ class BeveragesViewModel extends _$BeveragesViewModel {
   BeveragesViewState _handleBeverageResult(BeverageResult result, BeverageType type) {
     switch(result) {
       case Success():
-        return SuccessBeveragesViewState(result.beverages, type);
+        final RouteName route = HomeRoute();
+        final viewData = result.beverages.map((beverage) =>
+            BeverageViewData.fromBeverage(beverage, HeroTagBuilder(beverage, route).build())
+        ).toList();
+        return SuccessBeveragesViewState(viewData, type);
       case Error():
         return ErrorBeveragesViewState();
     }

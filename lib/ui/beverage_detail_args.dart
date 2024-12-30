@@ -1,6 +1,7 @@
 
 import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
+import 'package:flutter_brew/ui/viewdata/beverage_view_data.dart';
 
 class BeverageDetailArgs {
   final String image;
@@ -9,7 +10,7 @@ class BeverageDetailArgs {
   final String titleHeroTag;
   final BeverageType type;
 
-  BeverageDetailArgs({required this.image, required this.title, required this.imageHeroTag, required this.titleHeroTag, required this.type});
+  BeverageDetailArgs({required this.image, required this.title, required this.type, this.imageHeroTag = '', this.titleHeroTag = ''});
 
   static BeverageDetailArgs fromModel(Beverage beverage) {
     return BeverageDetailArgs(
@@ -18,6 +19,16 @@ class BeverageDetailArgs {
       imageHeroTag: beverage.imageHeroTag,
       titleHeroTag: beverage.titleHeroTag,
       type: beverage.type,
+    );
+  }
+
+  static BeverageDetailArgs fromViewData(BeverageViewData viewData) {
+    return BeverageDetailArgs(
+      image: viewData.image,
+      title: viewData.title,
+      imageHeroTag: viewData.heroTag.imageHeroTag,
+      titleHeroTag: viewData.heroTag.titleHeroTag,
+      type: viewData.type,
     );
   }
 }

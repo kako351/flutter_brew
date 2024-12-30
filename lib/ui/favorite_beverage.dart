@@ -54,22 +54,25 @@ class FavoriteBeverage extends ConsumerWidget {
           }
 
           final beverages = viewState.beverages;
-          return GridView.builder(
-            itemCount: beverages.length,
-            itemBuilder: (context, index) {
-              return BeverageCellWidget(
-                beverage: beverages[index],
-                onTap: () {
-                  BeverageDetailPageRoute(id: beverages[index].beverageId, $extra: BeverageDetailArgs.fromModel(beverages[index])).push(context);
-                },
-              );
-            },
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: _crossAxisCount,
-              mainAxisSpacing: 8.0,
-              crossAxisSpacing: 8.0,
-              childAspectRatio: (itemWidth / itemHeight),
-            ),
+          return RefreshIndicator(
+            onRefresh: () => ref.refresh(favoriteBeverageViewModelProvider.future),
+            child: GridView.builder(
+              itemCount: beverages.length,
+              itemBuilder: (context, index) {
+                return BeverageCellWidget(
+                  beverage: beverages[index],
+                  onTap: () {
+                    BeverageDetailPageRoute(id: beverages[index].beverageId, $extra: BeverageDetailArgs.fromModel(beverages[index])).push(context);
+                  },
+                );
+              },
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: _crossAxisCount,
+                mainAxisSpacing: 8.0,
+                crossAxisSpacing: 8.0,
+                childAspectRatio: (itemWidth / itemHeight),
+              ),
+            )
           );
         },
       ),

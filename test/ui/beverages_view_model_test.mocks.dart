@@ -188,4 +188,29 @@ class MockBeverageRepository extends _i1.Mock
           ),
         )),
       ) as _i3.Future<_i6.BeverageDetailResult>);
+
+  @override
+  _i3.Future<_i4.BeverageResult> findSearchWords(String? words) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #findSearchWords,
+          [words],
+        ),
+        returnValue: _i3.Future<_i4.BeverageResult>.value(
+            _i5.dummyValue<_i4.BeverageResult>(
+          this,
+          Invocation.method(
+            #findSearchWords,
+            [words],
+          ),
+        )),
+        returnValueForMissingStub: _i3.Future<_i4.BeverageResult>.value(
+            _i5.dummyValue<_i4.BeverageResult>(
+          this,
+          Invocation.method(
+            #findSearchWords,
+            [words],
+          ),
+        )),
+      ) as _i3.Future<_i4.BeverageResult>);
 }

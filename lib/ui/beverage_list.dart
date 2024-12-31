@@ -102,6 +102,7 @@ class SearchToolBar extends ConsumerWidget {
                     ref.read(beveragesViewModelProvider.notifier).saveSearchHistory(item);
                     SearchResultPageRoute(words: item).push(context);
                     controller.closeView(item);
+                    _unFocus(context);
                   },
                 );
               });
@@ -116,9 +117,16 @@ class SearchToolBar extends ConsumerWidget {
         viewOnSubmitted: (String value) {
           ref.read(beveragesViewModelProvider.notifier).saveSearchHistory(value);
           SearchResultPageRoute(words: value).push(context);
+
+          _unFocus(context);
         },
       ),
     );
+  }
+
+  void _unFocus(BuildContext context) {
+    final scope = FocusScope.of(context);
+    if(scope.hasFocus) scope.unfocus();
   }
 }
 

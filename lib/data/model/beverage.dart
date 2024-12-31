@@ -13,7 +13,8 @@ part 'beverage.g.dart';
 class Beverage with _$Beverage {
   Beverage._();
 
-  Id get id => Isar.autoIncrement;
+  @override
+  Id get id => super.id;
 
   @override
   @enumerated
@@ -22,6 +23,7 @@ class Beverage with _$Beverage {
   final favorite = IsarLink<FavoriteBeverage>();
 
   factory Beverage({
+    @Default(Isar.autoIncrement) int id,
     required String title,
     required String description,
     required List<String> ingredients,
@@ -42,6 +44,9 @@ class Beverage with _$Beverage {
       type: type,
     );
   }
+
+  @Index()
+  int get beverageIdIdx => beverageId;
 
   @Index(type: IndexType.value, caseSensitive: false)
   List<String> get descriptionWords => description.split(' ');

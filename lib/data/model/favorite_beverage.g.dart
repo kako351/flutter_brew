@@ -62,6 +62,7 @@ FavoriteBeverage _favoriteBeverageDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = FavoriteBeverage(
+    id: id,
     isFavorite: reader.readBool(offsets[0]),
   );
   return object;

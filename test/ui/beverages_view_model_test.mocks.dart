@@ -241,6 +241,47 @@ class MockBeverageRepository extends _i1.Mock
           ),
         )),
       ) as _i3.Future<_i4.BeverageResult>);
+
+  @override
+  _i3.Future<_i6.BeverageDetailResult> updateFavorite(
+    int? id,
+    _i7.BeverageType? type,
+    bool? isFavorite,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateFavorite,
+          [
+            id,
+            type,
+            isFavorite,
+          ],
+        ),
+        returnValue: _i3.Future<_i6.BeverageDetailResult>.value(
+            _i5.dummyValue<_i6.BeverageDetailResult>(
+          this,
+          Invocation.method(
+            #updateFavorite,
+            [
+              id,
+              type,
+              isFavorite,
+            ],
+          ),
+        )),
+        returnValueForMissingStub: _i3.Future<_i6.BeverageDetailResult>.value(
+            _i5.dummyValue<_i6.BeverageDetailResult>(
+          this,
+          Invocation.method(
+            #updateFavorite,
+            [
+              id,
+              type,
+              isFavorite,
+            ],
+          ),
+        )),
+      ) as _i3.Future<_i6.BeverageDetailResult>);
 }
 
 /// A class which mocks [SearchHistoryRepository].

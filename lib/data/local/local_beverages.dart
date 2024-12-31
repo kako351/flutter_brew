@@ -55,4 +55,29 @@ class LocalBeverages {
         })
         .findAll();
   }
+
+  Future<Beverage?> getBeverage(int beverageId, BeverageType type) async {
+    return await isar.beverages.filter().beverageIdEqualTo(beverageId).and().typeEqualTo(type).findFirst();
+  }
+
+  Future<Beverage?> updateFavorite(int beverageId, BeverageType type, bool isFavorite) async {
+    return await isar.writeTxn(() async {
+      final beverage = await isar.beverages.filter().beverageIdEqualTo(beverageId).and().typeEqualTo(type).findFirst();
+      if(beverage == null) {
+        return null;
+      }
+      final favorite = await isar.favoriteBeverages.filter().idEqualTo(beverage.id).findFirst();
+      if(favorite == null) {
+        return null;
+      }
+      final newFavorite = FavoriteBeverage(id: favorite.id, isFavorite: isFavorite);
+      final newBeverage = Beverage(id: beverage.id, title: beverage.title, description: beverage.description, ingredients: beverage.ingredients, image: beverage.image, beverageId: beverage.beverageId, type: beverage.type)
+        ..favorite.value = newFavorite;
+      await isar.beverages.put(newBeverage);
+      await isar.favoriteBeverages.put(newFavorite);
+      await beverage.favorite.save();
+
+      return newBeverage;
+    });
+  }
 }

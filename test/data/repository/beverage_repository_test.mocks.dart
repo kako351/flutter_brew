@@ -9,6 +9,7 @@ import 'package:flutter_brew/data/infra/api_service.dart' as _i4;
 import 'package:flutter_brew/data/infra/response/beverage_response.dart' as _i2;
 import 'package:flutter_brew/data/local/local_beverages.dart' as _i6;
 import 'package:flutter_brew/data/model/beverage.dart' as _i7;
+import 'package:flutter_brew/data/model/beverage_type.dart' as _i8;
 import 'package:isar/isar.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -211,4 +212,40 @@ class MockLocalBeverages extends _i1.Mock implements _i6.LocalBeverages {
         returnValueForMissingStub:
             _i5.Future<List<_i7.Beverage>>.value(<_i7.Beverage>[]),
       ) as _i5.Future<List<_i7.Beverage>>);
+
+  @override
+  _i5.Future<_i7.Beverage?> getBeverage(
+    int? beverageId,
+    _i8.BeverageType? type,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getBeverage,
+          [
+            beverageId,
+            type,
+          ],
+        ),
+        returnValue: _i5.Future<_i7.Beverage?>.value(),
+        returnValueForMissingStub: _i5.Future<_i7.Beverage?>.value(),
+      ) as _i5.Future<_i7.Beverage?>);
+
+  @override
+  _i5.Future<_i7.Beverage?> updateFavorite(
+    int? beverageId,
+    _i8.BeverageType? type,
+    bool? isFavorite,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateFavorite,
+          [
+            beverageId,
+            type,
+            isFavorite,
+          ],
+        ),
+        returnValue: _i5.Future<_i7.Beverage?>.value(),
+        returnValueForMissingStub: _i5.Future<_i7.Beverage?>.value(),
+      ) as _i5.Future<_i7.Beverage?>);
 }

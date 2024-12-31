@@ -4,10 +4,7 @@ import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/beverage_list.dart';
 import 'package:flutter_brew/ui/favorite_beverage_view_model.dart';
-import 'package:flutter_brew/ui/herotag/hero_tag_builder.dart';
-import 'package:flutter_brew/ui/route/route_name.dart';
 import 'package:flutter_brew/ui/route/routes.dart';
-import 'package:flutter_brew/ui/viewdata/beverage_view_data.dart';
 import 'package:flutter_brew/ui/viewstate/favorite_beverage_view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -61,10 +58,8 @@ class FavoriteBeverage extends ConsumerWidget {
             child: GridView.builder(
               itemCount: beverages.length,
               itemBuilder: (context, index) {
-                final beverage = beverages[index];
-                final heroTag = HeroTagBuilder(beverage, FavoriteRoute()).build();
                 return BeverageCellWidget(
-                  beverage: BeverageViewData.fromBeverage(beverages[index],heroTag),
+                  beverage: beverages[index],
                   onTap: () {
                     BeverageDetailPageRoute(id: beverages[index].beverageId, $extra: BeverageDetailArgs.fromModel(beverages[index])).push(context);
                   },

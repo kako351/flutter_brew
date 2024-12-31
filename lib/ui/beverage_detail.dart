@@ -5,6 +5,7 @@ import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/designsystem/color.dart';
 import 'package:flutter_brew/ui/designsystem/size.dart';
 import 'package:flutter_brew/ui/designsystem/spacer.dart';
+import 'package:flutter_brew/ui/herotag/hero_tag_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_brew/ui/beverage_detail_view_model.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widget_book;
@@ -51,7 +52,7 @@ class BeverageDetail extends ConsumerWidget {
           loading: () {
             return Column(
               children: [
-                BeverageImage(image: args.image, imageHeroTag: args.imageHeroTag),
+                BeverageImage(image: args.image, imageHeroTag: args.imageHeroTag.tag),
                 Container(
                   width: double.infinity,
                   margin: const EdgeInsets.only(left: SpacerDefinition.sizeM, right: SpacerDefinition.sizeM),
@@ -59,7 +60,7 @@ class BeverageDetail extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SpacerS(),
-                        BeverageTitle(title: args.title, titleHeroTag: args.titleHeroTag),
+                        BeverageTitle(title: args.title, titleHeroTag: args.titleHeroTag.tag),
                         SpacerL(),
                         Center(child: CircularProgressIndicator()),
                       ]
@@ -91,7 +92,7 @@ class BeverageDetailContent extends StatelessWidget {
         SliverToBoxAdapter(
           child: Column(
             children: [
-              BeverageImage(image: beverage.image, imageHeroTag: args.imageHeroTag),
+              BeverageImage(image: beverage.image, imageHeroTag: args.imageHeroTag.tag),
 
               Container(
                 margin: const EdgeInsets.only(left: SpacerDefinition.sizeM, right: SpacerDefinition.sizeM),
@@ -99,7 +100,7 @@ class BeverageDetailContent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SpacerS(),
-                    BeverageTitle(title: beverage.title, titleHeroTag: args.titleHeroTag),
+                    BeverageTitle(title: beverage.title, titleHeroTag: args.titleHeroTag.tag),
                     SpacerS(),
                     Text(beverage.description, style: Theme.of(context).textTheme.bodyLarge),
                     SpacerXL(),
@@ -195,6 +196,8 @@ BeverageDetailContent beverageDetailContent(BuildContext context) {
     image: beverage.image,
     title: beverage.title,
     type: beverage.type,
+    imageHeroTag: HeroTagBuilder().build(),
+    titleHeroTag: HeroTagBuilder().build(),
   );
 
   return BeverageDetailContent(beverage: beverage, args: args);

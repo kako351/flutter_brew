@@ -5,10 +5,7 @@ import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/beverages_view_model.dart';
 import 'package:flutter_brew/ui/designsystem/color.dart';
-import 'package:flutter_brew/ui/herotag/hero_tag_builder.dart';
-import 'package:flutter_brew/ui/route/route_name.dart';
 import 'package:flutter_brew/ui/route/routes.dart';
-import 'package:flutter_brew/ui/viewdata/beverage_view_data.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widget_book;
@@ -56,7 +53,7 @@ class BeverageList extends ConsumerWidget {
             state: state,
             onTypeTap: (type) => onCategorySelected(ref, type),
             onTap: (beverage) {
-              BeverageDetailPageRoute(id: beverage.beverageId, $extra: BeverageDetailArgs.fromViewData(beverage)).push(context);
+              BeverageDetailPageRoute(id: beverage.beverageId, $extra: BeverageDetailArgs.fromModel(beverage)).push(context);
             },
           );
         }
@@ -112,7 +109,7 @@ class BeverageContentsByType extends StatelessWidget {
 
   final SuccessBeveragesViewState state;
   final Function(BeverageType) onTypeTap;
-  final Function(BeverageViewData) onTap;
+  final Function(Beverage) onTap;
 
   final int _crossAxisCount = 2;
 
@@ -121,9 +118,9 @@ class BeverageContentsByType extends StatelessWidget {
     final double itemWidth = (MediaQuery.of(context).size.width / _crossAxisCount) - 16.0;
     final double itemHeight = itemWidth * 0.9;
 
-    List<BeverageViewData> remainingBeveragesList = switch(state.type) {
+    List<Beverage> remainingBeveragesList = switch(state.type) {
       BeverageType.all => state.remainingBeverages(),
-      BeverageType.hot || BeverageType.iced => state.beveragesViewData,
+      BeverageType.hot || BeverageType.iced => state.beverages,
     };
 
     return CustomScrollView(
@@ -214,7 +211,7 @@ class BeverageContentsByType extends StatelessWidget {
 class BeverageTopCellWidget extends StatelessWidget {
   const BeverageTopCellWidget({required this.beverage, required this.onTap, super.key});
 
-  final BeverageViewData beverage;
+  final Beverage beverage;
   final VoidCallback onTap;
 
   @override
@@ -237,7 +234,7 @@ class BeverageTopCellWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Hero(
-                tag: beverage.heroTag.imageHeroTag,
+                tag: beverage.imageHeroTag.tag,
                 child: AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Image.network(
@@ -258,7 +255,7 @@ class BeverageTopCellWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Hero(
-                        tag: beverage.heroTag.titleHeroTag,
+                        tag: beverage.titleHeroTag.tag,
                         child: Text(beverage.title, style: Theme.of(context).textTheme.labelLarge
                         ),
                       ),
@@ -284,7 +281,7 @@ class BeverageTopCellWidget extends StatelessWidget {
 class BeverageCellWidget extends StatelessWidget {
   const BeverageCellWidget({required this.beverage, required this.onTap, super.key});
 
-  final BeverageViewData beverage;
+  final Beverage beverage;
   final VoidCallback onTap;
 
   @override
@@ -306,7 +303,7 @@ class BeverageCellWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Hero(
-                tag: beverage.heroTag.imageHeroTag,
+                tag: beverage.imageHeroTag.tag,
                 child: AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Image.network(
@@ -327,7 +324,7 @@ class BeverageCellWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Hero(
-                      tag: beverage.heroTag.titleHeroTag,
+                      tag: beverage.titleHeroTag.tag,
                       child: Text(beverage.title, style: Theme.of(context).textTheme.labelLarge
                       ),
                     ),
@@ -454,6 +451,5 @@ BeverageCellWidget beverageList(BuildContext context) {
     ingredients: ['Ingredient 1', 'Ingredient 2'],
     type: BeverageType.hot,
   );
-  final viewData = BeverageViewData.fromBeverage(beverage, HeroTagBuilder(beverage, HomeRoute()).build());
-  return BeverageCellWidget(beverage: viewData, onTap: () {});
+  return BeverageCellWidget(beverage: beverage, onTap: () {});
 }

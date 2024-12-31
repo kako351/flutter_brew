@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/designsystem/color.dart';
-import 'package:flutter_brew/ui/route/route_name.dart';
 import 'package:flutter_brew/ui/route/routes.dart';
 import 'package:flutter_brew/ui/search_result_view_model.dart';
 import 'package:flutter_brew/ui/viewstate/search_result_view_state.dart';

@@ -234,7 +234,7 @@ class BeverageTopCellWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Hero(
-                tag: beverage.imageHeroTag,
+                tag: beverage.imageHeroTag.tag,
                 child: AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Image.network(
@@ -255,7 +255,7 @@ class BeverageTopCellWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Hero(
-                        tag: beverage.titleHeroTag,
+                        tag: beverage.titleHeroTag.tag,
                         child: Text(beverage.title, style: Theme.of(context).textTheme.labelLarge
                         ),
                       ),
@@ -303,7 +303,7 @@ class BeverageCellWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Hero(
-                tag: beverage.imageHeroTag,
+                tag: beverage.imageHeroTag.tag,
                 child: AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Image.network(
@@ -324,7 +324,7 @@ class BeverageCellWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Hero(
-                      tag: beverage.titleHeroTag,
+                      tag: beverage.titleHeroTag.tag,
                       child: Text(beverage.title, style: Theme.of(context).textTheme.labelLarge
                       ),
                     ),

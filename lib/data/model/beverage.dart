@@ -1,6 +1,7 @@
 import 'package:flutter_brew/data/infra/response/beverage_response.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/data/model/favorite_beverage.dart';
+import 'package:flutter_brew/ui/herotag/hero_tag_builder.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
 
@@ -55,8 +56,8 @@ class Beverage with _$Beverage {
   bool get isFavorite => favorite.value?.isFavorite ?? false;
 
   @ignore
-  get imageHeroTag => 'beverage_image_${beverageId}_$title';
+  final imageHeroTag = HeroTagBuilder().build();
 
   @ignore
-  get titleHeroTag => 'beverage_title_${beverageId}_$title';
+  final titleHeroTag = HeroTagBuilder().build();
 }

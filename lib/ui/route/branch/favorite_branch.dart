@@ -1,12 +1,5 @@
 part of '../routes.dart';
 
-abstract class FavoriteRoute {
-  static const path = '/favorite';
-  static const name = 'favorite';
-  static const label = 'favorite';
-  static const icon = Icon(Icons.favorite);
-}
-
 class FavoriteShellBranch extends StatefulShellBranchData {
   const FavoriteShellBranch();
 }

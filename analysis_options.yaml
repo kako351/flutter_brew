@@ -35,5 +35,6 @@ linter:
 analyzer:
   errors:
     recursive_getters: ignore
+    unnecessary_overrides: ignore
   exclude:
     - lib/**/*.g.dart

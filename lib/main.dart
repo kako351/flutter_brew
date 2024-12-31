@@ -2,9 +2,12 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_brew/data/local/local_beverages.dart';
+import 'package:flutter_brew/data/local/local_search_history.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/data/model/favorite_beverage.dart';
+import 'package:flutter_brew/data/model/search_history.dart';
 import 'package:flutter_brew/data/repository/beverage_repository.dart';
+import 'package:flutter_brew/data/repository/search_history_repository.dart';
 import 'package:flutter_brew/ui/route/routes.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
@@ -20,7 +23,8 @@ Future<void> main() async {
   final isar = await Isar.open(
     [
       BeverageSchema,
-      FavoriteBeverageSchema
+      FavoriteBeverageSchema,
+      SearchHistorySchema
     ],
     directory: dbPath,
     name: Isar.defaultName,
@@ -29,6 +33,8 @@ Future<void> main() async {
   GetIt.I.registerLazySingleton(() => isar);
   GetIt.I.registerLazySingleton(() => LocalBeverages());
   GetIt.I.registerLazySingleton<BeverageRepository>(() => BeverageRepositoryImpl());
+  GetIt.I.registerLazySingleton(() => LocalSearchHistory());
+  GetIt.I.registerLazySingleton<SearchHistoryRepository>(() => SearchHistoryRepositoryImpl());
   await GetIt.I.allReady();
 
   runApp(

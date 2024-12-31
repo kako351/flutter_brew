@@ -24,6 +24,8 @@ abstract interface class BeverageRepository {
   Future<beverage_result.BeverageResult> findSearchWords(String words);
 
   Future<beverage_result.BeverageResult> getIsFavoriteTrueBeverages();
+
+  Future<beverage_detail_result.BeverageDetailResult> updateFavorite(int id, BeverageType type, bool isFavorite);
 }
 
 class BeverageRepositoryImpl implements BeverageRepository {
@@ -156,6 +158,19 @@ class BeverageRepositoryImpl implements BeverageRepository {
       return beverage_result.Success(result);
     } catch (e) {
       return beverage_result.Error(e.toString());
+    }
+  }
+
+  @override
+  Future<beverage_detail_result.BeverageDetailResult> updateFavorite(int id, BeverageType type, bool isFavorite) async {
+    try {
+      Beverage? result = await localBeverages.updateFavorite(id, type, isFavorite);
+      if (result == null) {
+        return beverage_detail_result.Error('Failed to update favorite');
+      }
+      return beverage_detail_result.Success(result);
+    } catch (e) {
+      throw beverage_detail_result.Error(e.toString());
     }
   }
 }

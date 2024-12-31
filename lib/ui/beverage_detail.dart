@@ -56,6 +56,7 @@ class BeverageDetail extends ConsumerWidget {
             final icon = isFavorite ? Icons.favorite : Icons.favorite_border;
             return FloatingActionButton(
               onPressed: () {
+                ref.read(beverageDetailViewModelProvider(id, args.type).notifier).updateFavorite(state.beverageId, state.type, !isFavorite);
               },
               child: Icon(icon),
             );

@@ -229,6 +229,7 @@ Beverage _beverageDeserialize(
   final object = Beverage(
     beverageId: reader.readLong(offsets[0]),
     description: reader.readString(offsets[2]),
+    id: id,
     image: reader.readString(offsets[4]),
     ingredients: reader.readStringList(offsets[5]) ?? [],
     title: reader.readString(offsets[8]),
@@ -2846,6 +2847,7 @@ extension BeverageQueryProperty
 
 _$BeverageImpl _$$BeverageImplFromJson(Map<String, dynamic> json) =>
     _$BeverageImpl(
+      id: (json['id'] as num?)?.toInt() ?? Isar.autoIncrement,
       title: json['title'] as String,
       description: json['description'] as String,
       ingredients: (json['ingredients'] as List<dynamic>)
@@ -2858,6 +2860,7 @@ _$BeverageImpl _$$BeverageImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$BeverageImplToJson(_$BeverageImpl instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'title': instance.title,
       'description': instance.description,
       'ingredients': instance.ingredients,

@@ -33,4 +33,11 @@ class BeverageDetailViewModel extends _$BeverageDetailViewModel {
         throw Exception(result.message);
     }
   }
+
+  Future<void> updateFavorite(int beverageId, BeverageType type, bool isFavorite) async {
+    BeverageDetailResult result = await _repository.updateFavorite(id, type, isFavorite);
+    state = state.whenData((viewState) {
+      return _handleBeverageDetailResult(result);
+    });
+  }
 }

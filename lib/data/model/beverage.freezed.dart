@@ -20,6 +20,7 @@ Beverage _$BeverageFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Beverage {
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   List<String> get ingredients => throw _privateConstructorUsedError;
@@ -43,7 +44,8 @@ abstract class $BeverageCopyWith<$Res> {
       _$BeverageCopyWithImpl<$Res, Beverage>;
   @useResult
   $Res call(
-      {String title,
+      {int id,
+      String title,
       String description,
       List<String> ingredients,
       String image,
@@ -66,6 +68,7 @@ class _$BeverageCopyWithImpl<$Res, $Val extends Beverage>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? description = null,
     Object? ingredients = null,
@@ -74,6 +77,10 @@ class _$BeverageCopyWithImpl<$Res, $Val extends Beverage>
     Object? type = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -111,7 +118,8 @@ abstract class _$$BeverageImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String title,
+      {int id,
+      String title,
       String description,
       List<String> ingredients,
       String image,
@@ -132,6 +140,7 @@ class __$$BeverageImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? description = null,
     Object? ingredients = null,
@@ -140,6 +149,10 @@ class __$$BeverageImplCopyWithImpl<$Res>
     Object? type = null,
   }) {
     return _then(_$BeverageImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -172,7 +185,8 @@ class __$$BeverageImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$BeverageImpl extends _Beverage {
   _$BeverageImpl(
-      {required this.title,
+      {this.id = Isar.autoIncrement,
+      required this.title,
       required this.description,
       required final List<String> ingredients,
       required this.image,
@@ -184,6 +198,9 @@ class _$BeverageImpl extends _Beverage {
   factory _$BeverageImpl.fromJson(Map<String, dynamic> json) =>
       _$$BeverageImplFromJson(json);
 
+  @override
+  @JsonKey()
+  final int id;
   @override
   final String title;
   @override
@@ -205,7 +222,7 @@ class _$BeverageImpl extends _Beverage {
 
   @override
   String toString() {
-    return 'Beverage(title: $title, description: $description, ingredients: $ingredients, image: $image, beverageId: $beverageId, type: $type)';
+    return 'Beverage(id: $id, title: $title, description: $description, ingredients: $ingredients, image: $image, beverageId: $beverageId, type: $type)';
   }
 
   @override
@@ -213,6 +230,7 @@ class _$BeverageImpl extends _Beverage {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BeverageImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -228,6 +246,7 @@ class _$BeverageImpl extends _Beverage {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
       title,
       description,
       const DeepCollectionEquality().hash(_ingredients),
@@ -253,7 +272,8 @@ class _$BeverageImpl extends _Beverage {
 
 abstract class _Beverage extends Beverage {
   factory _Beverage(
-      {required final String title,
+      {final int id,
+      required final String title,
       required final String description,
       required final List<String> ingredients,
       required final String image,
@@ -264,6 +284,8 @@ abstract class _Beverage extends Beverage {
   factory _Beverage.fromJson(Map<String, dynamic> json) =
       _$BeverageImpl.fromJson;
 
+  @override
+  int get id;
   @override
   String get title;
   @override

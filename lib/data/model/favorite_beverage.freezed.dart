@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$FavoriteBeverage {
+  int get id => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
 
   /// Create a copy of FavoriteBeverage
@@ -31,7 +32,7 @@ abstract class $FavoriteBeverageCopyWith<$Res> {
           FavoriteBeverage value, $Res Function(FavoriteBeverage) then) =
       _$FavoriteBeverageCopyWithImpl<$Res, FavoriteBeverage>;
   @useResult
-  $Res call({bool isFavorite});
+  $Res call({int id, bool isFavorite});
 }
 
 /// @nodoc
@@ -49,9 +50,14 @@ class _$FavoriteBeverageCopyWithImpl<$Res, $Val extends FavoriteBeverage>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? isFavorite = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       isFavorite: null == isFavorite
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -68,7 +74,7 @@ abstract class _$$FavoriteBeverageImplCopyWith<$Res>
       __$$FavoriteBeverageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isFavorite});
+  $Res call({int id, bool isFavorite});
 }
 
 /// @nodoc
@@ -84,9 +90,14 @@ class __$$FavoriteBeverageImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? isFavorite = null,
   }) {
     return _then(_$FavoriteBeverageImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       isFavorite: null == isFavorite
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -98,14 +109,19 @@ class __$$FavoriteBeverageImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$FavoriteBeverageImpl extends _FavoriteBeverage {
-  const _$FavoriteBeverageImpl({required this.isFavorite}) : super._();
+  _$FavoriteBeverageImpl(
+      {this.id = Isar.autoIncrement, required this.isFavorite})
+      : super._();
 
+  @override
+  @JsonKey()
+  final int id;
   @override
   final bool isFavorite;
 
   @override
   String toString() {
-    return 'FavoriteBeverage(isFavorite: $isFavorite)';
+    return 'FavoriteBeverage(id: $id, isFavorite: $isFavorite)';
   }
 
   @override
@@ -113,12 +129,13 @@ class _$FavoriteBeverageImpl extends _FavoriteBeverage {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FavoriteBeverageImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.isFavorite, isFavorite) ||
                 other.isFavorite == isFavorite));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isFavorite);
+  int get hashCode => Object.hash(runtimeType, id, isFavorite);
 
   /// Create a copy of FavoriteBeverage
   /// with the given fields replaced by the non-null parameter values.
@@ -131,10 +148,12 @@ class _$FavoriteBeverageImpl extends _FavoriteBeverage {
 }
 
 abstract class _FavoriteBeverage extends FavoriteBeverage {
-  const factory _FavoriteBeverage({required final bool isFavorite}) =
+  factory _FavoriteBeverage({final int id, required final bool isFavorite}) =
       _$FavoriteBeverageImpl;
-  const _FavoriteBeverage._() : super._();
+  _FavoriteBeverage._() : super._();
 
+  @override
+  int get id;
   @override
   bool get isFavorite;
 

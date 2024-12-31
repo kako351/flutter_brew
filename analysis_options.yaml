@@ -33,5 +33,7 @@ linter:
 
 # ignore files
 analyzer:
+  errors:
+    recursive_getters: ignore
   exclude:
     - lib/**/*.g.dart

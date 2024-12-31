@@ -14,7 +14,7 @@ class Beverage with _$Beverage {
   Beverage._();
 
   @override
-  Id get id => id;
+  Id get id => super.id;
 
   @override
   @enumerated

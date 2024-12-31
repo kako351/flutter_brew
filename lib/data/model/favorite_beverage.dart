@@ -11,7 +11,7 @@ class FavoriteBeverage with _$FavoriteBeverage {
   FavoriteBeverage._();
 
   @override
-  Id get id => id;
+  Id get id => super.id;
 
   factory FavoriteBeverage({
     @Default(Isar.autoIncrement) int id,

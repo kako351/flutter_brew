@@ -67,6 +67,7 @@ class SearchToolBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(beveragesViewModelProvider.notifier).updateSearchHistories('');
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SearchAnchor(

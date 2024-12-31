@@ -14,4 +14,10 @@ class LocalSearchHistory {
 
     return await query.limit(5).findAll();
   }
+
+  Future<void> saveSearchHistory(SearchHistory searchHistory) async {
+    await isar.writeTxn(() async {
+      await isar.searchHistorys.put(searchHistory);
+    });
+  }
 }

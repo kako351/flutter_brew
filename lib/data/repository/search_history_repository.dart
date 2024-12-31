@@ -4,6 +4,8 @@ import 'package:get_it/get_it.dart';
 
 abstract interface class SearchHistoryRepository {
   Future<List<SearchHistory>> getSearchHistories(String words);
+
+  Future<void> saveSearchHistory(String words);
 }
 
 class SearchHistoryRepositoryImpl implements SearchHistoryRepository {
@@ -14,5 +16,10 @@ class SearchHistoryRepositoryImpl implements SearchHistoryRepository {
   @override
   Future<List<SearchHistory>> getSearchHistories(String words) async {
     return await localSearchHistory.getSearchHistories(words);
+  }
+
+  @override
+  Future<void> saveSearchHistory(String words) async {
+    await localSearchHistory.saveSearchHistory(SearchHistory(query: words));
   }
 }

@@ -38,7 +38,7 @@ class BeveragesViewModel extends _$BeveragesViewModel {
     var result = await _getBeveragesByType(type);
     state = state.whenData((viewState) {
       if (viewState is SuccessBeveragesViewState) {
-        return _handleBeverageResult(result, type);
+        return _handleBeverageResult(result, type, searchHistories: viewState.searchHistories);
       }
       return viewState;
     });
@@ -56,12 +56,16 @@ class BeveragesViewModel extends _$BeveragesViewModel {
   }
 
   Future<void> updateSearchHistories(String words) async {
-    var searchHistories = await _searchHistoryRepository.getSearchHistories(words);
+    final searchHistories = await _searchHistoryRepository.getSearchHistories(words);
     state = state.whenData((viewState) {
       if (viewState is SuccessBeveragesViewState) {
         return SuccessBeveragesViewState(viewState.beverages, viewState.type, searchHistories: searchHistories);
       }
       return viewState;
     });
+  }
+
+  Future<void> saveSearchHistory(String words) async {
+    await _searchHistoryRepository.saveSearchHistory(words);
   }
 }

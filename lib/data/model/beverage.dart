@@ -43,6 +43,9 @@ class Beverage with _$Beverage {
     );
   }
 
+  @Index()
+  int get beverageIdIdx => beverageId;
+
   @Index(type: IndexType.value, caseSensitive: false)
   List<String> get descriptionWords => description.split(' ');
 

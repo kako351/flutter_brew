@@ -122,6 +122,11 @@ class BeverageRepositoryImpl implements BeverageRepository {
   @override
   Future<beverage_detail_result.BeverageDetailResult> getBeverageDetail(int id, BeverageType type) async {
     try {
+      final localDetail = await localBeverages.getBeverage(id, type);
+      if(localDetail != null) {
+        return beverage_detail_result.Success(localDetail);
+      }
+
       BeverageResponse result = switch(type) {
         BeverageType.hot => await client.getHotBeverageDetail(id),
         BeverageType.iced => await client.getIcedBeverageDetail(id),

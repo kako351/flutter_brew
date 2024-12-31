@@ -55,4 +55,8 @@ class LocalBeverages {
         })
         .findAll();
   }
+
+  Future<Beverage?> getBeverage(int beverageId, BeverageType type) async {
+    return await isar.beverages.filter().beverageIdEqualTo(beverageId).and().typeEqualTo(type).findFirst();
+  }
 }

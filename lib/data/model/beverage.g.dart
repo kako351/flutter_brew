@@ -22,48 +22,53 @@ const BeverageSchema = CollectionSchema(
       name: r'beverageId',
       type: IsarType.long,
     ),
-    r'description': PropertySchema(
+    r'beverageIdIdx': PropertySchema(
       id: 1,
+      name: r'beverageIdIdx',
+      type: IsarType.long,
+    ),
+    r'description': PropertySchema(
+      id: 2,
       name: r'description',
       type: IsarType.string,
     ),
     r'descriptionWords': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'descriptionWords',
       type: IsarType.stringList,
     ),
     r'image': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'image',
       type: IsarType.string,
     ),
     r'ingredients': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'ingredients',
       type: IsarType.stringList,
     ),
     r'ingredientsWords': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'ingredientsWords',
       type: IsarType.stringList,
     ),
     r'isFavorite': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'isFavorite',
       type: IsarType.bool,
     ),
     r'title': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'title',
       type: IsarType.string,
     ),
     r'titleWords': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'titleWords',
       type: IsarType.stringList,
     ),
     r'type': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'type',
       type: IsarType.byte,
       enumMap: _BeveragetypeEnumValueMap,
@@ -75,6 +80,19 @@ const BeverageSchema = CollectionSchema(
   deserializeProp: _beverageDeserializeProp,
   idName: r'id',
   indexes: {
+    r'beverageIdIdx': IndexSchema(
+      id: -1547003849980205222,
+      name: r'beverageIdIdx',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'beverageIdIdx',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
+    ),
     r'descriptionWords': IndexSchema(
       id: 4013375675557855679,
       name: r'descriptionWords',
@@ -190,15 +208,16 @@ void _beverageSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.beverageId);
-  writer.writeString(offsets[1], object.description);
-  writer.writeStringList(offsets[2], object.descriptionWords);
-  writer.writeString(offsets[3], object.image);
-  writer.writeStringList(offsets[4], object.ingredients);
-  writer.writeStringList(offsets[5], object.ingredientsWords);
-  writer.writeBool(offsets[6], object.isFavorite);
-  writer.writeString(offsets[7], object.title);
-  writer.writeStringList(offsets[8], object.titleWords);
-  writer.writeByte(offsets[9], object.type.index);
+  writer.writeLong(offsets[1], object.beverageIdIdx);
+  writer.writeString(offsets[2], object.description);
+  writer.writeStringList(offsets[3], object.descriptionWords);
+  writer.writeString(offsets[4], object.image);
+  writer.writeStringList(offsets[5], object.ingredients);
+  writer.writeStringList(offsets[6], object.ingredientsWords);
+  writer.writeBool(offsets[7], object.isFavorite);
+  writer.writeString(offsets[8], object.title);
+  writer.writeStringList(offsets[9], object.titleWords);
+  writer.writeByte(offsets[10], object.type.index);
 }
 
 Beverage _beverageDeserialize(
@@ -209,11 +228,11 @@ Beverage _beverageDeserialize(
 ) {
   final object = Beverage(
     beverageId: reader.readLong(offsets[0]),
-    description: reader.readString(offsets[1]),
-    image: reader.readString(offsets[3]),
-    ingredients: reader.readStringList(offsets[4]) ?? [],
-    title: reader.readString(offsets[7]),
-    type: _BeveragetypeValueEnumMap[reader.readByteOrNull(offsets[9])] ??
+    description: reader.readString(offsets[2]),
+    image: reader.readString(offsets[4]),
+    ingredients: reader.readStringList(offsets[5]) ?? [],
+    title: reader.readString(offsets[8]),
+    type: _BeveragetypeValueEnumMap[reader.readByteOrNull(offsets[10])] ??
         BeverageType.hot,
   );
   return object;
@@ -229,22 +248,24 @@ P _beverageDeserializeProp<P>(
     case 0:
       return (reader.readLong(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 2:
-      return (reader.readStringList(offset) ?? []) as P;
-    case 3:
       return (reader.readString(offset)) as P;
-    case 4:
+    case 3:
       return (reader.readStringList(offset) ?? []) as P;
+    case 4:
+      return (reader.readString(offset)) as P;
     case 5:
       return (reader.readStringList(offset) ?? []) as P;
     case 6:
-      return (reader.readBool(offset)) as P;
-    case 7:
-      return (reader.readString(offset)) as P;
-    case 8:
       return (reader.readStringList(offset) ?? []) as P;
+    case 7:
+      return (reader.readBool(offset)) as P;
+    case 8:
+      return (reader.readString(offset)) as P;
     case 9:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 10:
       return (_BeveragetypeValueEnumMap[reader.readByteOrNull(offset)] ??
           BeverageType.hot) as P;
     default:
@@ -280,6 +301,14 @@ extension BeverageQueryWhereSort on QueryBuilder<Beverage, Beverage, QWhere> {
   QueryBuilder<Beverage, Beverage, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhere> anyBeverageIdIdx() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'beverageIdIdx'),
+      );
     });
   }
 
@@ -377,6 +406,96 @@ extension BeverageQueryWhere on QueryBuilder<Beverage, Beverage, QWhereClause> {
         lower: lowerId,
         includeLower: includeLower,
         upper: upperId,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause> beverageIdIdxEqualTo(
+      int beverageIdIdx) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'beverageIdIdx',
+        value: [beverageIdIdx],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause> beverageIdIdxNotEqualTo(
+      int beverageIdIdx) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'beverageIdIdx',
+              lower: [],
+              upper: [beverageIdIdx],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'beverageIdIdx',
+              lower: [beverageIdIdx],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'beverageIdIdx',
+              lower: [beverageIdIdx],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'beverageIdIdx',
+              lower: [],
+              upper: [beverageIdIdx],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause> beverageIdIdxGreaterThan(
+    int beverageIdIdx, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'beverageIdIdx',
+        lower: [beverageIdIdx],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause> beverageIdIdxLessThan(
+    int beverageIdIdx, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'beverageIdIdx',
+        lower: [],
+        upper: [beverageIdIdx],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterWhereClause> beverageIdIdxBetween(
+    int lowerBeverageIdIdx,
+    int upperBeverageIdIdx, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'beverageIdIdx',
+        lower: [lowerBeverageIdIdx],
+        includeLower: includeLower,
+        upper: [upperBeverageIdIdx],
         includeUpper: includeUpper,
       ));
     });
@@ -896,6 +1015,60 @@ extension BeverageQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'beverageId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition> beverageIdIdxEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'beverageIdIdx',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition>
+      beverageIdIdxGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'beverageIdIdx',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition> beverageIdIdxLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'beverageIdIdx',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterFilterCondition> beverageIdIdxBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'beverageIdIdx',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -2346,6 +2519,18 @@ extension BeverageQuerySortBy on QueryBuilder<Beverage, Beverage, QSortBy> {
     });
   }
 
+  QueryBuilder<Beverage, Beverage, QAfterSortBy> sortByBeverageIdIdx() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'beverageIdIdx', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterSortBy> sortByBeverageIdIdxDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'beverageIdIdx', Sort.desc);
+    });
+  }
+
   QueryBuilder<Beverage, Beverage, QAfterSortBy> sortByDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.asc);
@@ -2418,6 +2603,18 @@ extension BeverageQuerySortThenBy
   QueryBuilder<Beverage, Beverage, QAfterSortBy> thenByBeverageIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'beverageId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterSortBy> thenByBeverageIdIdx() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'beverageIdIdx', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Beverage, Beverage, QAfterSortBy> thenByBeverageIdIdxDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'beverageIdIdx', Sort.desc);
     });
   }
 
@@ -2502,6 +2699,12 @@ extension BeverageQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Beverage, Beverage, QDistinct> distinctByBeverageIdIdx() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'beverageIdIdx');
+    });
+  }
+
   QueryBuilder<Beverage, Beverage, QDistinct> distinctByDescription(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2571,6 +2774,12 @@ extension BeverageQueryProperty
   QueryBuilder<Beverage, int, QQueryOperations> beverageIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'beverageId');
+    });
+  }
+
+  QueryBuilder<Beverage, int, QQueryOperations> beverageIdIdxProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'beverageIdIdx');
     });
   }
 

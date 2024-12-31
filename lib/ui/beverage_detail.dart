@@ -48,6 +48,19 @@ class BeverageDetail extends ConsumerWidget {
         appBar: AppBar(
           title: Text(data.value?.title ?? args.title),
         ),
+        floatingActionButton: data.when(
+          loading: () => const SizedBox(),
+          error: (o, s) => const SizedBox(),
+          data: (state) {
+            final isFavorite = state.isFavorite;
+            final icon = isFavorite ? Icons.favorite : Icons.favorite_border;
+            return FloatingActionButton(
+              onPressed: () {
+              },
+              child: Icon(icon),
+            );
+          }
+        ),
         body: data.when(
           loading: () {
             return Column(

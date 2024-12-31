@@ -13,7 +13,7 @@ Architecture is Layered Architecture pattern. The app follows the [Flutter Archi
 ```mermaid
 graph TB
 subgraph "UI Layer"
-    A[UI(Widget)] --> B(ViewModel)
+    A[UI] --> B(ViewModel)
 end
 subgraph "Data Layer"
    C[Repository] 

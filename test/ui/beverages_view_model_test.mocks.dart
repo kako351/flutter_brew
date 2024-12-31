@@ -8,7 +8,10 @@ import 'dart:async' as _i3;
 import 'package:flutter_brew/data/model/beverage_detail_result.dart' as _i6;
 import 'package:flutter_brew/data/model/beverage_result.dart' as _i4;
 import 'package:flutter_brew/data/model/beverage_type.dart' as _i7;
+import 'package:flutter_brew/data/model/search_history.dart' as _i9;
 import 'package:flutter_brew/data/repository/beverage_repository.dart' as _i2;
+import 'package:flutter_brew/data/repository/search_history_repository.dart'
+    as _i8;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i5;
 
@@ -238,4 +241,33 @@ class MockBeverageRepository extends _i1.Mock
           ),
         )),
       ) as _i3.Future<_i4.BeverageResult>);
+}
+
+/// A class which mocks [SearchHistoryRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSearchHistoryRepository extends _i1.Mock
+    implements _i8.SearchHistoryRepository {
+  @override
+  _i3.Future<List<_i9.SearchHistory>> getSearchHistories(String? words) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getSearchHistories,
+          [words],
+        ),
+        returnValue:
+            _i3.Future<List<_i9.SearchHistory>>.value(<_i9.SearchHistory>[]),
+        returnValueForMissingStub:
+            _i3.Future<List<_i9.SearchHistory>>.value(<_i9.SearchHistory>[]),
+      ) as _i3.Future<List<_i9.SearchHistory>>);
+
+  @override
+  _i3.Future<void> saveSearchHistory(String? words) => (super.noSuchMethod(
+        Invocation.method(
+          #saveSearchHistory,
+          [words],
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 }

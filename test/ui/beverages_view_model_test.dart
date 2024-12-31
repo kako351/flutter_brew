@@ -2,6 +2,7 @@ import 'package:flutter_brew/data/model/beverage.dart';
 import 'package:flutter_brew/data/model/beverage_result.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/data/repository/beverage_repository.dart';
+import 'package:flutter_brew/data/repository/search_history_repository.dart';
 import 'package:flutter_brew/ui/beverages_view_model.dart';
 import 'package:flutter_brew/ui/viewstate/beverages_view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +11,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-@GenerateNiceMocks([MockSpec<BeverageRepository>()])
+@GenerateNiceMocks([MockSpec<BeverageRepository>(), MockSpec<SearchHistoryRepository>()])
 import 'beverages_view_model_test.mocks.dart';
 
 class Listener extends Mock {
@@ -58,6 +59,7 @@ void main() {
 
   final List<Beverage> mockBeverages = mockHotBeverages + mockIcedBeverages;
   late final BeverageRepository mockRepository;
+  late final SearchHistoryRepository mockSearchHistoryRepository;
   final getIt = GetIt.instance;
 
   setUp(() {
@@ -66,7 +68,9 @@ void main() {
 
   setUpAll((){
     mockRepository = MockBeverageRepository();
+    mockSearchHistoryRepository = MockSearchHistoryRepository();
     getIt.registerSingleton<BeverageRepository>(mockRepository);
+    getIt.registerSingleton<SearchHistoryRepository>(mockSearchHistoryRepository);
   });
 
   tearDownAll((){

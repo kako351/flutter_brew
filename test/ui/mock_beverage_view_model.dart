@@ -25,4 +25,9 @@ class MockBeverageViewModel extends _$MockBeverageViewModel
       ),
     ], BeverageType.defaultValue);
   }
+
+  @override
+  Future<void> updateSearchHistories(String words) async {
+    return Future.value();
+  }
 }

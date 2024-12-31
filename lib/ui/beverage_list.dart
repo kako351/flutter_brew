@@ -62,11 +62,12 @@ class BeverageList extends ConsumerWidget {
   }
 }
 
-class SearchToolBar extends StatelessWidget {
+class SearchToolBar extends ConsumerWidget {
   const SearchToolBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(beveragesViewModelProvider.notifier).updateSearchHistories('');
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SearchAnchor(
@@ -79,28 +80,53 @@ class SearchToolBar extends StatelessWidget {
             onTap: () {
               controller.openView();
             },
-            onChanged: (_) {
+            onChanged: (String value) {
               controller.openView();
             },
             leading: const Icon(Icons.search),
           );
         },
         suggestionsBuilder: (BuildContext context, SearchController controller) {
-          return List<ListTile>.generate(5, (int index) {
-            final String item = 'item $index';
-            return ListTile(
-              title: Text(item),
-              onTap: () {
-                controller.closeView(item);
-              },
-            );
-          });
+          final data = ref.watch(beveragesViewModelProvider);
+          return data.when(
+            data: (state) {
+              if (state is! SuccessBeveragesViewState) {
+                return [const SizedBox()];
+              }
+              final searchHistories = state.searchHistories;
+              return List<ListTile>.generate(searchHistories.length, (int index) {
+                final String item = searchHistories[index].query;
+                return ListTile(
+                  title: Text(item),
+                  onTap: () {
+                    ref.read(beveragesViewModelProvider.notifier).saveSearchHistory(item);
+                    SearchResultPageRoute(words: item).push(context);
+                    controller.closeView(item);
+                    _unFocus(context);
+                  },
+                );
+              });
+            },
+            error: (o, s) => [const SizedBox()],
+            loading: () => [const SizedBox()],
+          );
+        },
+        viewOnChanged: (String value) {
+          ref.read(beveragesViewModelProvider.notifier).updateSearchHistories(value);
         },
         viewOnSubmitted: (String value) {
+          ref.read(beveragesViewModelProvider.notifier).saveSearchHistory(value);
           SearchResultPageRoute(words: value).push(context);
+
+          _unFocus(context);
         },
       ),
     );
+  }
+
+  void _unFocus(BuildContext context) {
+    final scope = FocusScope.of(context);
+    if(scope.hasFocus) scope.unfocus();
   }
 }
 

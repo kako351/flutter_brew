@@ -2,14 +2,45 @@
 
 Flutter Brew is a Flutter application that displays a list of beverages. 
 
-<img src="images/screenshot_android.png" width=300 />
+| Android | iOS |
+| --- | --- |
+| <img src="images/screenshot_android.png" width=300 /> | <img src="images/screenshot_ios.png" width=300 /> |
+
+## Architecture
+
+Architecture is Layered Architecture pattern. The app follows the [Flutter Architecture Guild](https://docs.flutter.dev/app-architecture/guide). The UI Layer is separated from the Data Layer. The UI Layer consists of the screens that display the beverages. The Data Layer consists of the repository that provides the beverages to the UI Layer.
+
+```mermaid
+graph LR
+subgraph "UI Layer"
+A[BeverageListScreen] --> B(BeverageDetailsScreen)
+end
+subgraph "Data Layer"
+C[BeverageRepository]
+end
+B --> C
+A --> C
+```
 
 ## Features
 
 - Display a list of beverages
 - Show details of each beverage
-- Unit tests for the beverage model
-- Widget tests for the beverage list
+- Search for beverages
+- Favorite a beverage
+- Filter beverages by category
+
+## Technologies
+
+- riverpod
+- Mockito
+- freezed
+- retrofit
+- isar
+- go router
+- get it
+- Widget Book
+
 
 ## Getting Started
 

@@ -11,15 +11,18 @@ Flutter Brew is a Flutter application that displays a list of beverages.
 Architecture is Layered Architecture pattern. The app follows the [Flutter Architecture Guild](https://docs.flutter.dev/app-architecture/guide). The UI Layer is separated from the Data Layer. The UI Layer consists of the screens that display the beverages. The Data Layer consists of the repository that provides the beverages to the UI Layer.
 
 ```mermaid
-graph LR
+graph TB
 subgraph "UI Layer"
-A[BeverageListScreen] --> B(BeverageDetailsScreen)
+    A[UI(Widget)] --> B(ViewModel)
 end
 subgraph "Data Layer"
-C[BeverageRepository]
+   C[Repository] 
+   D[Network Service]
+   E[Local DB]
 end
 B --> C
-A --> C
+C --> D
+C --> E
 ```
 
 ## Features

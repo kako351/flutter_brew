@@ -34,6 +34,19 @@ const SearchHistorySchema = CollectionSchema(
   deserializeProp: _searchHistoryDeserializeProp,
   idName: r'id',
   indexes: {
+    r'query': IndexSchema(
+      id: -3238105102146786367,
+      name: r'query',
+      unique: true,
+      replace: true,
+      properties: [
+        IndexPropertySchema(
+          name: r'query',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    ),
     r'queryWords': IndexSchema(
       id: 6032178025307930284,
       name: r'queryWords',
@@ -83,9 +96,8 @@ SearchHistory _searchHistoryDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = SearchHistory(
-    query: reader.readString(offsets[0]),
-  );
+  final object = SearchHistory();
+  object.query = reader.readString(offsets[0]);
   return object;
 }
 
@@ -115,6 +127,61 @@ List<IsarLinkBase<dynamic>> _searchHistoryGetLinks(SearchHistory object) {
 
 void _searchHistoryAttach(
     IsarCollection<dynamic> col, Id id, SearchHistory object) {}
+
+extension SearchHistoryByIndex on IsarCollection<SearchHistory> {
+  Future<SearchHistory?> getByQuery(String query) {
+    return getByIndex(r'query', [query]);
+  }
+
+  SearchHistory? getByQuerySync(String query) {
+    return getByIndexSync(r'query', [query]);
+  }
+
+  Future<bool> deleteByQuery(String query) {
+    return deleteByIndex(r'query', [query]);
+  }
+
+  bool deleteByQuerySync(String query) {
+    return deleteByIndexSync(r'query', [query]);
+  }
+
+  Future<List<SearchHistory?>> getAllByQuery(List<String> queryValues) {
+    final values = queryValues.map((e) => [e]).toList();
+    return getAllByIndex(r'query', values);
+  }
+
+  List<SearchHistory?> getAllByQuerySync(List<String> queryValues) {
+    final values = queryValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'query', values);
+  }
+
+  Future<int> deleteAllByQuery(List<String> queryValues) {
+    final values = queryValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'query', values);
+  }
+
+  int deleteAllByQuerySync(List<String> queryValues) {
+    final values = queryValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'query', values);
+  }
+
+  Future<Id> putByQuery(SearchHistory object) {
+    return putByIndex(r'query', object);
+  }
+
+  Id putByQuerySync(SearchHistory object, {bool saveLinks = true}) {
+    return putByIndexSync(r'query', object, saveLinks: saveLinks);
+  }
+
+  Future<List<Id>> putAllByQuery(List<SearchHistory> objects) {
+    return putAllByIndex(r'query', objects);
+  }
+
+  List<Id> putAllByQuerySync(List<SearchHistory> objects,
+      {bool saveLinks = true}) {
+    return putAllByIndexSync(r'query', objects, saveLinks: saveLinks);
+  }
+}
 
 extension SearchHistoryQueryWhereSort
     on QueryBuilder<SearchHistory, SearchHistory, QWhere> {
@@ -201,6 +268,51 @@ extension SearchHistoryQueryWhere
         upper: upperId,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<SearchHistory, SearchHistory, QAfterWhereClause> queryEqualTo(
+      String query) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'query',
+        value: [query],
+      ));
+    });
+  }
+
+  QueryBuilder<SearchHistory, SearchHistory, QAfterWhereClause> queryNotEqualTo(
+      String query) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'query',
+              lower: [],
+              upper: [query],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'query',
+              lower: [query],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'query',
+              lower: [query],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'query',
+              lower: [],
+              upper: [query],
+              includeUpper: false,
+            ));
+      }
     });
   }
 

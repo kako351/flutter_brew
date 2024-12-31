@@ -8,8 +8,8 @@ class LocalSearchHistory {
 
   Future<List<SearchHistory>> getSearchHistories(String words) async {
     final query = switch(words.isEmpty) {
-      true => isar.searchHistorys.where(),
-      false => isar.searchHistorys.filter().queryWordsStartsWith(words).or().queryWordsEqualTo(words)
+      true => isar.searchHistorys.where().sortByQueryDesc(),
+      false => isar.searchHistorys.filter().queryWordsStartsWith(words).or().queryWordsEqualTo(words).sortByQueryDesc()
     };
 
     return await query.limit(5).findAll();

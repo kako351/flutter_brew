@@ -20,6 +20,6 @@ class SearchHistoryRepositoryImpl implements SearchHistoryRepository {
 
   @override
   Future<void> saveSearchHistory(String words) async {
-    await localSearchHistory.saveSearchHistory(SearchHistory(query: words));
+    await localSearchHistory.saveSearchHistory(SearchHistory()..query = words);
   }
 }

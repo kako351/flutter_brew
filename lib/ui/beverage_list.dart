@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
+import 'package:flutter_brew/data/model/beverage_display_extension.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/beverages_view_model.dart';
@@ -289,7 +290,7 @@ class BeverageTopCellWidget extends StatelessWidget {
                         padding: EdgeInsets.only(top: 8.0),
                       ),
                       Text(
-                        beverage.ingredients.join(', '),
+                        beverage.formattedIngredients,
                         style: Theme.of(context).textTheme.labelSmall?.merge(TextStyle(color: BrewColor.lightGrey)),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -358,7 +359,7 @@ class BeverageCellWidget extends StatelessWidget {
                       padding: EdgeInsets.only(top: 8.0),
                     ),
                     Text(
-                      beverage.ingredients.join(', '),
+                      beverage.formattedIngredients,
                       style: Theme.of(context).textTheme.labelSmall?.merge(TextStyle(color: BrewColor.lightGrey)),
                       overflow: TextOverflow.ellipsis,
                     ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_brew/data/model/beverage.dart';
-import 'package:flutter_brew/data/model/beverage_display_extension.dart';
 import 'package:flutter_brew/data/model/beverage_type.dart';
 import 'package:flutter_brew/ui/beverage_detail_args.dart';
 import 'package:flutter_brew/ui/designsystem/color.dart';

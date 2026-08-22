@@ -67,7 +67,7 @@ dev_dependencies:
   retrofit_generator: '>=8.0.0 <10.0.0' # for Dart 3.3 use ^9.0.0
   riverpod_generator: ^2.6.3
   build_runner: ^2.4.13
-  custom_lint: ^0.7.0
+  custom_lint: ^0.8.0
   riverpod_lint: ^2.6.3
   mockito: ^5.4.4
   widgetbook_generator: ^3.9.1
